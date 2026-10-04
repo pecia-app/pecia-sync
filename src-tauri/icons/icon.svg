@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-label="Pecia Sync">
+  <rect width="1024" height="1024" rx="224" fill="#26473A"/>
+  <path d="M192 270c123-28 229 5 320 90 91-85 197-118 320-90v487c-116-26-220 5-320 90-100-85-204-116-320-90Z" fill="#EDF2E9"/>
+  <path d="M512 360v407" stroke="#7FA691" stroke-width="28" stroke-linecap="round"/>
+  <path d="M269 392c73-8 135 10 190 59M269 492c73-8 135 10 190 59M755 392c-73-8-135 10-190 59M755 492c-73-8-135 10-190 59" fill="none" stroke="#B56F55" stroke-width="28" stroke-linecap="round"/>
+  <circle cx="512" cy="694" r="52" fill="#26473A"/><path d="M490 694h44M512 672v44" stroke="#EDF2E9" stroke-width="18" stroke-linecap="round"/>
+</svg>
