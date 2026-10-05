@@ -1,7 +1,20 @@
 {
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "default",
-  "description": "The offline import window; no plugins or filesystem grants",
+  "description": "The offline import window; external actions require an explicit click for the tracked Pecia.app link or a support email",
   "windows": ["main"],
-  "permissions": ["core:default"]
+  "permissions": [
+    "core:default",
+    {
+      "identifier": "opener:allow-open-url",
+      "allow": [
+        {
+          "url": "https://pecia.app/?utm_source=pecia-sync&utm_medium=desktop-app&utm_campaign=sync-beta"
+        },
+        {
+          "url": "mailto:hola@pecia.app*"
+        }
+      ]
+    }
+  ]
 }
