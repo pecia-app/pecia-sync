@@ -45,7 +45,15 @@ jobs:
           path: release
           merge-multiple: true
       - name: Generate checksums
-        run: find release -type f -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS.txt
+        run: |
+          find release -type f \( \
+            -name '*.dmg' -o \
+            -name '*.msi' -o \
+            -name '*-setup.exe' -o \
+            -name '*.AppImage' -o \
+            -name '*.deb' -o \
+            -name '*.rpm' \
+          \) -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS.txt
       - name: Attach installers and checksums
         uses: softprops/action-gh-release@v2
         with:
@@ -53,5 +61,10 @@ jobs:
           prerelease: true
           generate_release_notes: true
           files: |
-            release/**
+            release/**/*.dmg
+            release/**/*.msi
+            release/**/*-setup.exe
+            release/**/*.AppImage
+            release/**/*.deb
+            release/**/*.rpm
             SHA256SUMS.txt
