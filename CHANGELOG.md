@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.1 — beta
+
+- Fix the macOS bundle's ad-hoc signature so it opens through the normal
+  Gatekeeper override instead of being reported as damaged.
+
 ## 0.1.0 — beta
 
 - Offline, read-only CSV export compatible with Goodreads import fields.
