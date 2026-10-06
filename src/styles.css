@@ -30,6 +30,10 @@ button:disabled { cursor: wait; opacity: .7; }
 .book-preview li::before { content: "·"; margin-right: 7px; color: #b56f55; font-weight: 700; }
 .book-preview .book-preview-more { margin-top: 3px; padding: 7px 10px; border-radius: 6px; background: rgba(203, 217, 201, .65); color: #355546; font-weight: 700; }
 .book-preview .book-preview-more::before { content: "+"; }
+.review-result > button { margin-top: 8px; background: #cbd9c9; }
+.review-editor { display: grid; gap: 8px; margin-top: 10px; max-height: 280px; overflow: auto; }
+.review-edit-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 8px; border-radius: 7px; background: #f8efd8; }
+.review-edit-row input { min-width: 0; padding: 8px; border: 1px solid rgba(31,64,53,.22); border-radius: 5px; background: #fffdf7; color: #1f4035; font: 14px system-ui, sans-serif; }
 .review-detail { margin: 0; padding-top: 10px; border-top: 1px solid rgba(31, 64, 53, .16); color: #486353; }
 .how-it-works ol { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin: 14px 0; padding: 0; list-style-position: inside; }
 .how-it-works li::marker { color: #b56f55; font-weight: 700; }
