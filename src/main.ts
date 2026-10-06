@@ -2,6 +2,7 @@ import "./styles.css";
 import { invoke } from "@tauri-apps/api/core";
 import { openUrl } from "@tauri-apps/plugin-opener";
 import { bookFromKindleFilename, toSyncCsv, type SyncBook } from "./lib/csv";
+import { reviewBooksForGoodreads, type ReviewBook } from "./lib/goodreads-review";
 
 type ConnectedDevice = {
     manufacturer: string | null;
@@ -100,6 +101,7 @@ const copy = {
 
 let language: Language = "es";
 let reviewedBooks: SyncBook[] = [];
+let reviewBooks: ReviewBook[] = [];
 let connectedDevices: ConnectedDevice[] = [];
 let lastReview: MetadataReview | null = null;
 const diagnosticEvents: string[] = [];
@@ -145,24 +147,24 @@ function renderReviewResult(review: MetadataReview) {
   if (!result || !summary || !preview || !detail) return;
 
   const bookCount = reviewedBooks.length;
+  const ready = reviewBooks.filter((entry) => !entry.needsReview).length;
+  const flagged = reviewBooks.filter((entry) => entry.needsReview);
+  const adjusted = reviewBooks.filter((entry) => entry.changes.length);
   summary.textContent = language === "es"
-    ? `${bookCount} libro${bookCount === 1 ? "" : "s"} encontrado${bookCount === 1 ? "" : "s"} en tu e-reader`
-    : `${bookCount} book${bookCount === 1 ? "" : "s"} found on your e-reader`;
-  const previewItems = reviewedBooks.slice(0, 3).map((book) => {
+    ? `${bookCount} libros encontrados · ${ready} listos para exportar${flagged.length ? ` · ${flagged.length} necesitan revisión` : ""}`
+    : `${bookCount} books found · ${ready} ready to export${flagged.length ? ` · ${flagged.length} need review` : ""}`;
+  const previewItems = adjusted.slice(0, 2).map((entry) => {
     const item = document.createElement("li");
-    item.textContent = `${book.title} — ${book.author}`;
+    item.textContent = `${entry.book.title} — ${entry.book.author} · ${language === "es" ? "ajustado automáticamente" : "adjusted automatically"}`;
     return item;
   });
-  const remaining = bookCount - previewItems.length;
-  if (remaining > 0) {
-    const more = document.createElement("li");
-    more.className = "book-preview-more";
-    more.textContent = language === "es"
-      ? `Y ${remaining} libro${remaining === 1 ? "" : "s"} más en este dispositivo`
-      : `And ${remaining} more book${remaining === 1 ? "" : "s"} on this device`;
-    previewItems.push(more);
-  }
+  if (!previewItems.length) previewItems.push(Object.assign(document.createElement("li"), { textContent: language === "es" ? "Los títulos y autores están listos para exportar." : "Titles and authors are ready to export." }));
   preview.replaceChildren(...previewItems);
+  const issuesButton = document.querySelector<HTMLButtonElement>("#review-issues");
+  if (issuesButton) {
+    issuesButton.hidden = !flagged.length;
+    issuesButton.textContent = language === "es" ? `Ver y editar los ${flagged.length} que necesitan revisión` : `View and edit ${flagged.length} needing review`;
+  }
   const metadata = language === "es"
     ? `${review.objectCount} elementos revisados · ${review.storageCount} almacenamiento · Solo metadatos`
     : `${review.objectCount} items reviewed · ${review.storageCount} storage area${review.storageCount === 1 ? "" : "s"} · Metadata only`;
@@ -171,6 +173,20 @@ function renderReviewResult(review: MetadataReview) {
     : "";
   detail.textContent = `${metadata}${skipped}`;
   result.removeAttribute("hidden");
+}
+
+function renderIssueEditor() {
+  const editor = document.querySelector<HTMLElement>("#review-editor");
+  if (!editor) return;
+  const flagged = reviewBooks.filter((entry) => entry.needsReview);
+  editor.replaceChildren(...flagged.map((entry) => {
+    const row = document.createElement("div"); row.className = "review-edit-row";
+    const title = document.createElement("input"); title.value = entry.book.title; title.setAttribute("aria-label", language === "es" ? "Título" : "Title");
+    const author = document.createElement("input"); author.value = entry.book.author; author.placeholder = language === "es" ? "Añade el autor" : "Add author"; author.setAttribute("aria-label", language === "es" ? "Autor" : "Author");
+    const save = () => { entry.book.title = title.value.trim(); entry.book.author = author.value.trim(); entry.needsReview = !entry.book.author || entry.book.title.length < 2; reviewedBooks = reviewBooks.map((item) => item.book); renderReviewResult(lastReview!); if (!entry.needsReview) renderIssueEditor(); };
+    title.addEventListener("input", save); author.addEventListener("input", save); row.append(title, author); return row;
+  }));
+  editor.hidden = false;
 }
 
 async function saveCsv(books: readonly SyncBook[], filename: string, status: HTMLElement, successMessage: string): Promise<boolean> {
@@ -223,9 +239,11 @@ async function reviewVisibleMetadata() {
       ?? connectedDevices.find((device) => device.connection === "usb-drive")?.connection
       ?? "mtp";
     const review = await invoke<MetadataReview>("review_visible_metadata", { connection });
-    reviewedBooks = review.books.length
+    const books = review.books.length
       ? review.books
       : review.bookNames.map(bookFromKindleFilename).filter((book): book is SyncBook => book !== null);
+    reviewBooks = reviewBooksForGoodreads(books);
+    reviewedBooks = reviewBooks.map((entry) => entry.book);
     lastReview = review;
     recordDiagnostic(`Metadata review: ${reviewedBooks.length} book record(s), ${review.storageCount} storage area(s)`);
     status.textContent = reviewedBooks.length ? "" : t().noBooks;
@@ -290,6 +308,7 @@ window.addEventListener("DOMContentLoaded", () => {
   document.querySelector("#device-check")?.addEventListener("click", checkConnectedDevice);
   document.querySelector("#metadata-review")?.addEventListener("click", reviewVisibleMetadata);
   document.querySelector("#kindle-export")?.addEventListener("click", downloadKindleReview);
+  document.querySelector("#review-issues")?.addEventListener("click", renderIssueEditor);
   document.querySelector<HTMLAnchorElement>("#support-email")?.addEventListener("click", contactSupport);
   document.querySelector<HTMLAnchorElement>("#pecia-link")?.addEventListener("click", async (event: MouseEvent) => {
     event.preventDefault();
