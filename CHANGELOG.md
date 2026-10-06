@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.2 — beta
+
+- Add an editable, local Goodreads matching review: safe title and author
+  cleanup is shown before export, while incomplete records are flagged for
+  correction instead of silently guessed.
+
 ## 0.1.1 — beta
 
 - Fix the macOS bundle's ad-hoc signature so it opens through the normal
