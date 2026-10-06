@@ -1,6 +1,6 @@
 [package]
 name = "pecia-sync"
-version = "0.1.1"
+version = "0.1.2"
 description = "Auditable, offline Kindle and Kobo library importer for Pecia"
 authors = ["Pecia"]
 edition = "2021"
