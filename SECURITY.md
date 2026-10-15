@@ -28,9 +28,37 @@ Encrypted MOBI/KF8 headers, including hybrid records, are rejected before
 parsing. EPUB encryption declarations are rejected. No DRM licences or
 credentials are used and no protection is removed.
 
-Only local reading positions and bookmarks are persisted, keyed by a content
+Local reading positions and bookmarks are persisted, keyed by a content
 hash. They are separate from device progress, CSV exports and support reports.
 Book contents are not persisted by the reader or sent to a remote service.
 Input and expanded-content bounds reduce resource exposure, but malformed book
 parsers remain an attack surface; please report crashes or unexpected resource
 loading with a minimal synthetic reproducer, not a private ebook.
+
+## Highlights boundary (development)
+
+Clippings are read only after an explicit import action, never by discovery
+or a book scan. Direct USB import reads only `documents/My Clippings.txt` and
+rejects symlink paths. Direct MTP import opens one Kindle by its current USB
+location (never exposed to the frontend), lists root/documents metadata, and
+streams only the exact clippings file with a 20 MB cap. Ambiguous devices/files
+are refused. A shared device lock prevents concurrent scanning/import sessions;
+MTP sessions are closed after success or failure. No device writes or resets.
+The file picker accepts UTF-8 text files up to 20 MB; the parser
+caps input at 50,000 entries. Source paths and annotation content are not logged
+or included in diagnostics. No Kobo annotation query is made.
+
+If the clippings file is absent over MTP, explicit import also reads bounded
+annotation-database snapshots and matching DRM-free KFX books into memory.
+Experimental recovered passages are preview-only: no persistence, fingerprints,
+or export. Pending edits suppress recovery; unsupported maps are not guessed.
+See `docs/KFX-INTEGRATION.md` for bounds and the GPL distribution release gate.
+
+Clipping text and book headings are rendered using textContent. Markdown exports
+escape source markup and are written only after a native save dialog. Exports
+to detected Kindle/Kobo volumes or existing symlink destinations are refused.
+Imported text remains in session memory, not localStorage. Only SHA-256 entry
+fingerprints for the last successful import are persisted; these are local
+comparison identifiers, not anonymized data or encryption. The clear-history
+control removes them and the in-memory entries. Annotation import does not
+alter the CSV export or reading-position stores.

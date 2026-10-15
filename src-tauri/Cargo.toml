@@ -18,9 +18,11 @@ crate-type = ["staticlib", "cdylib", "rlib"]
 tauri-build = { version = "2", features = [] }
 
 [dependencies]
+pecia-kfx-prototype = { path = "../experiments/kfx" }
+serde_json = "1"
 mtp-rs = "0.32.0"
 rfd = "0.17.2"
-rusqlite = { version = "0.37.0", features = ["bundled"] }
+rusqlite = { version = "0.37.0", features = ["bundled", "serialize"] }
 serde = { version = "1", features = ["derive"] }
 sysinfo = { version = "0.39.6", default-features = false, features = ["disk"] }
 tauri = { version = "2", features = [] }

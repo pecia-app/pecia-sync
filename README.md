@@ -17,6 +17,54 @@ explicit local review step: Kindle reads visible object names, while Kobo reads
 only its local library metadata database in read-only mode. Scanning never reads
 ebook contents. Opening a book is a separate, explicit action.
 
+## Highlights and notes (development, not in 0.2.0)
+
+Use **Import from Kindle** to explicitly read `documents/My Clippings.txt`
+from one connected Kindle over mounted USB or MTP. **Import file…** selects a
+local copy instead. English and Spanish highlight/note entries
+are supported. Review entries by book, search their text, filter new entries,
+and export the filtered selection as one Markdown file for Obsidian or another
+notes app. Nothing is automatically added to the library CSV.
+
+Text stays in memory until the app closes or **Clear local history** is used.
+Only SHA-256 entry fingerprints are saved locally to compare against the
+previous successful import, including across restarts. Import the same source
+for meaningful new-entry comparisons; switching files compares against the
+previous file, not a per-device history. The first import marks every entry new.
+The clear control removes both session text and this fingerprint history.
+
+Clippings are an export log, not a live annotation database: deleted or edited
+entries may remain, and copyright export limits can omit text. Exact repeated
+entries are collapsed; changed text is preserved. Notes stay separate from
+highlights. Book grouping uses the exact source heading, without guessing an
+ISBN or merging with scanned library books. Dates retain the device's original
+local text, without an inferred timezone.
+
+Limits: UTF-8, 20 MB, 50,000 entries. Unsupported/malformed records and bookmarks
+are counted and skipped. An empty/unsupported file or cancelled picker leaves
+the previous import untouched. Cancelling leaves the panel unchanged without
+a persistent message. **View highlights** appears after a successful import;
+**Privacy & history** remains available for clearing fingerprints after restart.
+
+When the clippings file is absent on MTP, the importer checks the Kindle's
+annotation database and reads matching DRM-free KFX books into memory to recover
+synced highlight passages. This experimental preview is not saved, fingerprinted,
+or exportable; previous clippings imports remain intact. Pending edits suppress
+the preview. Three passages were recovered on a physical Kindle and displayed
+in the dev app; exact boundaries still require comparison with the device.
+The card provides a manual quote carousel and a full review window.
+Multiple devices or ambiguous matches are refused. No uploads, resets, deletes,
+or saved device copies. Kobo annotations are not implemented.
+See [KFX integration and release licensing requirements](docs/KFX-INTEGRATION.md).
+The development executable now includes GPL-3.0-or-later decoder code and must
+not be described or distributed as MIT-only; complete the release review first.
+The source format was checked against
+[KindleMate2's format documentation](https://github.com/lzcapp/KindleMate2/blob/main/formats.md).
+
+Browser regression checks (synthetic data only): after `npm run build`, install
+Playwright WebKit with `npx playwright install webkit`, ensure Chrome is installed,
+then run `node scripts/test-highlights.mjs`.
+
 ## Offline reader (0.2.0 beta)
 
 See the [reader guide](docs/reader-guide.md) for opening books, navigation,

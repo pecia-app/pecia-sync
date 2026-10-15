@@ -5,6 +5,26 @@ is not a hardware-support promise; missing progress never means unread.
 
 ## Device scanning
 
+### Development: MTP annotation database fallback
+
+When `documents/My Clippings.txt` is absent, an explicit Import from Kindle
+action checks `system/ksdk/.annotations/amzn1.account.*/ksdk_annotation_v1.db`.
+The database is read into memory only (20 MiB per database, at most 16).
+The UI reports synced highlight/note record counts and pending edit counts;
+these are **not current annotation totals or imported text**. Existing imports
+and local fingerprints are preserved. Pending edits are not reconciled.
+WAL snapshots and unsupported schemas are refused rather than guessed.
+Mounted USB devices still use the clippings-file importer only.
+
+A read-only physical MTP probe on 15 October 2026 found two databases and three
+synced highlight records. Those records contained positions, not highlight text.
+The development app now recovers supported DRM-free KFX passages into an
+experimental preview. Three passages were displayed from a physical Kindle;
+exact endpoints remain subject to user comparison. Notes, pending-edit
+reconciliation, and DRM-protected content are unsupported. Synthetic tests cover
+counts, rejected snapshots, position resolution, and the preview UI;
+no real annotation database or book content is retained as a fixture.
+
 | Device | Connection | Host | Metadata | Progress | Validation |
 |---|---|---|---|---|---|
 | Kindle Scribe 32GB | MTP | macOS | Storage and book object names | Not exposed by current implementation | Physical-device detection and metadata probe |
@@ -36,6 +56,20 @@ Tests use an in-memory database built from src-tauri/fixtures/kobo/metadata.sql.
 It contains fictional metadata only. The production parser uses SQLite
 read-only mode and tolerates absent optional columns. A physical Kobo test is
 still required.
+
+## Highlights and notes (development, not in 0.2.0)
+
+Explicit `Import from Kindle` reads `documents/My Clippings.txt` over mounted USB
+or MTP. File selection additionally supports local
+copies in UTF-8, with English/Spanish highlight and note metadata. Synthetic
+tests cover parsing, duplicates, raw local dates, safe Markdown, new-entry
+history and review UI, including cancellation/layout checks at laptop sizes.
+Physical MTP connection and root/documents metadata enumeration were validated
+on 15 October 2026. No clippings text file was present on that Kindle, so actual
+content transfer still needs validation. No real annotations were logged or saved.
+Kobo annotations, other languages and note-to-highlight
+linking are not implemented. The file is an append-style export history, not
+proof of current annotations or an exhaustive collection. No device writes.
 
 ## In-app reader (development)
 

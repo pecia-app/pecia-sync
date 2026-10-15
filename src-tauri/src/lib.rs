@@ -1,4 +1,6 @@
 mod reader;
+mod annotations;
+static DEVICE_ACCESS: tauri::async_runtime::Mutex<()> = tauri::async_runtime::Mutex::const_new(());
 
 #[derive(serde::Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -238,6 +240,7 @@ fn read_kobo_metadata_from_connection(database: &Connection) -> Result<Vec<Revie
 /// only. It never calls download, upload, rename, move, copy, delete, or reset.
 #[tauri::command]
 async fn review_visible_metadata(connection: String) -> Result<MetadataReview, String> {
+    let _guard = DEVICE_ACCESS.try_lock().map_err(|_| "busy".to_string())?;
     if connection == "kobo-usb" {
         let mount_point = kobo_volumes().into_iter().next()
             .ok_or_else(|| "No mounted Kobo volume found".to_string())?;
@@ -390,7 +393,7 @@ fn save_csv(default_filename: String, contents: String, dialog_title: String) ->
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
-        .invoke_handler(tauri::generate_handler![list_connected_devices, review_visible_metadata, save_csv, diagnostic_snapshot, reader::open_reader_file])
+        .invoke_handler(tauri::generate_handler![list_connected_devices, review_visible_metadata, save_csv, diagnostic_snapshot, reader::open_reader_file, annotations::open_clippings_file, annotations::save_annotations, annotations::import_kindle_clippings])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
