@@ -14,8 +14,35 @@ test; it is not yet a compatibility promise. See the
 Sync writes a Goodreads-shaped CSV with optional `Pecia Sync …` columns for
 progress, last-read date, source, device ID and opt-in highlights. It uses an
 explicit local review step: Kindle reads visible object names, while Kobo reads
-only its local library metadata database in read-only mode. It never reads
-ebook contents.
+only its local library metadata database in read-only mode. Scanning never reads
+ebook contents. Opening a book is a separate, explicit action.
+
+## Offline reader (development)
+
+Double-click a supported book (or focus it and press Enter), or use **Open book**
+to select a local file. EPUB, PDF, DRM-free MOBI and AZW3 are supported by bundled
+parsers: no Calibre installation or network conversion is required. Direct
+device opening currently supports mounted Kindle USB drives; MTP and Kobo users
+can select a local copy. KFX and AZW are not supported.
+
+The reader provides section/page navigation, text sizing or PDF zoom, a local
+bookmark and resume position. Positions are keyed by a content hash and stored
+in local webview storage, separately from device progress and CSV exports.
+No book content is persisted by the reader. Original files are never modified.
+
+MOBI/AZW3 parsing uses pinned MIT-licensed
+[Foliate-js](https://github.com/johnfactotum/foliate-js); its license ships in
+public/licenses/foliate-js.txt. Its full HTML renderer is not used: extracted
+text and embedded raster images pass through our inert allowlist renderer.
+Book scripts, styles, external URLs, media and embedded fonts are not loaded.
+Encryption is rejected, including encrypted headers in hybrid MOBI/KF8 files.
+This is a simplified reflowable reader, not exact Kindle typesetting.
+
+Limits: 32 MB input, 80 MB expanded content, 16 MB per section. Password-protected
+PDFs and EPUBs with encryption declarations are currently unsupported.
+Regression tests use synthetic content. Read-only parser checks succeeded for
+one physical-device MOBI (29 sections) and one AZW3; no private book fixtures
+are committed. Broader firmware/book compatibility is not yet guaranteed.
 
 ### Kindle progress observations
 
@@ -31,7 +58,7 @@ The device-reported value may differ from the on-screen percentage; Sync does
 not adjust it. The review displays the observation time, and CSV exports carry
 it in `Pecia Sync Progress Observed At`, separately from `Pecia Sync Last Read`.
 The 2016 Kindle was inspected read-only; MTP progress extraction is not yet
-implemented or validated on the 2024 Kindle. No ebook contents are opened.
+implemented or validated on the 2024 Kindle. Progress scanning opens no ebook contents.
 
 ## Local Goodreads review
 
@@ -52,12 +79,13 @@ way for Goodreads to match a particular edition.
 - No sign-in, background network requests, telemetry, runtime updater, or
   downloader.
 - No Amazon, Kobo or Adobe credentials.
-- No ebook file, DRM licence, cover or book content is read, uploaded or changed.
+- Book contents are read only after an explicit open action. No DRM licence is
+  read, no protection is removed, and no content is uploaded or modified.
 - Device discovery and metadata review happen only after the reader clicks the
   corresponding local action. Hardware serials are never returned to the UI.
 - Nothing is installed or written to a connected e-reader.
-- The only output is a CSV saved only after the reader chooses its destination
-  in the native save panel.
+- CSV output is saved only after the reader chooses its destination in the
+  native save panel. Reader positions and bookmarks are stored locally.
 - The app keeps no persistent logs. Its optional support email includes only
   the app version, OS/architecture, and a short in-memory record of safe
   operation counts—never book titles, files, databases, accounts or device IDs.

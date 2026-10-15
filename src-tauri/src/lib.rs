@@ -1,3 +1,5 @@
+mod reader;
+
 #[derive(serde::Serialize)]
 #[serde(rename_all = "camelCase")]
 struct ConnectedDevice {
@@ -388,7 +390,7 @@ fn save_csv(default_filename: String, contents: String, dialog_title: String) ->
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
-        .invoke_handler(tauri::generate_handler![list_connected_devices, review_visible_metadata, save_csv, diagnostic_snapshot])
+        .invoke_handler(tauri::generate_handler![list_connected_devices, review_visible_metadata, save_csv, diagnostic_snapshot, reader::open_reader_file])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
