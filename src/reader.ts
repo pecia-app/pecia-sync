@@ -5,6 +5,7 @@ import { parsePosition, readerFormat } from "./lib/reader-position";
 import { parseMobi } from "./lib/mobi";
 import { readerContents } from "./lib/reader-contents";
 import type { PDFDocumentProxy, RenderTask } from "pdfjs-dist";
+import { pdfPageText, pdfFitWidth } from "./lib/reader-pdf";
 
 type Language = "es" | "en";
 const labels = {
@@ -234,7 +235,8 @@ class Reader {
         const page = await this.pdf.getPage(section + 1);
         if (serial !== this.serial || this.closed) return;
         const base = page.getViewport({ scale: 1 });
-        const width = Math.min(1100, Math.max(240, this.viewport.clientWidth - 80));
+        const padding = getComputedStyle(this.viewport);
+        const width = pdfFitWidth(this.viewport.clientWidth, parseFloat(padding.paddingLeft), parseFloat(padding.paddingRight));
         const scale = width / base.width * Number(this.size.value) / 100;
         const viewport = page.getViewport({ scale });
         const ratio = Math.min(window.devicePixelRatio || 1, 2);
@@ -246,9 +248,13 @@ class Reader {
         this.article.append(canvas);
         this.task = page.render({ canvas, viewport, transform: ratio === 1 ? undefined : [ratio,0,0,ratio,0,0] });
         await this.task.promise;
-        const content = await page.getTextContent();
+        // Text extraction is supplementary: failure must not mark a rendered page
+        // as broken or prevent its reading position from being saved.
+        let text: string;
+        try { text = await pdfPageText(page); }
+        catch { text = this.t.text === "Texto accesible" ? "El texto accesible no está disponible para esta página." : "Accessible text is unavailable for this page."; }
         if (serial !== this.serial || this.closed) return;
-        this.pdfTextBody.textContent = content.items.map(item => "str" in item ? item.str : "").join(" ");
+        this.pdfTextBody.textContent = text;
       }
       if (serial !== this.serial || this.closed) return;
       this.restoreOffset(offset); this.pendingOffset = null; this.save();
