@@ -1,5 +1,25 @@
 # Changelog
 
+## 0.2.0 — beta
+
+- Add a laptop-sized, bilingual dashboard with one-click scanning, book search,
+  progress filters and CSV export.
+- Read dated Kindle progress observations where exposed by mounted USB drives;
+  missing data remains unknown and is never interpreted as unread.
+- Add an offline, in-app reader for EPUB, PDF and DRM-free MOBI/AZW3, with
+  contents navigation, text sizing/PDF zoom, a local bookmark and resume position.
+- Bundle the reader parsers: no Calibre or network conversion is required.
+- Use the Pecia logo in the interface and app icons, including native rebuilds
+  when icons change.
+- Add reader, privacy and compatibility documentation with synthetic screenshots.
+
+Known beta limitations: KFX/AZW and DRM-protected books are unsupported;
+highlights are not connected. Direct content opening is limited to mounted
+Kindle USB drives; other connections require a local copy. Reader positions
+stay on this computer and do not update Kindle progress. Reflowable section
+counts are currently labelled as chapters. macOS packages are ad-hoc signed,
+not Apple-notarized.
+
 ## 0.1.2 — beta
 
 - Add an editable, local Goodreads matching review: safe title and author

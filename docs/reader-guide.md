@@ -1,7 +1,7 @@
 # Reading locally with Pecia Sync
 
-This guide describes the development reader, not the previously released 0.1.2
-installer. Reading is offline; no Calibre installation or account is required.
+This guide describes the reader in 0.2.0 beta. The older 0.1.2 installer does not
+include it. Reading is offline; no Calibre installation or account is required.
 
 ![The reader with a fictional book and original demonstration text](screenshots/reader.png)
 

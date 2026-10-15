@@ -5,7 +5,7 @@ An open-source, offline, read-only Kindle and Kobo library importer for
 
 ## Beta status
 
-Pecia Sync is currently `0.1.2` and intended for testing. Kindle MTP and
+Pecia Sync is currently `0.2.0` beta and intended for testing. Kindle MTP and
 Kindle USB Drive Mode have been tested on macOS. Kobo support has automated
 coverage against a sanitized SQLite fixture but still needs a physical-device
 test; it is not yet a compatibility promise. See the
@@ -17,7 +17,7 @@ explicit local review step: Kindle reads visible object names, while Kobo reads
 only its local library metadata database in read-only mode. Scanning never reads
 ebook contents. Opening a book is a separate, explicit action.
 
-## Offline reader (development)
+## Offline reader (0.2.0 beta)
 
 See the [reader guide](docs/reader-guide.md) for opening books, navigation,
 bookmarks, resume behaviour and troubleshooting.
