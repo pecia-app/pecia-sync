@@ -1,41 +1,59 @@
 # Compatibility matrix
 
-This table records only tested combinations. A missing field means Sync omits it;
-it never estimates progress or treats an untested device as supported.
+Device scanning and in-app reading are separate capabilities. Fixture coverage
+is not a hardware-support promise; missing progress never means unread.
 
-| Device | Connection | Host | Library metadata | Progress | Status |
+## Device scanning
+
+| Device | Connection | Host | Metadata | Progress | Validation |
 |---|---|---|---|---|---|
-| Kindle Scribe 32GB (`1949:9981`) | MTP | macOS | MTP storage and book object names exposed | `system/cc.db` not exposed | Detection/title-metadata proof of concept complete; no cable-progress claim |
-| Kindle 2016 | USB Drive Mode | macOS | `documents/` filenames and sidecar folders exposed | No standard `system/cc.db` found | Detection/title-metadata proof of concept complete; no cable-progress claim |
-| Kobo eReader | USB storage | Sanitized fixture only | `.kobo/KoboReader.sqlite` title/author/ISBN, plus progress/date where exposed | Parsed from fixture | Not hardware-validated |
+| Kindle Scribe 32GB | MTP | macOS | Storage and book object names | Not exposed by current implementation | Physical-device detection and metadata probe |
+| Kindle 2016 | USB Drive Mode | macOS | Filenames below documents/ | Optional, dated fmcache observations | Physical-device scan and dashboard exercised |
+| Kobo eReader | USB storage | Synthetic fixture | Title/author/ISBN and optional fields from KoboReader.sqlite | Parsed from fixture | Not hardware-validated |
 
-## Kindle Scribe 32GB probe — 4 October 2026
+### Kindle Scribe probe — 4 October 2026
 
-The device is visible to macOS as Amazon Kindle hardware but not as a mounted
-volume. It exposes one internal storage area and lists object names such as KFX
-book files and their sidecar metadata. A read-only filtered object listing
-found no `system/cc.db` or `system` path. Pecia Sync uses a pure-Rust MTP
-implementation for its native discovery and metadata review; `libmtp` was used
-only as a development probe.
+The device exposed MTP storage and KFX/sidecar object names but no mounted
+volume or standard system/cc.db path. No ebook contents were downloaded during
+the probe. Native scanning uses pure-Rust MTP; libmtp was only a development
+probe. No serial number is recorded here.
 
-No object contents were downloaded, and no device operation that writes,
-deletes, moves, copies or changes a property was used. The device serial number
-is intentionally not recorded here.
+### Kindle 2016 — 5 and 15 October 2026
 
-## Kindle 2016 probe — 5 October 2026
+The initial USB Drive Mode probe inspected filenames only and found no standard
+system/cc.db. Later testing established that system/fmcache/fmcache.db can expose
+temporary shared_reading_update_v2 observations.
 
-In USB Drive Mode the reader mounted as a removable FAT32 volume. Pecia Sync
-walked directory entries below `documents/` and selected supported book
-filenames; it did not open those files. The usual progress database was not
-present at the standard `system/cc.db` path, so the export deliberately leaves
-progress, last-read and highlights blank.
+Sync now reads that cache with SQLite's read-only flag and matches valid
+percentages and timestamps to exact visible book filenames. Observations may
+be stale, absent or different from the on-screen percentage. Sync does not
+adjust them. The dashboard and CSV distinguish observation time from last-read
+time. This does not establish 2024 Kindle/MTP progress support.
 
-## Kobo fixture coverage — 5 October 2026
+### Kobo fixture — 5 October 2026
 
-Kobo's database schema is not an official stable interface. The fixture is an
-in-memory database created from `src-tauri/fixtures/kobo/metadata.sql`; it has
-fictional metadata only and contains no account data, book content, highlights,
-or device identifier. The parser opens an actual Kobo database with SQLite's
-read-only flag, tolerates absent optional ISBN/progress/date columns, and reads
-only library-level records. A physical Kobo test is still required before
-compatibility can be claimed.
+Tests use an in-memory database built from src-tauri/fixtures/kobo/metadata.sql.
+It contains fictional metadata only. The production parser uses SQLite
+read-only mode and tolerates absent optional columns. A physical Kobo test is
+still required.
+
+## In-app reader (development)
+
+| Format / path | Implemented | Evidence / limits |
+|---|---|---|
+| EPUB | Local, reflowable reader | Synthetic parsing/sanitization tests; broader visual validation pending |
+| PDF | Local page renderer and zoom | Production build verified; end-to-end manual PDF validation pending |
+| DRM-free MOBI | Bundled Foliate-js parser | Synthetic tests, read-only physical-file parser check, user exercised native macOS reader |
+| DRM-free AZW3 / KF8 | Bundled Foliate-js parser | One physical-file parser check; broader visual validation pending |
+| KFX / AZW | No | Clear unsupported-format dialog |
+| Encrypted books | No | Encryption rejection tests; no DRM removal |
+| Mounted Kindle USB content | Yes, for supported formats | Read-only open; bounded basename lookup, symlinks skipped, ambiguity rejected |
+| MTP / Kobo direct content | No | Select a local copy instead |
+
+Reader position is local to this app and is never written to the device or
+merged into the dashboard's observed progress. Reflowable rendering deliberately
+omits original CSS, fonts, scripts, remote resources and media.
+
+CI builds on macOS, Ubuntu and Windows; that is not equivalent to physical-device
+or visual-reader validation on all three platforms. No private ebooks or
+screenshots are included in fixtures. See the [reader guide](reader-guide.md).

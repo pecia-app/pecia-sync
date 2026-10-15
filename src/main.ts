@@ -1,10 +1,12 @@
 import "./styles.css";
 import "./laptop.css";
+import "./reader.css";
 import { invoke } from "@tauri-apps/api/core";
 import { openUrl } from "@tauri-apps/plugin-opener";
 import { toSyncCsv, type SyncBook } from "./lib/csv";
 import { reviewBooksForGoodreads, type ReviewBook } from "./lib/goodreads-review";
 import { kindleBook, progressLabel, type ProgressObservation } from "./lib/progress";
+import { readerFormat } from "./lib/reader-position";
 
 type ConnectedDevice = {
     manufacturer: string | null;
@@ -38,7 +40,7 @@ const copy = {
     eyebrow: "Pecia Sync · beta sin conexión",
     overview: "Vista general", booksNav: "Libros", annotationsNav: "Subrayados", yourReader: "Tu lector", notConnected: "Sin conectar", localOnly: "Local. Privado. Solo lectura.", notImported: "Sin importar", booksHeading: "En tu lector", readOnly: "Solo lectura", search: "Buscar título o autor", filters: "Filtrar libros", allBooks: "Todos", withProgress: "Con progreso", unavailable: "Sin datos", emptyTitle: "Tu biblioteca empieza aquí", emptyBody: "Conecta tu Kindle o Kobo por USB y busca el lector para revisar sus libros.", noMatches: "No hay libros que coincidan.", missingNotice: "Sin datos no significa sin leer. El progreso refleja la última observación disponible, no una lectura en directo.", annotationsHeading: "Subrayados y notas", soon: "Próximamente", annotationsEmpty: "Tus ideas, en un solo lugar.", annotationsBody: "La importación de subrayados aún no está conectada. Esta versión revisa libros y el progreso disponible.", annotationsPrivacy: "No se han leído ni exportado tus notas.", readyHeading: "Haz espacio para tu próxima lectura.", readyBody: "Guarda el CSV e impórtalo en tu biblioteca de Pecia. Tú decides qué compartir.", openPecia: "Abrir Pecia ↗",
     title: "Tu lector, de un vistazo.",
-    lede: "Un importador de solo lectura para Kindle y Kobo. Sin cuenta, conexión a internet, descargas ni cambios en tu dispositivo.",
+    lede: "Tu biblioteca, sin conexión y de solo lectura. El contenido de un libro solo se lee cuando eliges abrirlo.",
     connectHeading: "Conecta un dispositivo",
     connectLede: "Cada paso es local y de solo lectura hasta que guardes un CSV de forma explícita.",
     flowLabel: "Pasos de importación de Kindle",
@@ -74,7 +76,7 @@ const copy = {
     eyebrow: "Pecia Sync · offline beta",
     overview: "Overview", booksNav: "Books", annotationsNav: "Highlights", yourReader: "Your reader", notConnected: "Not connected", localOnly: "Local. Private. Read-only.", notImported: "Not imported", booksHeading: "On your reader", readOnly: "Read-only", search: "Search title or author", filters: "Filter books", allBooks: "All books", withProgress: "With progress", unavailable: "Unavailable", emptyTitle: "Your library starts here", emptyBody: "Connect your Kindle or Kobo by USB, then find your reader to review its books.", noMatches: "No matching books.", missingNotice: "Missing data does not mean unread. Progress reflects the latest available observation, not a live reading.", annotationsHeading: "Highlights & notes", soon: "Coming soon", annotationsEmpty: "Your ideas, in one place.", annotationsBody: "Highlight importing is not connected yet. This version reviews books and available reading progress.", annotationsPrivacy: "Your notes have not been read or exported.", readyHeading: "Make room for your next read.", readyBody: "Save the CSV and import it into your Pecia library. You decide what to share.", openPecia: "Open Pecia ↗",
     title: "Your reader, at a glance.",
-    lede: "A read-only importer for Kindle and Kobo. No account, network connection, downloads or changes to your device.",
+    lede: "Your library, offline and read-only. Book contents are read only when you choose to open them.",
     connectHeading: "Connect a device",
     connectLede: "Each step is local and read-only until you explicitly save a CSV.",
     flowLabel: "Kindle import steps",
@@ -116,6 +118,39 @@ let lastReview: MetadataReview | null = null;
 let activeFilter = "all";
 let scanTime: Date | null = null;
 let scanning = false;
+const bookFiles = new WeakMap<SyncBook, string>();
+
+function explainReaderFormat(book: SyncBook, filename?: string) {
+  const dialog = document.createElement("dialog");
+  dialog.className = "reader-format-dialog";
+  dialog.setAttribute("aria-labelledby", "reader-format-title");
+  const heading = document.createElement("h2"); heading.id = "reader-format-title";
+  heading.textContent = book.title;
+  const message = document.createElement("p");
+  const format = filename?.split(".").pop()?.toUpperCase();
+  message.textContent = filename && !readerFormat(filename)
+    ? language === "es"
+      ? `Este archivo es ${format}. El lector de Pecia Sync solo admite EPUB, PDF, MOBI y AZW3 sin DRM. Si tienes una copia compatible, puedes seleccionarla aquí.`
+      : `This file is ${format}. Pecia Sync’s reader supports only DRM-free EPUB, PDF, MOBI and AZW3. If you have a compatible copy, you can select it here.`
+    : language === "es"
+      ? "No podemos abrir este archivo directamente desde esta conexión. Puedes seleccionar una copia EPUB, PDF, MOBI o AZW3 local."
+      : "This file cannot be opened directly over this connection. You can select a local EPUB, PDF, MOBI or AZW3 copy.";
+  const actions = document.createElement("div"); actions.className = "actions";
+  const cancel = document.createElement("button"); cancel.textContent = language === "es" ? "Cerrar" : "Close";
+  cancel.addEventListener("click", () => dialog.close());
+  const choose = document.createElement("button"); choose.className = "primary";
+  choose.textContent = language === "es" ? "Abrir libro" : "Open book";
+  choose.addEventListener("click", () => { dialog.close(); void launchReader(); });
+  actions.append(cancel, choose); dialog.append(heading, message, actions);
+  dialog.addEventListener("close", () => dialog.remove(), { once:true });
+  document.body.append(dialog); dialog.showModal(); choose.focus();
+}
+
+async function launchReader(filename?: string) {
+  if (scanning) return;
+  const { openReader } = await import("./reader");
+  await openReader(language, filename);
+}
 const diagnosticEvents: string[] = [];
 
 function t() { return copy[language]; }
@@ -144,6 +179,12 @@ function setLanguage(nextLanguage: Language) {
   const status = document.querySelector<HTMLElement>("#device-status");
   if (status) status.textContent = "";
   document.querySelector<HTMLInputElement>("#book-search")!.placeholder = t().search;
+  const openFile = document.querySelector<HTMLButtonElement>("#open-reader-file");
+  if (openFile) openFile.textContent = language === "es" ? "Abrir libro" : "Open book";
+  const hint = document.querySelector<HTMLElement>("#reader-hint");
+  if (hint) hint.textContent = language === "es"
+    ? "Doble clic o Intro para leer EPUB, PDF, MOBI o AZW3. Solo se abre el contenido al elegir un libro."
+    : "Double-click or press Enter to read EPUB, PDF, MOBI or AZW3. Content is opened only when you choose a book.";
   updateDevicePanel();
   if (lastReview) renderReviewResult(lastReview);
 }
@@ -183,6 +224,22 @@ function renderReviewResult(review: MetadataReview) {
   const previewItems = visibleBooks.map((entry) => {
     const item = document.createElement("li");
     item.className = "book-row";
+    item.tabIndex = 0;
+    item.setAttribute("role", "button");
+    item.setAttribute("aria-label", language === "es" ? `Abrir ${entry.book.title}` : `Open ${entry.book.title}`);
+    const open = () => {
+      const filename = bookFiles.get(entry.book);
+      if (filename) {
+        if (!readerFormat(filename)) {
+          explainReaderFormat(entry.book, filename);
+          return;
+        }
+        if (connectedDevices.some(device => device.connection === "usb-drive")) { void launchReader(filename); return; }
+      }
+      explainReaderFormat(entry.book, filename);
+    };
+    item.addEventListener("dblclick", open);
+    item.addEventListener("keydown", event => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); open(); } });
     const cover = document.createElement("span"); cover.className = "book-cover"; cover.textContent = entry.book.title.slice(0, 1); cover.setAttribute("aria-hidden", "true");
     const info = document.createElement("div"); info.className = "book-info";
     const title = document.createElement("span"); title.className = "book-title"; title.textContent = entry.book.title;
@@ -293,10 +350,15 @@ async function reviewVisibleMetadata() {
       ?? connectedDevices.find((device) => device.connection === "usb-drive")?.connection
       ?? "mtp";
     const review = await invoke<MetadataReview>("review_visible_metadata", { connection });
-    const books = review.books.length
-      ? review.books
-      : review.bookNames.map((name) => kindleBook(name, review.kindleProgress ?? {})).filter((book): book is SyncBook => book !== null);
-    reviewBooks = reviewBooksForGoodreads(books);
+    const candidates = review.books.length
+      ? review.books.map(book => ({ book, filename: undefined as string | undefined }))
+      : review.bookNames.map(filename => ({
+        filename,
+        book: kindleBook(filename, review.kindleProgress ?? {}) ??
+          (readerFormat(filename) ? { title:filename.replace(/\.(epub|pdf)$/i, ""), author:"", source:"kindle" as const } : null),
+      })).filter((entry): entry is { filename:string; book:SyncBook } => entry.book !== null);
+    reviewBooks = reviewBooksForGoodreads(candidates.map(entry => entry.book));
+    reviewBooks.forEach((entry, index) => { if (candidates[index]?.filename) bookFiles.set(entry.book, candidates[index]!.filename!); });
     reviewedBooks = reviewBooks.map((entry) => entry.book);
     lastReview = review;
     scanTime = new Date();
@@ -351,6 +413,12 @@ async function contactSupport(event: MouseEvent) {
 }
 
 window.addEventListener("DOMContentLoaded", () => {
+  const openFile = document.createElement("button");
+  openFile.id = "open-reader-file"; openFile.className = "reader-open-file";
+  openFile.addEventListener("click", () => void launchReader());
+  document.querySelector("#books .panel-heading")!.append(openFile);
+  const hint = document.createElement("p"); hint.id = "reader-hint"; hint.className = "reader-hint";
+  document.querySelector("#books .filters")!.after(hint);
   setLanguage("es");
   document.querySelectorAll<HTMLButtonElement>("[data-language]").forEach((button) => {
     button.addEventListener("click", () => setLanguage(button.dataset.language as Language));
