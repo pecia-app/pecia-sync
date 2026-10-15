@@ -22,6 +22,11 @@ e-reader. Do not commit device backups, ebook files, reader databases, serial
 numbers, account information, or real annotations. Use minimal sanitized
 fixtures instead.
 
+Documentation screenshots must use synthetic or clearly public-domain content,
+never a contributor's real library, private annotations or copyrighted book
+excerpts. Label fixture-based captures as such; do not present them as hardware
+compatibility evidence. Capture the actual interface rather than a design mockup.
+
 ## Pull requests
 
 Explain the device/firmware scope, add regression coverage, and state whether

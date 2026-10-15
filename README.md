@@ -19,6 +19,9 @@ ebook contents. Opening a book is a separate, explicit action.
 
 ## Offline reader (development)
 
+See the [reader guide](docs/reader-guide.md) for opening books, navigation,
+bookmarks, resume behaviour and troubleshooting.
+
 Double-click a supported book (or focus it and press Enter), or use **Open book**
 to select a local file. EPUB, PDF, DRM-free MOBI and AZW3 are supported by bundled
 parsers: no Calibre installation or network conversion is required. Direct
