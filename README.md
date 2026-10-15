@@ -22,6 +22,14 @@ ebook contents. Opening a book is a separate, explicit action.
 See the [reader guide](docs/reader-guide.md) for opening books, navigation,
 bookmarks, resume behaviour and troubleshooting.
 
+![Dashboard with a synthetic demonstration library](docs/screenshots/dashboard.png)
+
+![Offline reader with original demonstration text](docs/screenshots/reader.png)
+
+Screenshots capture the real webview interface in a browser at 1200 × 760.
+Device responses and book contents are synthetic; they are not hardware-support
+evidence. Native macOS window decorations are not included.
+
 Double-click a supported book (or focus it and press Enter), or use **Open book**
 to select a local file. EPUB, PDF, DRM-free MOBI and AZW3 are supported by bundled
 parsers: no Calibre installation or network conversion is required. Direct

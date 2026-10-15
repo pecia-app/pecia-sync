@@ -3,6 +3,11 @@
 This guide describes the development reader, not the previously released 0.1.2
 installer. Reading is offline; no Calibre installation or account is required.
 
+![The reader with a fictional book and original demonstration text](screenshots/reader.png)
+
+This is the actual interface, captured in a browser with synthetic book data.
+It does not show a personal library or native window decorations.
+
 ## Open a book
 
 1. Connect and unlock the Kindle, then click **Scan reader / Escanear lector**.
@@ -67,3 +72,19 @@ is a separate explicit action.
 
 See the [compatibility matrix](compatibility.md) for tested scope and the
 [security policy](../SECURITY.md) for the content-handling boundary.
+
+## Reproduce documentation screenshots
+
+With dependencies installed and Google Chrome available:
+
+```sh
+node scripts/capture-screenshots.mjs
+```
+
+The script starts an isolated local Vite server on port 1422, uses a fresh
+browser context, mocks the native bridge and blocks non-local requests.
+It generates an original two-section EPUB in memory and fictional device
+metadata. It writes dashboard.png and reader.png to docs/screenshots/, then
+checks next-section and return-to-library navigation. No Kindle is accessed.
+To use a different installed Playwright browser channel, set SCREENSHOT_BROWSER.
+Review both images before committing them.
