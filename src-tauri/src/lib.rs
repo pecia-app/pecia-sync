@@ -18,6 +18,60 @@ struct MetadataReview {
     skipped_object_count: usize,
     book_names: Vec<String>,
     books: Vec<ReviewedBook>,
+    kindle_progress: std::collections::HashMap<String, ProgressObservation>,
+}
+
+#[derive(serde::Serialize, Debug)]
+#[serde(rename_all = "camelCase")]
+struct ProgressObservation {
+    progress: f64,
+    observed_at: String,
+}
+
+/// Optional, transient device observations. Never infer unread from a missing
+/// event or from reading_state=UNREAD (which also occurs for partly read books).
+fn kindle_progress(database: &Connection) -> rusqlite::Result<std::collections::HashMap<String, ProgressObservation>> {
+    let mut statement = database.prepare(
+        "SELECT json_extract(record, '$.library_asin'),
+                json_extract(record, '$.reading_progress'),
+                strftime('%Y-%m-%dT%H:%M:%fZ', created_timestamp / 1000.0, 'unixepoch')
+         FROM records
+         WHERE schema_name = 'shared_reading_update_v2'
+           AND json_valid(record)
+           AND json_type(record, '$.library_asin') = 'text'
+           AND json_type(record, '$.reading_progress') IN ('integer', 'real')
+           AND json_extract(record, '$.reading_progress') BETWEEN 0 AND 100
+           AND typeof(created_timestamp) = 'integer'
+           AND created_timestamp > 0
+           AND created_timestamp <= CAST(strftime('%s', 'now') AS INTEGER) * 1000
+         ORDER BY created_timestamp ASC, id ASC"
+    )?;
+    let mut observations = std::collections::HashMap::new();
+    let mut rows = statement.query([])?;
+    while let Some(row) = rows.next()? {
+        let id: String = row.get(0)?;
+        let percent: f64 = row.get(1)?;
+        if let Some(observed_at) = row.get::<_, Option<String>>(2)? {
+            observations.insert(id, ProgressObservation { progress: percent / 100.0, observed_at });
+        }
+    }
+    Ok(observations)
+}
+
+fn read_kindle_progress(mount: &std::path::Path, names: &[String]) -> std::collections::HashMap<String, ProgressObservation> {
+    let observations = Connection::open_with_flags(
+        mount.join("system/fmcache/fmcache.db"), OpenFlags::SQLITE_OPEN_READ_ONLY,
+    ).and_then(|db| kindle_progress(&db)).unwrap_or_default();
+    // Return only observations belonging to visible books, keyed by filename.
+    // Internal content identifiers and unrelated events stay on the device.
+    let mut matched = std::collections::HashMap::new();
+    for name in names {
+        let id = name.rsplit_once('.').and_then(|(stem, _)| stem.rsplit_once('_')).map(|(_, id)| id);
+        if let Some(value) = id.and_then(|id| observations.get(id)) {
+            matched.insert(name.clone(), ProgressObservation { progress: value.progress, observed_at: value.observed_at.clone() });
+        }
+    }
+    matched
 }
 
 #[derive(serde::Serialize, Debug, PartialEq)]
@@ -194,6 +248,7 @@ async fn review_visible_metadata(connection: String) -> Result<MetadataReview, S
             skipped_object_count: 0,
             book_names: Vec::new(),
             books,
+            kindle_progress: Default::default(),
         });
     }
     if connection == "usb-drive" {
@@ -203,6 +258,7 @@ async fn review_visible_metadata(connection: String) -> Result<MetadataReview, S
         let mut skipped_object_count = 0;
         let mut book_names = Vec::new();
         collect_legacy_metadata(&mount_point.join("documents"), &mut object_count, &mut skipped_object_count, &mut book_names);
+        let kindle_progress = read_kindle_progress(&mount_point, &book_names);
         return Ok(MetadataReview {
             manufacturer: "Amazon".into(),
             model: "Kindle (USB Drive Mode)".into(),
@@ -211,6 +267,7 @@ async fn review_visible_metadata(connection: String) -> Result<MetadataReview, S
             skipped_object_count,
             book_names,
             books: Vec::new(),
+            kindle_progress,
         });
     }
     let device = mtp_rs::mtp::MtpDevice::open_first()
@@ -247,12 +304,33 @@ async fn review_visible_metadata(connection: String) -> Result<MetadataReview, S
         skipped_object_count,
         book_names,
         books: Vec::new(),
+        kindle_progress: Default::default(),
     })
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn progress_uses_latest_valid_event_without_treating_unread_as_zero() {
+        let db = Connection::open_in_memory().unwrap();
+        db.execute_batch(r#"
+            CREATE TABLE records(id INTEGER, schema_name TEXT, created_timestamp INTEGER, record TEXT);
+            INSERT INTO records VALUES
+              (1,'shared_reading_update_v2',1700000000000,'{"library_asin":"BOOK","reading_progress":6,"reading_state":"UNREAD"}'),
+              (2,'shared_reading_update_v2',1700000060000,'{"library_asin":"BOOK","reading_progress":9}'),
+              (3,'shared_reading_update_v2',1700000090000,'{"library_asin":"BOOK","reading_progress":101}'),
+              (4,'shared_reading_update_v2',1700000090000,'broken'),
+              (5,'shared_reading_update_v2',1700000090000,'{"library_asin":"BAD","reading_progress":"9"}'),
+              (6,'shared_reading_update_v2',1700000090000,'{"library_asin":"ZERO","reading_progress":0}');
+        "#).unwrap();
+        let observations = kindle_progress(&db).unwrap();
+        assert_eq!(observations.len(), 2);
+        assert_eq!(observations["BOOK"].progress, 0.09);
+        assert_eq!(observations["BOOK"].observed_at, "2023-11-14T22:14:20.000Z");
+        assert_eq!(observations["ZERO"].progress, 0.0);
+    }
 
     #[test]
     fn parses_sanitized_kobo_library_metadata() {

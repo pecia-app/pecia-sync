@@ -1,0 +1,88 @@
+.actions { flex-wrap: nowrap; }
+button.primary:hover:not(:disabled) {
+  background: #26473a;
+  border-color: #26473a;
+  color: #fff;
+}
+button.primary:active:not(:disabled) {
+  background: #1d382d;
+  border-color: #1d382d;
+  color: #fff;
+}
+.actions button { white-space: nowrap; }
+#device-check[aria-busy="true"]::before {
+  content: "";
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 8px;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  vertical-align: -2px;
+  animation: scan-spin .8s linear infinite;
+}
+@keyframes scan-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) {
+  #device-check[aria-busy="true"]::before { animation: none; }
+}
+/* Keep the desktop dashboard within laptop-sized windows. Smaller/zoomed
+   viewports retain the normal document flow instead of clipping controls. */
+@media (min-width: 1120px) and (min-height: 680px) {
+  .shell { height: 100dvh; min-height: 680px; }
+  .sidebar { position: sticky; top: 0; height: 100dvh; padding: 26px 22px; }
+  .sidebar-bottom { padding-top: 16px; }
+  main {
+    height: 100%;
+    min-height: 0;
+    margin: 0 auto;
+    padding: 24px 28px 16px;
+    display: flex;
+    flex-direction: column;
+  }
+  header { gap: 16px; }
+  header > div:first-child { min-width: 0; }
+  header .muted { margin: 8px 0 0; }
+  h1 { font-size: 27px; margin-bottom: 8px; }
+  .actions { max-width: 310px; }
+  .status { flex: none; min-height: 0; margin: 8px 0; }
+  .status:empty { margin: 8px 0 0; }
+  .device-panel { flex: none; padding: 16px 22px; margin: 12px 0 18px; gap: 20px; }
+  .reader-art { width: 58px; height: 82px; }
+  .reader-art span { margin-bottom: 2px; }
+  .device-metric strong { font-size: 25px; }
+  .content-grid {
+    flex: 1;
+    min-height: 0;
+    grid-template-columns: minmax(0, 1.65fr) minmax(280px, 1fr);
+    gap: 20px;
+    align-items: stretch;
+  }
+  .panel { padding: 18px; }
+  .panel-heading { margin-bottom: 12px; }
+  .panel-heading h2 { font-size: 17px; }
+  .books-panel { display: flex; flex-direction: column; min-height: 0; }
+  .books-panel > * { flex-shrink: 0; }
+  .filters { margin: 10px 0 12px; }
+  #books-empty { flex: 1; min-height: 100px; padding: 12px; display: flex; flex-direction: column; justify-content: center; }
+  #books-empty h3 { margin: 6px 0; }
+  #books-empty p { margin: 0 auto; }
+  #review-result { flex: 1; min-height: 100px; overflow-y: auto; overscroll-behavior: contain; scrollbar-gutter: stable; }
+  #book-preview { max-height: none; overflow: visible; }
+  .book-row { padding: 12px 0; }
+  .notice { margin-top: 12px; }
+  .right-column { min-height: 0; gap: 16px; grid-template-rows: minmax(0, 1fr) auto; }
+  /* This is a short empty state, not a scrollable feed. Let its content
+     establish a minimum height and remove decorative vertical space. */
+  .right-column { grid-template-rows: minmax(min-content, 1fr) auto; }
+  #annotations { overflow: visible; }
+  #annotations .panel-heading { margin-bottom: 10px; }
+  .annotation-placeholder { display: none; }
+  #annotations h3 { margin: 0 0 6px; font-size: 14px; }
+  #annotations .muted { margin: 0; line-height: 1.45; }
+  #annotations .fine-print { margin: 8px 0 0; line-height: 1.4; }
+  .pecia-panel h2 { font-size: 17px; margin: 8px 0; }
+  .pecia-panel p { margin: 8px 0; }
+  .pecia-panel a { margin-top: 2px; }
+  footer { flex: none; margin-top: 12px; }
+}
