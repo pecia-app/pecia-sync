@@ -1,10 +1,10 @@
 export type SyncHighlight = { text: string; note?: string | null; location?: string; createdAt?: string };
-export type SyncBook = { title: string; author: string; isbn?: string; progress?: number; lastRead?: string; source: "kindle" | "kobo"; deviceId?: string; highlights?: SyncHighlight[] };
+export type SyncBook = { title: string; author: string; isbn?: string; progress?: number | null; progressObservedAt?: string; lastRead?: string; source: "kindle" | "kobo"; deviceId?: string; highlights?: SyncHighlight[] };
 const headers = ["Title", "Author", "ISBN", "ISBN13", "Date Read", "Bookshelves", "Exclusive Shelf", "Pecia Sync Progress", "Pecia Sync Last Read", "Pecia Sync Source", "Pecia Sync Device ID", "Pecia Sync Highlights"];
 const escape = (value: string) => /[\",\n\r]/.test(value) ? `"${value.replace(/"/g, '""')}"` : value;
-const shelfFor = (progress: number | undefined) => progress === undefined ? "" : progress <= 0 ? "to-read" : progress >= 1 ? "read" : "currently-reading";
+const shelfFor = (progress: number | null | undefined) => progress == null ? "" : progress <= 0 ? "to-read" : progress >= 1 ? "read" : "currently-reading";
 const digits = (isbn: string | undefined) => isbn?.replace(/[^0-9X]/gi, "") ?? "";
-export function toSyncCsv(books: readonly SyncBook[]): string { const rows = books.map((book) => { const shelf = shelfFor(book.progress); const isbn = digits(book.isbn); return [book.title, book.author, isbn.length === 13 ? "" : isbn, isbn.length === 13 ? isbn : "", book.progress === 1 ? book.lastRead ?? "" : "", shelf, shelf, book.progress?.toString() ?? "", book.lastRead ?? "", book.source, book.deviceId ?? "", book.highlights?.length ? JSON.stringify(book.highlights) : ""].map(escape).join(","); }); return `${headers.join(",")}\r\n${rows.join("\r\n")}\r\n`; }
+export function toSyncCsv(books: readonly SyncBook[]): string { const rows = books.map((book) => { const shelf = shelfFor(book.progress); const isbn = digits(book.isbn); return [book.title, book.author, isbn.length === 13 ? "" : isbn, isbn.length === 13 ? isbn : "", book.progress === 1 ? book.lastRead ?? "" : "", shelf, shelf, book.progress?.toString() ?? "", book.lastRead ?? "", book.source, book.deviceId ?? "", book.highlights?.length ? JSON.stringify(book.highlights) : "", book.progressObservedAt ?? ""].map(escape).join(","); }); return `${[...headers, "Pecia Sync Progress Observed At"].join(",")}\r\n${rows.join("\r\n")}\r\n`; }
 /**
  * Converts the human-readable portion of a Kindle MTP filename into a review
  * candidate. The opaque suffix is intentionally discarded: it is not a title

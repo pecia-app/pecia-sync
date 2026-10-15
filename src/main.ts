@@ -1,8 +1,10 @@
 import "./styles.css";
+import "./laptop.css";
 import { invoke } from "@tauri-apps/api/core";
 import { openUrl } from "@tauri-apps/plugin-opener";
-import { bookFromKindleFilename, toSyncCsv, type SyncBook } from "./lib/csv";
+import { toSyncCsv, type SyncBook } from "./lib/csv";
 import { reviewBooksForGoodreads, type ReviewBook } from "./lib/goodreads-review";
+import { kindleBook, progressLabel, type ProgressObservation } from "./lib/progress";
 
 type ConnectedDevice = {
     manufacturer: string | null;
@@ -20,6 +22,7 @@ type MetadataReview = {
   skippedObjectCount: number;
   bookNames: string[];
   books: SyncBook[];
+  kindleProgress?: Record<string, ProgressObservation>;
 };
 
 type DiagnosticSnapshot = {
@@ -33,31 +36,34 @@ type Language = "es" | "en";
 const copy = {
   es: {
     eyebrow: "Pecia Sync · beta sin conexión",
-    title: "Tu e-reader, en tu biblioteca.",
+    overview: "Vista general", booksNav: "Libros", annotationsNav: "Subrayados", yourReader: "Tu lector", notConnected: "Sin conectar", localOnly: "Local. Privado. Solo lectura.", notImported: "Sin importar", booksHeading: "En tu lector", readOnly: "Solo lectura", search: "Buscar título o autor", filters: "Filtrar libros", allBooks: "Todos", withProgress: "Con progreso", unavailable: "Sin datos", emptyTitle: "Tu biblioteca empieza aquí", emptyBody: "Conecta tu Kindle o Kobo por USB y busca el lector para revisar sus libros.", noMatches: "No hay libros que coincidan.", missingNotice: "Sin datos no significa sin leer. El progreso refleja la última observación disponible, no una lectura en directo.", annotationsHeading: "Subrayados y notas", soon: "Próximamente", annotationsEmpty: "Tus ideas, en un solo lugar.", annotationsBody: "La importación de subrayados aún no está conectada. Esta versión revisa libros y el progreso disponible.", annotationsPrivacy: "No se han leído ni exportado tus notas.", readyHeading: "Haz espacio para tu próxima lectura.", readyBody: "Guarda el CSV e impórtalo en tu biblioteca de Pecia. Tú decides qué compartir.", openPecia: "Abrir Pecia ↗",
+    title: "Tu lector, de un vistazo.",
     lede: "Un importador de solo lectura para Kindle y Kobo. Sin cuenta, conexión a internet, descargas ni cambios en tu dispositivo.",
     connectHeading: "Conecta un dispositivo",
     connectLede: "Cada paso es local y de solo lectura hasta que guardes un CSV de forma explícita.",
     flowLabel: "Pasos de importación de Kindle",
-    find: "1 · Busca un e-reader",
-    review: "2 · Revisa libros",
-    save: "3 · Guarda el CSV",
+    find: "Escanear lector",
+    refresh: "Actualizar",
+    scanning: "Escaneando…",
+    review: "Revisar libros",
+    save: "Exportar CSV",
     howHeading: "Cómo funciona",
     howFind: "Busca. Sync busca un Kindle o Kobo conectado a tu ordenador.",
     howReview: "Revisa. Lee los metadatos visibles del lector, nunca el contenido de un ebook.",
     howSave: "Guarda. Tú eliges dónde guardar un CSV compatible con Goodreads, listo para importar en Pecia.",
     kindleNote: "Nota sobre Kindle: los Kindles más recientes quizá no expongan el progreso ni los subrayados por USB. Sync deja esos campos vacíos en vez de inventarlos.",
     footer: "Pecia Sync es parte de Pecia · código abierto · sin actualizador · sin telemetría · sin acceso de red en segundo plano",
-    checking: "Buscando un lector MTP de forma local. No se leerá ningún archivo.",
-    noDevice: "No se ha encontrado un e-reader MTP. Déjalo conectado y desbloqueado e inténtalo de nuevo.",
+    checking: "Buscando un lector conectado por USB de forma local.",
+    noDevice: "No se ha encontrado un lector. Déjalo conectado y desbloqueado e inténtalo de nuevo.",
     found: "Encontrado",
     foundNext: "La detección funciona; el siguiente paso es revisar los metadatos.",
     deviceUnavailable: "Pecia Sync no ha podido acceder al lector. Desconéctalo, vuelve a conectarlo e inténtalo de nuevo.",
     reviewing: "Abriendo una sesión de solo lectura. Pecia Sync no descargará ningún ebook.",
     noBooks: " No se han encontrado títulos de libros reconocibles en este dispositivo.",
     noContents: " No se ha leído el contenido de ningún archivo.",
-    reviewUnavailable: "El Kindle está ocupado o no está disponible por MTP. Desconéctalo, vuelve a conectarlo y revisa los metadatos otra vez.",
+    reviewUnavailable: "El lector está ocupado o no está disponible. Desconéctalo, vuelve a conectarlo y revisa los metadatos otra vez.",
     saveCancelled: "Guardado cancelado. No se ha escrito ningún archivo.",
-    saved: "CSV de revisión de Kindle guardado localmente. Contiene títulos y autores obtenidos solo de metadatos; no había progreso ni contenido de archivos disponible.",
+    saved: "CSV guardado con los metadatos disponibles y la fecha de las observaciones de progreso.",
     saveFailed: "Pecia Sync no ha podido guardar el CSV de revisión de Kindle.",
     saveDialog: "Guardar CSV de Pecia Sync",
     support: "¿Necesitas ayuda?",
@@ -66,31 +72,34 @@ const copy = {
   },
   en: {
     eyebrow: "Pecia Sync · offline beta",
-    title: "Your e-reader, in your library.",
+    overview: "Overview", booksNav: "Books", annotationsNav: "Highlights", yourReader: "Your reader", notConnected: "Not connected", localOnly: "Local. Private. Read-only.", notImported: "Not imported", booksHeading: "On your reader", readOnly: "Read-only", search: "Search title or author", filters: "Filter books", allBooks: "All books", withProgress: "With progress", unavailable: "Unavailable", emptyTitle: "Your library starts here", emptyBody: "Connect your Kindle or Kobo by USB, then find your reader to review its books.", noMatches: "No matching books.", missingNotice: "Missing data does not mean unread. Progress reflects the latest available observation, not a live reading.", annotationsHeading: "Highlights & notes", soon: "Coming soon", annotationsEmpty: "Your ideas, in one place.", annotationsBody: "Highlight importing is not connected yet. This version reviews books and available reading progress.", annotationsPrivacy: "Your notes have not been read or exported.", readyHeading: "Make room for your next read.", readyBody: "Save the CSV and import it into your Pecia library. You decide what to share.", openPecia: "Open Pecia ↗",
+    title: "Your reader, at a glance.",
     lede: "A read-only importer for Kindle and Kobo. No account, network connection, downloads or changes to your device.",
     connectHeading: "Connect a device",
     connectLede: "Each step is local and read-only until you explicitly save a CSV.",
     flowLabel: "Kindle import steps",
-    find: "1 · Find e-reader",
-    review: "2 · Review books",
-    save: "3 · Save CSV",
+    find: "Scan reader",
+    refresh: "Refresh",
+    scanning: "Scanning…",
+    review: "Review books",
+    save: "Export CSV",
     howHeading: "How it works",
     howFind: "Find. Sync checks for a connected Kindle or Kobo on your computer.",
     howReview: "Review. It reads the reader’s visible book metadata—never the contents of an ebook.",
     howSave: "Save. You choose where to save one Goodreads-compatible CSV, ready to import into Pecia.",
     kindleNote: "Kindle note: newer Kindles may not expose reading progress or highlights over USB. Sync leaves those fields empty rather than guessing.",
     footer: "Pecia Sync is part of Pecia · open source · no updater · no telemetry · no background network access",
-    checking: "Looking only for an MTP device. No files are being read.",
-    noDevice: "No MTP e-reader found. Keep it connected and unlocked, then try again.",
+    checking: "Looking locally for a USB-connected reader.",
+    noDevice: "No e-reader found. Keep it connected and unlocked, then try again.",
     found: "Found",
     foundNext: "Device discovery is working; reading metadata is the next step.",
     deviceUnavailable: "Pecia Sync could not claim the device. Disconnect it, reconnect it, and try again.",
     reviewing: "Opening a read-only session. Pecia Sync will not download any book files.",
     noBooks: " No recognizable book titles were exposed by this device.",
     noContents: " No file contents were read.",
-    reviewUnavailable: "The Kindle is busy or unavailable to MTP. Disconnect it, reconnect it, then try the metadata review again.",
+    reviewUnavailable: "The reader is busy or unavailable. Disconnect it, reconnect it, then try the metadata review again.",
     saveCancelled: "Save cancelled. No file was written.",
-    saved: "Kindle review CSV saved locally. It contains titles and authors derived from metadata only; no progress or file contents were available.",
+    saved: "CSV saved with available metadata and progress observation times.",
     saveFailed: "Pecia Sync could not save the Kindle review CSV.",
     saveDialog: "Save Pecia Sync CSV",
     support: "Need help?",
@@ -104,6 +113,9 @@ let reviewedBooks: SyncBook[] = [];
 let reviewBooks: ReviewBook[] = [];
 let connectedDevices: ConnectedDevice[] = [];
 let lastReview: MetadataReview | null = null;
+let activeFilter = "all";
+let scanTime: Date | null = null;
+let scanning = false;
 const diagnosticEvents: string[] = [];
 
 function t() { return copy[language]; }
@@ -127,12 +139,24 @@ function setLanguage(nextLanguage: Language) {
   document.querySelectorAll<HTMLButtonElement>("[data-language]").forEach((button) => {
     button.setAttribute("aria-pressed", String(button.dataset.language === language));
   });
-  document.querySelector<HTMLButtonElement>("#device-check")!.textContent = t().find;
-  document.querySelector<HTMLButtonElement>("#metadata-review")!.textContent = t().review;
+  document.querySelector<HTMLButtonElement>("#device-check")!.textContent = scanning ? t().scanning : lastReview ? t().refresh : t().find;
   document.querySelector<HTMLButtonElement>("#kindle-export")!.textContent = t().save;
   const status = document.querySelector<HTMLElement>("#device-status");
   if (status) status.textContent = "";
+  document.querySelector<HTMLInputElement>("#book-search")!.placeholder = t().search;
+  updateDevicePanel();
   if (lastReview) renderReviewResult(lastReview);
+}
+
+function updateDevicePanel() {
+  const device = connectedDevices.find((item) => item.connection === "kobo-usb")
+    ?? connectedDevices.find((item) => item.connection === "usb-drive") ?? connectedDevices[0];
+  const name = device ? [device.manufacturer, device.product].filter(Boolean).join(" ") || "E-reader" : t().notConnected;
+  document.querySelector("#reader-name")!.textContent = name;
+  document.querySelector("#device-title")!.textContent = device ? name : t().connectHeading;
+  document.querySelector("#device-connection")!.textContent = device ? `USB · ${device.connection === "mtp" ? "MTP" : language === "es" ? "Disco" : "Drive"} · ${t().readOnly}` : t().connectLede;
+  document.querySelector("#book-count")!.textContent = lastReview ? String(reviewedBooks.length) : "—";
+  document.querySelector("#scan-time")!.textContent = scanTime ? `${language === "es" ? "Última revisión" : "Last scan"} · ${scanTime.toLocaleString(language === "es" ? "es-ES" : "en-GB")}` : "";
 }
 
 function hideReviewResult() {
@@ -149,17 +173,36 @@ function renderReviewResult(review: MetadataReview) {
   const bookCount = reviewedBooks.length;
   const ready = reviewBooks.filter((entry) => !entry.needsReview).length;
   const flagged = reviewBooks.filter((entry) => entry.needsReview);
-  const adjusted = reviewBooks.filter((entry) => entry.changes.length);
   summary.textContent = language === "es"
     ? `${bookCount} libros encontrados · ${ready} listos para exportar${flagged.length ? ` · ${flagged.length} necesitan revisión` : ""}`
     : `${bookCount} books found · ${ready} ready to export${flagged.length ? ` · ${flagged.length} need review` : ""}`;
-  const previewItems = adjusted.slice(0, 2).map((entry) => {
+  const query = document.querySelector<HTMLInputElement>("#book-search")!.value.trim().toLocaleLowerCase();
+  const visibleBooks = reviewBooks.filter(({book}) =>
+    (!query || `${book.title} ${book.author}`.toLocaleLowerCase().includes(query))
+    && (activeFilter === "all" || (activeFilter === "known" ? book.progress != null : book.progress == null)));
+  const previewItems = visibleBooks.map((entry) => {
     const item = document.createElement("li");
-    item.textContent = `${entry.book.title} — ${entry.book.author} · ${language === "es" ? "ajustado automáticamente" : "adjusted automatically"}`;
+    item.className = "book-row";
+    const cover = document.createElement("span"); cover.className = "book-cover"; cover.textContent = entry.book.title.slice(0, 1); cover.setAttribute("aria-hidden", "true");
+    const info = document.createElement("div"); info.className = "book-info";
+    const title = document.createElement("span"); title.className = "book-title"; title.textContent = entry.book.title;
+    const author = document.createElement("span"); author.className = "book-author"; author.textContent = entry.book.author || (language === "es" ? "Autor desconocido" : "Unknown author");
+    info.append(title, author);
+    const progress = document.createElement("div"); progress.className = "book-progress";
+    if (entry.book.progress != null) {
+      const percent = document.createElement("strong"); percent.textContent = `${Math.round(entry.book.progress * 100)}%`;
+      const track = document.createElement("span"); track.className = "progress-track"; track.setAttribute("aria-hidden", "true");
+      const fill = document.createElement("span"); fill.style.width = `${Math.max(0, Math.min(100, entry.book.progress * 100))}%`; track.append(fill);
+      progress.append(percent, track);
+    }
+    const observation = document.createElement("span"); observation.textContent = progressLabel(entry.book, language); progress.append(observation);
+    item.append(cover, info, progress);
     return item;
   });
-  if (!previewItems.length) previewItems.push(Object.assign(document.createElement("li"), { textContent: language === "es" ? "Los títulos y autores están listos para exportar." : "Titles and authors are ready to export." }));
   preview.replaceChildren(...previewItems);
+  document.querySelector<HTMLElement>("#no-matches")!.hidden = visibleBooks.length > 0;
+  document.querySelector<HTMLElement>("#books-empty")!.hidden = true;
+  updateDevicePanel();
   const issuesButton = document.querySelector<HTMLButtonElement>("#review-issues");
   if (issuesButton) {
     issuesButton.hidden = !flagged.length;
@@ -171,7 +214,10 @@ function renderReviewResult(review: MetadataReview) {
   const skipped = review.skippedObjectCount
     ? language === "es" ? ` · ${review.skippedObjectCount} no disponible${review.skippedObjectCount === 1 ? "" : "s"}` : ` · ${review.skippedObjectCount} unavailable`
     : "";
-  detail.textContent = `${metadata}${skipped}`;
+  const progressNote = language === "es"
+    ? " El progreso de Kindle procede de observaciones temporales: puede faltar o diferir del porcentaje en pantalla. Sin datos no significa sin leer."
+    : " Kindle progress comes from temporary observations: it may be missing or differ from the screen percentage. Missing data does not mean unread.";
+  detail.textContent = `${metadata}${skipped}${reviewedBooks.some((book) => book.source === "kindle") ? progressNote : ""}`;
   result.removeAttribute("hidden");
 }
 
@@ -184,7 +230,7 @@ function renderIssueEditor() {
     const title = document.createElement("input"); title.value = entry.book.title; title.setAttribute("aria-label", language === "es" ? "Título" : "Title");
     const author = document.createElement("input"); author.value = entry.book.author; author.placeholder = language === "es" ? "Añade el autor" : "Add author"; author.setAttribute("aria-label", language === "es" ? "Autor" : "Author");
     const save = () => { entry.book.title = title.value.trim(); entry.book.author = author.value.trim(); entry.needsReview = !entry.book.author || entry.book.title.length < 2; reviewedBooks = reviewBooks.map((item) => item.book); renderReviewResult(lastReview!); if (!entry.needsReview) renderIssueEditor(); };
-    title.addEventListener("input", save); author.addEventListener("input", save); row.append(title, author); return row;
+    title.addEventListener("change", save); author.addEventListener("change", save); row.append(title, author); return row;
   }));
   editor.hidden = false;
 }
@@ -196,14 +242,23 @@ async function saveCsv(books: readonly SyncBook[], filename: string, status: HTM
 }
 
 async function checkConnectedDevice() {
+  if (scanning) return;
   const button = document.querySelector<HTMLButtonElement>("#device-check");
   const status = document.querySelector<HTMLElement>("#device-status");
   if (!button || !status) return;
 
+  scanning = true;
   button.disabled = true;
-  button.textContent = language === "es" ? "Buscando localmente…" : "Checking locally…";
+  button.setAttribute("aria-busy", "true");
+  button.textContent = t().scanning;
+  document.querySelectorAll<HTMLButtonElement>("[data-language]").forEach((item) => { item.disabled = true; });
   status.textContent = t().checking;
   hideReviewResult();
+  reviewedBooks = []; reviewBooks = []; lastReview = null; scanTime = null; connectedDevices = [];
+  document.querySelector<HTMLButtonElement>("#kindle-export")!.disabled = true;
+  document.querySelector<HTMLElement>("#review-editor")!.hidden = true;
+  document.querySelector<HTMLElement>("#books-empty")!.hidden = false;
+  updateDevicePanel();
 
   try {
     connectedDevices = await invoke<ConnectedDevice[]>("list_connected_devices");
@@ -212,27 +267,26 @@ async function checkConnectedDevice() {
       status.textContent = t().noDevice;
       return;
     }
-    const names = connectedDevices.map((device) => [device.manufacturer, device.product].filter(Boolean).join(" ") || "MTP device");
-    status.textContent = `${t().found} ${names.join(", ")}. ${t().foundNext}`;
     recordDiagnostic(`Device check: ${connectedDevices.length} e-reader(s) found via ${connectedDevices.map((device) => device.connection).join(", ")}`);
     button.dataset.complete = "true";
-    document.querySelector<HTMLElement>("#metadata-review")?.removeAttribute("hidden");
+    updateDevicePanel();
+    await reviewVisibleMetadata();
   } catch {
     recordDiagnostic("Device check: unavailable");
     status.textContent = t().deviceUnavailable;
   } finally {
+    scanning = false;
     button.disabled = false;
-    button.textContent = t().find;
+    button.removeAttribute("aria-busy");
+    button.textContent = lastReview ? t().refresh : t().find;
+    document.querySelector<HTMLButtonElement>("#kindle-export")!.disabled = !reviewedBooks.length;
+    document.querySelectorAll<HTMLButtonElement>("[data-language]").forEach((item) => { item.disabled = false; });
   }
 }
 
 async function reviewVisibleMetadata() {
-  const button = document.querySelector<HTMLButtonElement>("#metadata-review");
   const status = document.querySelector<HTMLElement>("#device-status");
-  if (!button || !status) return;
-
-  button.disabled = true;
-  button.textContent = language === "es" ? "Revisando metadatos…" : "Reviewing metadata locally…";
+  if (!status) return;
   status.textContent = t().reviewing;
   try {
     const connection = connectedDevices.find((device) => device.connection === "kobo-usb")?.connection
@@ -241,21 +295,17 @@ async function reviewVisibleMetadata() {
     const review = await invoke<MetadataReview>("review_visible_metadata", { connection });
     const books = review.books.length
       ? review.books
-      : review.bookNames.map(bookFromKindleFilename).filter((book): book is SyncBook => book !== null);
+      : review.bookNames.map((name) => kindleBook(name, review.kindleProgress ?? {})).filter((book): book is SyncBook => book !== null);
     reviewBooks = reviewBooksForGoodreads(books);
     reviewedBooks = reviewBooks.map((entry) => entry.book);
     lastReview = review;
+    scanTime = new Date();
     recordDiagnostic(`Metadata review: ${reviewedBooks.length} book record(s), ${review.storageCount} storage area(s)`);
     status.textContent = reviewedBooks.length ? "" : t().noBooks;
     renderReviewResult(review);
-    button.dataset.complete = "true";
-    if (reviewedBooks.length) document.querySelector<HTMLElement>("#kindle-export")?.removeAttribute("hidden");
   } catch {
     recordDiagnostic("Metadata review: unavailable");
     status.textContent = t().reviewUnavailable;
-  } finally {
-    button.disabled = false;
-    button.textContent = t().review;
   }
 }
 
@@ -306,9 +356,16 @@ window.addEventListener("DOMContentLoaded", () => {
     button.addEventListener("click", () => setLanguage(button.dataset.language as Language));
   });
   document.querySelector("#device-check")?.addEventListener("click", checkConnectedDevice);
-  document.querySelector("#metadata-review")?.addEventListener("click", reviewVisibleMetadata);
   document.querySelector("#kindle-export")?.addEventListener("click", downloadKindleReview);
   document.querySelector("#review-issues")?.addEventListener("click", renderIssueEditor);
+  document.querySelector("#book-search")?.addEventListener("input", () => { if (lastReview) renderReviewResult(lastReview); });
+  document.querySelectorAll<HTMLButtonElement>("[data-filter]").forEach((button) => {
+    button.addEventListener("click", () => {
+      activeFilter = button.dataset.filter!;
+      document.querySelectorAll<HTMLButtonElement>("[data-filter]").forEach((item) => item.setAttribute("aria-pressed", String(item === button)));
+      if (lastReview) renderReviewResult(lastReview);
+    });
+  });
   document.querySelector<HTMLAnchorElement>("#support-email")?.addEventListener("click", contactSupport);
   document.querySelector<HTMLAnchorElement>("#pecia-link")?.addEventListener("click", async (event: MouseEvent) => {
     event.preventDefault();

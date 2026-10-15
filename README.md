@@ -17,6 +17,22 @@ explicit local review step: Kindle reads visible object names, while Kobo reads
 only its local library metadata database in read-only mode. It never reads
 ebook contents.
 
+### Kindle progress observations
+
+On mounted Kindle USB drives, review also reads
+`system/fmcache/fmcache.db` with SQLite's read-only flag. The latest valid
+`shared_reading_update_v2` percentage is matched to a visible book by its exact
+filename content-ID suffix. Only the percentage and observation time are
+returned alongside that book. Missing, inaccessible or incompatible caches
+leave progress unavailable; they never imply unread.
+
+These are temporary observations, not a complete or live reading history.
+The device-reported value may differ from the on-screen percentage; Sync does
+not adjust it. The review displays the observation time, and CSV exports carry
+it in `Pecia Sync Progress Observed At`, separately from `Pecia Sync Last Read`.
+The 2016 Kindle was inspected read-only; MTP progress extraction is not yet
+implemented or validated on the 2024 Kindle. No ebook contents are opened.
+
 ## Local Goodreads review
 
 Before saving a CSV, Sync makes a small number of safe, local presentation
