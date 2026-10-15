@@ -17,6 +17,20 @@ explicit local review step: Kindle reads visible object names, while Kobo reads
 only its local library metadata database in read-only mode. It never reads
 ebook contents.
 
+## Local Goodreads review
+
+Before saving a CSV, Sync makes a small number of safe, local presentation
+fixes that can improve matching in Goodreads, such as moving a trailing article
+to the front of a title or separating an accidentally joined author name. The
+review summary keeps this compact: it shows how many records are ready, which
+ones were adjusted, and which need attention.
+
+Sync never looks up books online, invents an ISBN, or guesses an author or
+edition. Records with incomplete metadata, such as a missing author, are put in
+an editable review queue. Any edits apply only to the CSV the reader explicitly
+chooses to save; the e-reader is never changed. ISBNs remain the most reliable
+way for Goodreads to match a particular edition.
+
 ## Non-negotiable boundary
 
 - No sign-in, background network requests, telemetry, runtime updater, or
@@ -46,8 +60,7 @@ cargo test --manifest-path src-tauri/Cargo.toml
 ```
 
 CI verifies the project on macOS, Ubuntu and Windows and builds distributable
-desktop packages. Tagged releases are published as draft prereleases with
-checksums.
+desktop packages. Tagged releases include checksums for every installer.
 
 ## Help, security and contributing
 
