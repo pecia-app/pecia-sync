@@ -4,12 +4,17 @@ import {execFileSync} from 'node:child_process';
 import {dirname,resolve,relative,join} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {validateReview} from './licensing-review.mjs';
+import {isNoticeFile,loadSupplements} from './notice-supplements.mjs';
 
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const read=path=>readFile(resolve(root,path),'utf8');
 const hash=value=>createHash('sha256').update(value).digest('hex');
 const inputs=['package.json','package-lock.json','src-tauri/Cargo.toml','src-tauri/Cargo.lock','experiments/kfx/Cargo.toml','experiments/kfx/Cargo.lock','src-tauri/tauri.conf.json','src-tauri/tauri.macos.conf.json','scripts/licenses.mjs','scripts/licensing-review.mjs','scripts/source-bundle.mjs','.github/workflows/release.yml'];
 const inputSha256=Object.fromEntries(await Promise.all(inputs.map(async path=>[path,hash(await read(path))])));
+inputSha256['.gitattributes']=hash(await read('.gitattributes'));
+for(const path of ['scripts/notice-supplements.mjs','release/notice-supplements.json','scripts/preferred-source.mjs','release/preferred-source.json','scripts/verify-source.mjs','.github/workflows/source-audit.yml'])inputSha256[path]=hash(await read(path));
+const supplements=await loadSupplements(root);
+for(const supplement of supplements.values())for(const notice of supplement.notices)inputSha256[`LICENSES/third-party/${notice.file}`]=notice.sha256;
 const mode=process.argv[2];
 if(mode==='--release') {
   const review=JSON.parse(await read('release/licensing-review.json'));
@@ -30,7 +35,7 @@ if(mode==='--release') {
   console.log(`License resources verified; ${inventory.packages.length} inventory records, ${inventory.warnings.length} items require review.`);
 } else {
   const metadata=JSON.parse(execFileSync('cargo',['metadata','--locked','--format-version','1','--manifest-path','src-tauri/Cargo.toml'],{cwd:root,maxBuffer:32*1024*1024,encoding:'utf8'}));
-  const records=metadata.packages.map(p=>({ecosystem:'cargo',name:p.name,version:p.version,license:p.license,source:p.source??'Pecia Sync source',directory:dirname(p.manifest_path),licenseFile:p.license_file}));
+  const records=metadata.packages.map(p=>({ecosystem:'cargo',name:p.name,version:p.version,license:p.license,authors:p.authors,source:p.source??'Pecia Sync source',directory:dirname(p.manifest_path),licenseFile:p.license_file}));
   const lock=JSON.parse(await read('package-lock.json'));
   const warnings=[];
   for(const [path,locked] of Object.entries(lock.packages)) {
@@ -52,7 +57,7 @@ if(mode==='--release') {
       if(entry.isSymbolicLink())continue;
       const path=join(dir,entry.name);
       if(entry.isDirectory()&&!['node_modules','target','.git'].includes(entry.name))found.push(...await licenseFiles(path,base));
-      else if(entry.isFile()&&/^(licen[sc]e|copying|copyright|notice|authors)([._-]|$)/i.test(entry.name))found.push({path,label:relative(base,path)});
+      else if(entry.isFile()&&isNoticeFile(entry.name))found.push({path,label:relative(base,path)});
     }
     return found;
   }
@@ -60,11 +65,20 @@ if(mode==='--release') {
     const {directory,licenseFile,...item}=record;
     const local=item.source==='Pecia Sync source';
     const files=local?[]:await licenseFiles(directory);
+    const supplement=supplements.get(`${item.ecosystem}/${item.name}@${item.version}`);
     if(licenseFile&&!files.some(f=>resolve(f.path)===resolve(directory,licenseFile)))files.push({path:resolve(directory,licenseFile),label:'declared license file'});
     if(!item.license)warnings.push(`Missing license metadata: ${item.ecosystem}/${item.name}@${item.version}`);
-    if(!files.length&&!local)warnings.push(`No license/notice text found: ${item.ecosystem}/${item.name}@${item.version}`);
+    if(!files.length&&!local&&!supplement)warnings.push(`No license/notice text found: ${item.ecosystem}/${item.name}@${item.version}`);
+    if(supplement?.reviewRequired)warnings.push(`Upstream legal review required: ${item.ecosystem}/${item.name}@${item.version}: ${supplement.reviewRequired}`);
     notices.push(`\n=== ${item.ecosystem}: ${item.name} ${item.version} ===`, `License: ${item.license??'REVIEW REQUIRED'}`, `Source: ${item.source}`);
     item.noticeFiles=[];
+    if(supplement) {
+      item.supplementProvenance={repository:supplement.repository,revision:supplement.revision,path:supplement.path,explanation:supplement.provenance,reviewRequired:supplement.reviewRequired};
+      for(const notice of supplement.notices) {
+        notices.push(`\n--- Upstream supplement: ${notice.url} ---`,notice.contents);
+        item.noticeFiles.push({path:`LICENSES/third-party/${notice.file}`,sha256:notice.sha256,url:notice.url});
+      }
+    }
     for(const file of files.sort((a,b)=>a.label.localeCompare(b.label))) {
       if((await stat(file.path)).size>4*1024*1024)throw Error(`Unexpected notice size: ${item.name}`);
       const contents=await readFile(file.path,'utf8');

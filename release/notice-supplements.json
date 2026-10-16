@@ -1,0 +1,1429 @@
+{
+  "schemaVersion": 1,
+  "records": [
+    {
+      "id": "cargo/alloc-stdlib@0.3.0",
+      "repository": "https://github.com/dropbox/rust-alloc-no-stdlib",
+      "revision": "0a81fd6928ea3b33c8cd484aa4575d50ffb98012",
+      "path": "alloc-stdlib",
+      "notices": [
+        {
+          "file": "c0c56f26d9c051cac4d200c34c84e7ae9aaa853e01a982a1df08b09931e518ae.txt",
+          "sha256": "c0c56f26d9c051cac4d200c34c84e7ae9aaa853e01a982a1df08b09931e518ae",
+          "url": "https://raw.githubusercontent.com/dropbox/rust-alloc-no-stdlib/0a81fd6928ea3b33c8cd484aa4575d50ffb98012/LICENSE"
+        }
+      ]
+    },
+    {
+      "id": "cargo/block2@0.6.2",
+      "repository": "https://github.com/madsmtm/objc2",
+      "revision": "b4167b582b2f75f9a1be75495c41b765344fd03c",
+      "path": "crates/block2",
+      "notices": [
+        {
+          "file": "7f976f7e9cb2d87df7230606feb932c3f21ac0e664045a775b600046ff850c54.txt",
+          "sha256": "7f976f7e9cb2d87df7230606feb932c3f21ac0e664045a775b600046ff850c54",
+          "url": "https://raw.githubusercontent.com/madsmtm/objc2/b4167b582b2f75f9a1be75495c41b765344fd03c/LICENSE.md"
+        }
+      ],
+      "reviewRequired": "Upstream LICENSE.md discusses Apple SDK-derived bindings and does not contain full license terms; legal/source review remains open. Collecting this notice does not clear that issue."
+    },
+    {
+      "id": "cargo/defmt-parser@1.0.0",
+      "repository": "https://github.com/knurling-rs/defmt",
+      "revision": "4a8cdb44891ed57b8ff5a023b6bec7137c48708f",
+      "path": "parser",
+      "notices": [
+        {
+          "file": "2710a622a896bba67356913d4d0492cab5465f61b2ecce6d880aeb483834fb50.txt",
+          "sha256": "2710a622a896bba67356913d4d0492cab5465f61b2ecce6d880aeb483834fb50",
+          "url": "https://raw.githubusercontent.com/knurling-rs/defmt/4a8cdb44891ed57b8ff5a023b6bec7137c48708f/LICENSE-MIT"
+        },
+        {
+          "file": "8173d5c29b4f956d532781d2b86e4e30f83e6b7878dce18c919451d6ba707c90.txt",
+          "sha256": "8173d5c29b4f956d532781d2b86e4e30f83e6b7878dce18c919451d6ba707c90",
+          "url": "https://raw.githubusercontent.com/knurling-rs/defmt/4a8cdb44891ed57b8ff5a023b6bec7137c48708f/LICENSE-APACHE"
+        }
+      ]
+    },
+    {
+      "id": "cargo/dispatch2@0.3.1",
+      "repository": "https://github.com/madsmtm/objc2",
+      "revision": "8852b424193ca41602281b3d7540d7c8ed51e49a",
+      "path": "crates/dispatch2",
+      "notices": [
+        {
+          "file": "7f976f7e9cb2d87df7230606feb932c3f21ac0e664045a775b600046ff850c54.txt",
+          "sha256": "7f976f7e9cb2d87df7230606feb932c3f21ac0e664045a775b600046ff850c54",
+          "url": "https://raw.githubusercontent.com/madsmtm/objc2/8852b424193ca41602281b3d7540d7c8ed51e49a/LICENSE.md"
+        }
+      ],
+      "reviewRequired": "Upstream LICENSE.md discusses Apple SDK-derived bindings and does not contain full license terms; legal/source review remains open. Collecting this notice does not clear that issue."
+    },
+    {
+      "id": "cargo/dlopen2@0.8.2",
+      "repository": "https://github.com/OpenByteDev/dlopen2",
+      "revision": "cc80e4a0a90d499b677fdf7743699b4b3a43a989",
+      "path": "dlopen2",
+      "notices": [
+        {
+          "file": "39fa265207450e77c62e90c5594a06c085b655d8374c7ced4bf7894b6bd95dd2.txt",
+          "sha256": "39fa265207450e77c62e90c5594a06c085b655d8374c7ced4bf7894b6bd95dd2",
+          "url": "https://raw.githubusercontent.com/OpenByteDev/dlopen2/cc80e4a0a90d499b677fdf7743699b4b3a43a989/LICENSE"
+        }
+      ]
+    },
+    {
+      "id": "cargo/dlopen2_derive@0.4.3",
+      "repository": "https://github.com/OpenByteDev/dlopen2",
+      "revision": "cc80e4a0a90d499b677fdf7743699b4b3a43a989",
+      "path": "dlopen2-derive",
+      "notices": [
+        {
+          "file": "39fa265207450e77c62e90c5594a06c085b655d8374c7ced4bf7894b6bd95dd2.txt",
+          "sha256": "39fa265207450e77c62e90c5594a06c085b655d8374c7ced4bf7894b6bd95dd2",
+          "url": "https://raw.githubusercontent.com/OpenByteDev/dlopen2/cc80e4a0a90d499b677fdf7743699b4b3a43a989/LICENSE"
+        }
+      ]
+    },
+    {
+      "id": "cargo/jni-sys-macros@0.4.1",
+      "repository": "https://github.com/jni-rs/jni-sys",
+      "revision": "64d77b7a5f119d7b55b4e2c169a4668067ff59e6",
+      "path": "jni-sys-macros",
+      "notices": [
+        {
+          "file": "1d85bd754b04ceec93e98e890edd1fa3c6a22e81bcb32135806beeccefa51cd1.txt",
+          "sha256": "1d85bd754b04ceec93e98e890edd1fa3c6a22e81bcb32135806beeccefa51cd1",
+          "url": "https://raw.githubusercontent.com/jni-rs/jni-sys/64d77b7a5f119d7b55b4e2c169a4668067ff59e6/LICENSE-MIT"
+        },
+        {
+          "file": "c6596eb7be8581c18be736c846fb9173b69eccf6ef94c5135893ec56bd92ba08.txt",
+          "sha256": "c6596eb7be8581c18be736c846fb9173b69eccf6ef94c5135893ec56bd92ba08",
+          "url": "https://raw.githubusercontent.com/jni-rs/jni-sys/64d77b7a5f119d7b55b4e2c169a4668067ff59e6/LICENSE-APACHE"
+        }
+      ]
+    },
+    {
+      "id": "cargo/libappindicator-sys@0.9.0",
+      "repository": "https://github.com/tauri-apps/libappindicator-rs",
+      "revision": "eafd1e3682a1247f595410266091e9684021cb6f",
+      "path": "sys",
+      "notices": [
+        {
+          "file": "eb227437252b2a7a9c1fc342c93ade1f3d7ce38cc6dd754f613db07d53ceff0b.txt",
+          "sha256": "eb227437252b2a7a9c1fc342c93ade1f3d7ce38cc6dd754f613db07d53ceff0b",
+          "url": "https://raw.githubusercontent.com/tauri-apps/libappindicator-rs/eafd1e3682a1247f595410266091e9684021cb6f/LICENSE-MIT"
+        },
+        {
+          "file": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2.txt",
+          "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+          "url": "https://raw.githubusercontent.com/tauri-apps/libappindicator-rs/eafd1e3682a1247f595410266091e9684021cb6f/LICENSE-APACHE"
+        }
+      ]
+    },
+    {
+      "id": "cargo/ndk@0.9.0",
+      "repository": "https://github.com/rust-mobile/ndk",
+      "revision": "49bbbba16c58ff63cb8a0ad0eca5a9fb7ecaec25",
+      "path": "ndk",
+      "notices": [
+        {
+          "file": "508a77d2e7b51d98adeed32648ad124b7b30241a8e70b2e72c99f92d8e5874d1.txt",
+          "sha256": "508a77d2e7b51d98adeed32648ad124b7b30241a8e70b2e72c99f92d8e5874d1",
+          "url": "https://raw.githubusercontent.com/rust-mobile/ndk/49bbbba16c58ff63cb8a0ad0eca5a9fb7ecaec25/LICENSE-MIT"
+        },
+        {
+          "file": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4.txt",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+          "url": "https://raw.githubusercontent.com/rust-mobile/ndk/49bbbba16c58ff63cb8a0ad0eca5a9fb7ecaec25/LICENSE-APACHE"
+        }
+      ]
+    },
+    {
+      "id": "cargo/ndk-context@0.1.1",
+      "repository": "https://github.com/rust-windowing/android-ndk-rs",
+      "revision": "10f2ba388fca20f7349996ebae26ccda7a6fda5c",
+      "path": "ndk-context",
+      "notices": [
+        {
+          "file": "508a77d2e7b51d98adeed32648ad124b7b30241a8e70b2e72c99f92d8e5874d1.txt",
+          "sha256": "508a77d2e7b51d98adeed32648ad124b7b30241a8e70b2e72c99f92d8e5874d1",
+          "url": "https://raw.githubusercontent.com/rust-windowing/android-ndk-rs/10f2ba388fca20f7349996ebae26ccda7a6fda5c/LICENSE-MIT"
+        },
+        {
+          "file": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4.txt",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+          "url": "https://raw.githubusercontent.com/rust-windowing/android-ndk-rs/10f2ba388fca20f7349996ebae26ccda7a6fda5c/LICENSE-APACHE"
+        }
+      ]
+    },
+    {
+      "id": "cargo/ndk-sys@0.6.0+11769913",
+      "repository": "https://github.com/rust-mobile/ndk",
+      "revision": "49bbbba16c58ff63cb8a0ad0eca5a9fb7ecaec25",
+      "path": "ndk-sys",
+      "notices": [
+        {
+          "file": "508a77d2e7b51d98adeed32648ad124b7b30241a8e70b2e72c99f92d8e5874d1.txt",
+          "sha256": "508a77d2e7b51d98adeed32648ad124b7b30241a8e70b2e72c99f92d8e5874d1",
+          "url": "https://raw.githubusercontent.com/rust-mobile/ndk/49bbbba16c58ff63cb8a0ad0eca5a9fb7ecaec25/LICENSE-MIT"
+        },
+        {
+          "file": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4.txt",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+          "url": "https://raw.githubusercontent.com/rust-mobile/ndk/49bbbba16c58ff63cb8a0ad0eca5a9fb7ecaec25/LICENSE-APACHE"
+        }
+      ]
+    },
+    {
+      "id": "cargo/objc2@0.6.4",
+      "repository": "https://github.com/madsmtm/objc2",
+      "revision": "8852b424193ca41602281b3d7540d7c8ed51e49a",
+      "path": "crates/objc2",
+      "notices": [
+        {
+          "file": "7f976f7e9cb2d87df7230606feb932c3f21ac0e664045a775b600046ff850c54.txt",
+          "sha256": "7f976f7e9cb2d87df7230606feb932c3f21ac0e664045a775b600046ff850c54",
+          "url": "https://raw.githubusercontent.com/madsmtm/objc2/8852b424193ca41602281b3d7540d7c8ed51e49a/LICENSE.md"
+        }
+      ],
+      "reviewRequired": "Upstream LICENSE.md discusses Apple SDK-derived bindings and does not contain full license terms; legal/source review remains open. Collecting this notice does not clear that issue."
+    },
+    {
+      "id": "cargo/objc2-app-kit@0.3.2",
+      "repository": "https://github.com/madsmtm/objc2",
+      "revision": "7b1abfd750a2cacaea71d6a56ecfb83cb7de560b",
+      "path": "framework-crates/objc2-app-kit",
+      "notices": [
+        {
+          "file": "7f976f7e9cb2d87df7230606feb932c3f21ac0e664045a775b600046ff850c54.txt",
+          "sha256": "7f976f7e9cb2d87df7230606feb932c3f21ac0e664045a775b600046ff850c54",
+          "url": "https://raw.githubusercontent.com/madsmtm/objc2/7b1abfd750a2cacaea71d6a56ecfb83cb7de560b/LICENSE.md"
+        }
+      ],
+      "reviewRequired": "Upstream LICENSE.md discusses Apple SDK-derived bindings and does not contain full license terms; legal/source review remains open. Collecting this notice does not clear that issue."
+    },
+    {
+      "id": "cargo/objc2-cloud-kit@0.3.2",
+      "repository": "https://github.com/madsmtm/objc2",
+      "revision": "7b1abfd750a2cacaea71d6a56ecfb83cb7de560b",
+      "path": "framework-crates/objc2-cloud-kit",
+      "notices": [
+        {
+          "file": "7f976f7e9cb2d87df7230606feb932c3f21ac0e664045a775b600046ff850c54.txt",
+          "sha256": "7f976f7e9cb2d87df7230606feb932c3f21ac0e664045a775b600046ff850c54",
+          "url": "https://raw.githubusercontent.com/madsmtm/objc2/7b1abfd750a2cacaea71d6a56ecfb83cb7de560b/LICENSE.md"
+        }
+      ],
+      "reviewRequired": "Upstream LICENSE.md discusses Apple SDK-derived bindings and does not contain full license terms; legal/source review remains open. Collecting this notice does not clear that issue."
+    },
+    {
+      "id": "cargo/objc2-core-data@0.3.2",
+      "repository": "https://github.com/madsmtm/objc2",
+      "revision": "7b1abfd750a2cacaea71d6a56ecfb83cb7de560b",
+      "path": "framework-crates/objc2-core-data",
+      "notices": [
+        {
+          "file": "7f976f7e9cb2d87df7230606feb932c3f21ac0e664045a775b600046ff850c54.txt",
+          "sha256": "7f976f7e9cb2d87df7230606feb932c3f21ac0e664045a775b600046ff850c54",
+          "url": "https://raw.githubusercontent.com/madsmtm/objc2/7b1abfd750a2cacaea71d6a56ecfb83cb7de560b/LICENSE.md"
+        }
+      ],
+      "reviewRequired": "Upstream LICENSE.md discusses Apple SDK-derived bindings and does not contain full license terms; legal/source review remains open. Collecting this notice does not clear that issue."
+    },
+    {
+      "id": "cargo/objc2-core-foundation@0.3.2",
+      "repository": "https://github.com/madsmtm/objc2",
+      "revision": "7b1abfd750a2cacaea71d6a56ecfb83cb7de560b",
+      "path": "framework-crates/objc2-core-foundation",
+      "notices": [
+        {
+          "file": "7f976f7e9cb2d87df7230606feb932c3f21ac0e664045a775b600046ff850c54.txt",
+          "sha256": "7f976f7e9cb2d87df7230606feb932c3f21ac0e664045a775b600046ff850c54",
+          "url": "https://raw.githubusercontent.com/madsmtm/objc2/7b1abfd750a2cacaea71d6a56ecfb83cb7de560b/LICENSE.md"
+        }
+      ],
+      "reviewRequired": "Upstream LICENSE.md discusses Apple SDK-derived bindings and does not contain full license terms; legal/source review remains open. Collecting this notice does not clear that issue."
+    },
+    {
+      "id": "cargo/objc2-core-graphics@0.3.2",
+      "repository": "https://github.com/madsmtm/objc2",
+      "revision": "7b1abfd750a2cacaea71d6a56ecfb83cb7de560b",
+      "path": "framework-crates/objc2-core-graphics",
+      "notices": [
+        {
+          "file": "7f976f7e9cb2d87df7230606feb932c3f21ac0e664045a775b600046ff850c54.txt",
+          "sha256": "7f976f7e9cb2d87df7230606feb932c3f21ac0e664045a775b600046ff850c54",
+          "url": "https://raw.githubusercontent.com/madsmtm/objc2/7b1abfd750a2cacaea71d6a56ecfb83cb7de560b/LICENSE.md"
+        }
+      ],
+      "reviewRequired": "Upstream LICENSE.md discusses Apple SDK-derived bindings and does not contain full license terms; legal/source review remains open. Collecting this notice does not clear that issue."
+    },
+    {
+      "id": "cargo/objc2-core-image@0.3.2",
+      "repository": "https://github.com/madsmtm/objc2",
+      "revision": "7b1abfd750a2cacaea71d6a56ecfb83cb7de560b",
+      "path": "framework-crates/objc2-core-image",
+      "notices": [
+        {
+          "file": "7f976f7e9cb2d87df7230606feb932c3f21ac0e664045a775b600046ff850c54.txt",
+          "sha256": "7f976f7e9cb2d87df7230606feb932c3f21ac0e664045a775b600046ff850c54",
+          "url": "https://raw.githubusercontent.com/madsmtm/objc2/7b1abfd750a2cacaea71d6a56ecfb83cb7de560b/LICENSE.md"
+        }
+      ],
+      "reviewRequired": "Upstream LICENSE.md discusses Apple SDK-derived bindings and does not contain full license terms; legal/source review remains open. Collecting this notice does not clear that issue."
+    },
+    {
+      "id": "cargo/objc2-core-location@0.3.2",
+      "repository": "https://github.com/madsmtm/objc2",
+      "revision": "7b1abfd750a2cacaea71d6a56ecfb83cb7de560b",
+      "path": "framework-crates/objc2-core-location",
+      "notices": [
+        {
+          "file": "7f976f7e9cb2d87df7230606feb932c3f21ac0e664045a775b600046ff850c54.txt",
+          "sha256": "7f976f7e9cb2d87df7230606feb932c3f21ac0e664045a775b600046ff850c54",
+          "url": "https://raw.githubusercontent.com/madsmtm/objc2/7b1abfd750a2cacaea71d6a56ecfb83cb7de560b/LICENSE.md"
+        }
+      ],
+      "reviewRequired": "Upstream LICENSE.md discusses Apple SDK-derived bindings and does not contain full license terms; legal/source review remains open. Collecting this notice does not clear that issue."
+    },
+    {
+      "id": "cargo/objc2-core-text@0.3.2",
+      "repository": "https://github.com/madsmtm/objc2",
+      "revision": "7b1abfd750a2cacaea71d6a56ecfb83cb7de560b",
+      "path": "framework-crates/objc2-core-text",
+      "notices": [
+        {
+          "file": "7f976f7e9cb2d87df7230606feb932c3f21ac0e664045a775b600046ff850c54.txt",
+          "sha256": "7f976f7e9cb2d87df7230606feb932c3f21ac0e664045a775b600046ff850c54",
+          "url": "https://raw.githubusercontent.com/madsmtm/objc2/7b1abfd750a2cacaea71d6a56ecfb83cb7de560b/LICENSE.md"
+        }
+      ],
+      "reviewRequired": "Upstream LICENSE.md discusses Apple SDK-derived bindings and does not contain full license terms; legal/source review remains open. Collecting this notice does not clear that issue."
+    },
+    {
+      "id": "cargo/objc2-encode@4.1.0",
+      "repository": "https://github.com/madsmtm/objc2",
+      "revision": "8d214f5477365ffcbcbb7de058c86ed9a518efb7",
+      "path": "crates/objc2-encode",
+      "notices": [
+        {
+          "file": "7f976f7e9cb2d87df7230606feb932c3f21ac0e664045a775b600046ff850c54.txt",
+          "sha256": "7f976f7e9cb2d87df7230606feb932c3f21ac0e664045a775b600046ff850c54",
+          "url": "https://raw.githubusercontent.com/madsmtm/objc2/8d214f5477365ffcbcbb7de058c86ed9a518efb7/LICENSE.md"
+        }
+      ],
+      "reviewRequired": "Upstream LICENSE.md discusses Apple SDK-derived bindings and does not contain full license terms; legal/source review remains open. Collecting this notice does not clear that issue."
+    },
+    {
+      "id": "cargo/objc2-exception-helper@0.1.1",
+      "repository": "https://github.com/madsmtm/objc2",
+      "revision": "8d214f5477365ffcbcbb7de058c86ed9a518efb7",
+      "path": "crates/objc2-exception-helper",
+      "notices": [
+        {
+          "file": "7f976f7e9cb2d87df7230606feb932c3f21ac0e664045a775b600046ff850c54.txt",
+          "sha256": "7f976f7e9cb2d87df7230606feb932c3f21ac0e664045a775b600046ff850c54",
+          "url": "https://raw.githubusercontent.com/madsmtm/objc2/8d214f5477365ffcbcbb7de058c86ed9a518efb7/LICENSE.md"
+        }
+      ],
+      "reviewRequired": "Upstream LICENSE.md discusses Apple SDK-derived bindings and does not contain full license terms; legal/source review remains open. Collecting this notice does not clear that issue."
+    },
+    {
+      "id": "cargo/objc2-io-kit@0.3.2",
+      "repository": "https://github.com/madsmtm/objc2",
+      "revision": "7b1abfd750a2cacaea71d6a56ecfb83cb7de560b",
+      "path": "framework-crates/objc2-io-kit",
+      "notices": [
+        {
+          "file": "7f976f7e9cb2d87df7230606feb932c3f21ac0e664045a775b600046ff850c54.txt",
+          "sha256": "7f976f7e9cb2d87df7230606feb932c3f21ac0e664045a775b600046ff850c54",
+          "url": "https://raw.githubusercontent.com/madsmtm/objc2/7b1abfd750a2cacaea71d6a56ecfb83cb7de560b/LICENSE.md"
+        }
+      ],
+      "reviewRequired": "Upstream LICENSE.md discusses Apple SDK-derived bindings and does not contain full license terms; legal/source review remains open. Collecting this notice does not clear that issue."
+    },
+    {
+      "id": "cargo/objc2-io-surface@0.3.2",
+      "repository": "https://github.com/madsmtm/objc2",
+      "revision": "7b1abfd750a2cacaea71d6a56ecfb83cb7de560b",
+      "path": "framework-crates/objc2-io-surface",
+      "notices": [
+        {
+          "file": "7f976f7e9cb2d87df7230606feb932c3f21ac0e664045a775b600046ff850c54.txt",
+          "sha256": "7f976f7e9cb2d87df7230606feb932c3f21ac0e664045a775b600046ff850c54",
+          "url": "https://raw.githubusercontent.com/madsmtm/objc2/7b1abfd750a2cacaea71d6a56ecfb83cb7de560b/LICENSE.md"
+        }
+      ],
+      "reviewRequired": "Upstream LICENSE.md discusses Apple SDK-derived bindings and does not contain full license terms; legal/source review remains open. Collecting this notice does not clear that issue."
+    },
+    {
+      "id": "cargo/objc2-quartz-core@0.3.2",
+      "repository": "https://github.com/madsmtm/objc2",
+      "revision": "7b1abfd750a2cacaea71d6a56ecfb83cb7de560b",
+      "path": "framework-crates/objc2-quartz-core",
+      "notices": [
+        {
+          "file": "7f976f7e9cb2d87df7230606feb932c3f21ac0e664045a775b600046ff850c54.txt",
+          "sha256": "7f976f7e9cb2d87df7230606feb932c3f21ac0e664045a775b600046ff850c54",
+          "url": "https://raw.githubusercontent.com/madsmtm/objc2/7b1abfd750a2cacaea71d6a56ecfb83cb7de560b/LICENSE.md"
+        }
+      ],
+      "reviewRequired": "Upstream LICENSE.md discusses Apple SDK-derived bindings and does not contain full license terms; legal/source review remains open. Collecting this notice does not clear that issue."
+    },
+    {
+      "id": "cargo/objc2-ui-kit@0.3.2",
+      "repository": "https://github.com/madsmtm/objc2",
+      "revision": "7b1abfd750a2cacaea71d6a56ecfb83cb7de560b",
+      "path": "framework-crates/objc2-ui-kit",
+      "notices": [
+        {
+          "file": "7f976f7e9cb2d87df7230606feb932c3f21ac0e664045a775b600046ff850c54.txt",
+          "sha256": "7f976f7e9cb2d87df7230606feb932c3f21ac0e664045a775b600046ff850c54",
+          "url": "https://raw.githubusercontent.com/madsmtm/objc2/7b1abfd750a2cacaea71d6a56ecfb83cb7de560b/LICENSE.md"
+        }
+      ],
+      "reviewRequired": "Upstream LICENSE.md discusses Apple SDK-derived bindings and does not contain full license terms; legal/source review remains open. Collecting this notice does not clear that issue."
+    },
+    {
+      "id": "cargo/objc2-user-notifications@0.3.2",
+      "repository": "https://github.com/madsmtm/objc2",
+      "revision": "7b1abfd750a2cacaea71d6a56ecfb83cb7de560b",
+      "path": "framework-crates/objc2-user-notifications",
+      "notices": [
+        {
+          "file": "7f976f7e9cb2d87df7230606feb932c3f21ac0e664045a775b600046ff850c54.txt",
+          "sha256": "7f976f7e9cb2d87df7230606feb932c3f21ac0e664045a775b600046ff850c54",
+          "url": "https://raw.githubusercontent.com/madsmtm/objc2/7b1abfd750a2cacaea71d6a56ecfb83cb7de560b/LICENSE.md"
+        }
+      ],
+      "reviewRequired": "Upstream LICENSE.md discusses Apple SDK-derived bindings and does not contain full license terms; legal/source review remains open. Collecting this notice does not clear that issue."
+    },
+    {
+      "id": "cargo/objc2-web-kit@0.3.2",
+      "repository": "https://github.com/madsmtm/objc2",
+      "revision": "7b1abfd750a2cacaea71d6a56ecfb83cb7de560b",
+      "path": "framework-crates/objc2-web-kit",
+      "notices": [
+        {
+          "file": "7f976f7e9cb2d87df7230606feb932c3f21ac0e664045a775b600046ff850c54.txt",
+          "sha256": "7f976f7e9cb2d87df7230606feb932c3f21ac0e664045a775b600046ff850c54",
+          "url": "https://raw.githubusercontent.com/madsmtm/objc2/7b1abfd750a2cacaea71d6a56ecfb83cb7de560b/LICENSE.md"
+        }
+      ],
+      "reviewRequired": "Upstream LICENSE.md discusses Apple SDK-derived bindings and does not contain full license terms; legal/source review remains open. Collecting this notice does not clear that issue."
+    },
+    {
+      "id": "cargo/selectors@0.35.0",
+      "repository": "https://github.com/servo/stylo",
+      "revision": "71737ad5c8b29c143a6c992af6222833f5d38b43",
+      "path": "selectors",
+      "notices": [
+        {
+          "file": "766674381e88a468d55e07de3596987391cf0e8beebe51baf4fddf11078785b3.txt",
+          "sha256": "766674381e88a468d55e07de3596987391cf0e8beebe51baf4fddf11078785b3",
+          "url": "https://raw.githubusercontent.com/servo/stylo/71737ad5c8b29c143a6c992af6222833f5d38b43/selectors/lib.rs",
+          "extraction": "Initial license comment, unmodified"
+        },
+        {
+          "file": "fab3dd6bdab226f1c08630b1dd917e11fcb4ec5e1e020e2c16f83a0a13863e85.txt",
+          "sha256": "fab3dd6bdab226f1c08630b1dd917e11fcb4ec5e1e020e2c16f83a0a13863e85",
+          "url": "https://crates.io/api/v1/crates/cssparser/0.37.0/download",
+          "extraction": "Unmodified LICENSE: canonical MPL-2.0 terms, referenced by selectors source header"
+        }
+      ]
+    },
+    {
+      "id": "cargo/selectors@0.38.0",
+      "repository": "https://github.com/servo/stylo",
+      "revision": "572ecba2d1600e7c3d490586692a209faf703baa",
+      "path": "selectors",
+      "notices": [
+        {
+          "file": "766674381e88a468d55e07de3596987391cf0e8beebe51baf4fddf11078785b3.txt",
+          "sha256": "766674381e88a468d55e07de3596987391cf0e8beebe51baf4fddf11078785b3",
+          "url": "https://raw.githubusercontent.com/servo/stylo/572ecba2d1600e7c3d490586692a209faf703baa/selectors/lib.rs",
+          "extraction": "Initial license comment, unmodified"
+        },
+        {
+          "file": "fab3dd6bdab226f1c08630b1dd917e11fcb4ec5e1e020e2c16f83a0a13863e85.txt",
+          "sha256": "fab3dd6bdab226f1c08630b1dd917e11fcb4ec5e1e020e2c16f83a0a13863e85",
+          "url": "https://crates.io/api/v1/crates/cssparser/0.37.0/download",
+          "extraction": "Unmodified LICENSE: canonical MPL-2.0 terms, referenced by selectors source header"
+        }
+      ]
+    },
+    {
+      "id": "cargo/tauri-plugin@2.7.1",
+      "repository": "https://github.com/tauri-apps/tauri",
+      "revision": "30da1fd6e17de6107ecc850c95dfb16b5729f2dd",
+      "path": "crates/tauri-plugin",
+      "notices": [
+        {
+          "file": "9dd42ea92cff2ede5cd477cbfcce051b2d0115c0ac7f368ee88cb545055dff1d.txt",
+          "sha256": "9dd42ea92cff2ede5cd477cbfcce051b2d0115c0ac7f368ee88cb545055dff1d",
+          "url": "https://raw.githubusercontent.com/tauri-apps/tauri/30da1fd6e17de6107ecc850c95dfb16b5729f2dd/LICENSE-MIT"
+        }
+      ]
+    },
+    {
+      "id": "cargo/webview2-com@0.39.1",
+      "repository": "https://github.com/wravery/webview2-rs",
+      "revision": "edc2caf886175ccaebe86078c9cfe1ae2a187328",
+      "path": "crates/webview2-com",
+      "notices": [
+        {
+          "file": "0dcf41516e608bbcb6cdc5229feb7b86fe4a643b85e7df251133c93408fdac73.txt",
+          "sha256": "0dcf41516e608bbcb6cdc5229feb7b86fe4a643b85e7df251133c93408fdac73",
+          "url": "https://raw.githubusercontent.com/wravery/webview2-rs/edc2caf886175ccaebe86078c9cfe1ae2a187328/LICENSE"
+        }
+      ]
+    },
+    {
+      "id": "cargo/webview2-com-macros@0.8.1",
+      "repository": "https://github.com/wravery/webview2-rs",
+      "revision": "dffa41a8a46d3f5565eefbff2de57d38d399f158",
+      "path": "crates/callback-macros",
+      "notices": [
+        {
+          "file": "0dcf41516e608bbcb6cdc5229feb7b86fe4a643b85e7df251133c93408fdac73.txt",
+          "sha256": "0dcf41516e608bbcb6cdc5229feb7b86fe4a643b85e7df251133c93408fdac73",
+          "url": "https://raw.githubusercontent.com/wravery/webview2-rs/dffa41a8a46d3f5565eefbff2de57d38d399f158/LICENSE"
+        }
+      ]
+    },
+    {
+      "id": "cargo/webview2-com-sys@0.39.1",
+      "repository": "https://github.com/wravery/webview2-rs",
+      "revision": "edc2caf886175ccaebe86078c9cfe1ae2a187328",
+      "path": "crates/bindings",
+      "notices": [
+        {
+          "file": "0dcf41516e608bbcb6cdc5229feb7b86fe4a643b85e7df251133c93408fdac73.txt",
+          "sha256": "0dcf41516e608bbcb6cdc5229feb7b86fe4a643b85e7df251133c93408fdac73",
+          "url": "https://raw.githubusercontent.com/wravery/webview2-rs/edc2caf886175ccaebe86078c9cfe1ae2a187328/LICENSE"
+        }
+      ]
+    },
+    {
+      "id": "cargo/winapi-i686-pc-windows-gnu@0.4.0",
+      "repository": "https://github.com/retep998/winapi-rs",
+      "notices": [
+        {
+          "file": "ce7bc3499fee93d5022ef430d5e4201e79a6d9154f3974e42f41349f0569e09b.txt",
+          "sha256": "ce7bc3499fee93d5022ef430d5e4201e79a6d9154f3974e42f41349f0569e09b",
+          "url": "https://raw.githubusercontent.com/retep998/winapi-rs/796a8e6c2971dc2ff1bcff166e6671284f9b5b6b/LICENSE-MIT"
+        },
+        {
+          "file": "b40930bbcf80744c86c46a12bc9da056641d722716c378f5659b9e555ef833e1.txt",
+          "sha256": "b40930bbcf80744c86c46a12bc9da056641d722716c378f5659b9e555ef833e1",
+          "url": "https://raw.githubusercontent.com/retep998/winapi-rs/796a8e6c2971dc2ff1bcff166e6671284f9b5b6b/LICENSE-APACHE"
+        }
+      ],
+      "revision": "796a8e6c2971dc2ff1bcff166e6671284f9b5b6b",
+      "provenance": "Enclosing winapi 0.3.9 published VCS revision; its manifest explicitly depends on import-library crates 0.4.0. Target crate metadata declares same MIT/Apache-2.0 terms and author."
+    },
+    {
+      "id": "cargo/winapi-x86_64-pc-windows-gnu@0.4.0",
+      "repository": "https://github.com/retep998/winapi-rs",
+      "notices": [
+        {
+          "file": "ce7bc3499fee93d5022ef430d5e4201e79a6d9154f3974e42f41349f0569e09b.txt",
+          "sha256": "ce7bc3499fee93d5022ef430d5e4201e79a6d9154f3974e42f41349f0569e09b",
+          "url": "https://raw.githubusercontent.com/retep998/winapi-rs/796a8e6c2971dc2ff1bcff166e6671284f9b5b6b/LICENSE-MIT"
+        },
+        {
+          "file": "b40930bbcf80744c86c46a12bc9da056641d722716c378f5659b9e555ef833e1.txt",
+          "sha256": "b40930bbcf80744c86c46a12bc9da056641d722716c378f5659b9e555ef833e1",
+          "url": "https://raw.githubusercontent.com/retep998/winapi-rs/796a8e6c2971dc2ff1bcff166e6671284f9b5b6b/LICENSE-APACHE"
+        }
+      ],
+      "revision": "796a8e6c2971dc2ff1bcff166e6671284f9b5b6b",
+      "provenance": "Enclosing winapi 0.3.9 published VCS revision; its manifest explicitly depends on import-library crates 0.4.0. Target crate metadata declares same MIT/Apache-2.0 terms and author."
+    },
+    {
+      "id": "npm/@esbuild/darwin-arm64@0.28.2",
+      "repository": "https://github.com/evanw/esbuild",
+      "revision": "609683d892977362a0f99026cb74b96263d728a9",
+      "registryIntegrity": "sha512-n4KqkOQrraxHJcgjM1RvwbigfQKIKJVpM7xp+KsxiyUSrRdIXnt73VhrPAx0fV44hgfmIVKjxMN9J1t5jySVkw==",
+      "notices": [
+        {
+          "file": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681.txt",
+          "sha256": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681",
+          "url": "https://raw.githubusercontent.com/evanw/esbuild/609683d892977362a0f99026cb74b96263d728a9/LICENSE.md"
+        }
+      ]
+    },
+    {
+      "id": "npm/@napi-rs/canvas-darwin-arm64@1.0.11",
+      "repository": "https://github.com/Brooooooklyn/canvas",
+      "registryIntegrity": "sha512-J/JylWoJTG8OQqZaiqly4IODyAxNofUlZo0wtSBJtHk6AdymbdIkPynAM1JvQaZpPaG5h+msk9QuK8y4i1ooqw==",
+      "notices": [
+        {
+          "file": "8802fecf9da4367bc23bcf20b21cc143785fc6c92b152f3fa7fbe6ce08d344d6.txt",
+          "sha256": "8802fecf9da4367bc23bcf20b21cc143785fc6c92b152f3fa7fbe6ce08d344d6",
+          "url": "https://raw.githubusercontent.com/Brooooooklyn/canvas/adce718ec8ff82f9e896875752fd621c46b1c04e/LICENSE"
+        }
+      ],
+      "revision": "adce718ec8ff82f9e896875752fd621c46b1c04e",
+      "provenance": "Published @napi-rs/canvas@1.0.11 gitHead; parent pins platform package to 1.0.11"
+    },
+    {
+      "id": "npm/@rolldown/binding-darwin-arm64@1.2.12",
+      "repository": "https://github.com/rolldown/rolldown",
+      "registryIntegrity": "sha512-3YIhqHD96nA5SaYNRBR16HnGv4oavZvXfD/ayHM+oYZ0WD/8lBAtf6zQua4kEyAvpqrluKXl0lnOBoiNby7x9w==",
+      "notices": [
+        {
+          "file": "23ecfff35a5a2e80d92142f75228912c3b1abc4b5a8337a821ff4397e2f9f734.txt",
+          "sha256": "23ecfff35a5a2e80d92142f75228912c3b1abc4b5a8337a821ff4397e2f9f734",
+          "url": "https://raw.githubusercontent.com/rolldown/rolldown/45e407b177f5885d04a9795f37f8be71d91f6f17/LICENSE"
+        }
+      ],
+      "revision": "45e407b177f5885d04a9795f37f8be71d91f6f17",
+      "provenance": "Upstream v1.2.12 tag resolved to commit; rolldown parent pins binding version"
+    },
+    {
+      "id": "npm/@tauri-apps/cli-darwin-arm64@2.12.1",
+      "repository": "https://github.com/tauri-apps/tauri",
+      "registryIntegrity": "sha512-8bMnbpJ2jKO/ufrOPL65EMHC3ptw7fzeraoQkwibyfGLqIl+UCWsC0152kmNbW6r9NvVQduXqAZF5mH1QgTWhw==",
+      "notices": [
+        {
+          "file": "9dd42ea92cff2ede5cd477cbfcce051b2d0115c0ac7f368ee88cb545055dff1d.txt",
+          "sha256": "9dd42ea92cff2ede5cd477cbfcce051b2d0115c0ac7f368ee88cb545055dff1d",
+          "url": "https://raw.githubusercontent.com/tauri-apps/tauri/30da1fd6e17de6107ecc850c95dfb16b5729f2dd/LICENSE-MIT"
+        }
+      ],
+      "revision": "30da1fd6e17de6107ecc850c95dfb16b5729f2dd",
+      "provenance": "Published @tauri-apps/cli@2.12.1 gitHead; parent pins platform package"
+    },
+    {
+      "id": "npm/saxes@6.0.0",
+      "repository": "https://github.com/lddubeau/saxes",
+      "revision": "211fa0ebec9b628affc09219199639887174bfc3",
+      "registryIntegrity": "sha512-xAg7SOnEhrm5zI3puOOKyy1OMcMlIJZYNJY7xLBwSze0UjhPLnWfj2GF2EpT0jmzaJKIWKHLsaSSajf35bcYnA==",
+      "notices": [
+        {
+          "file": "0fac2374380621b22e6b50451057721a9c52935b02d16d106a9f04897f061d0e.txt",
+          "sha256": "0fac2374380621b22e6b50451057721a9c52935b02d16d106a9f04897f061d0e",
+          "url": "https://raw.githubusercontent.com/lddubeau/saxes/211fa0ebec9b628affc09219199639887174bfc3/LICENSE"
+        }
+      ]
+    },
+    {
+      "id": "cargo/objc2-foundation@0.3.2",
+      "repository": "https://github.com/madsmtm/objc2",
+      "revision": "7b1abfd750a2cacaea71d6a56ecfb83cb7de560b",
+      "path": "framework-crates/objc2-foundation",
+      "notices": [
+        {
+          "file": "7f976f7e9cb2d87df7230606feb932c3f21ac0e664045a775b600046ff850c54.txt",
+          "sha256": "7f976f7e9cb2d87df7230606feb932c3f21ac0e664045a775b600046ff850c54",
+          "url": "https://raw.githubusercontent.com/madsmtm/objc2/7b1abfd750a2cacaea71d6a56ecfb83cb7de560b/LICENSE.md"
+        }
+      ],
+      "reviewRequired": "Upstream LICENSE.md discusses Apple SDK-derived bindings and does not contain full license terms; legal/source review remains open. Collecting this notice does not clear that issue."
+    },
+    {
+      "id": "npm/@esbuild/aix-ppc64@0.28.2",
+      "repository": "https://github.com/evanw/esbuild",
+      "revision": "609683d892977362a0f99026cb74b96263d728a9",
+      "registryIntegrity": "sha512-XExcO+dvLKvVtNTibSTBej1NCAbaGhWn9Ww1ZPx80qsahhPFe/8jgWP0IchNe0F3HwkU7n8ejhH8bjonqht8mQ==",
+      "notices": [
+        {
+          "file": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681.txt",
+          "sha256": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681",
+          "url": "https://raw.githubusercontent.com/evanw/esbuild/609683d892977362a0f99026cb74b96263d728a9/LICENSE.md"
+        }
+      ]
+    },
+    {
+      "id": "npm/@esbuild/android-arm@0.28.2",
+      "repository": "https://github.com/evanw/esbuild",
+      "revision": "609683d892977362a0f99026cb74b96263d728a9",
+      "registryIntegrity": "sha512-kXXoiPVVGQcnIYGOeaovwOURpniDBpSq4A03qkQ+BMQqtGG6HYap3xne9C1O1yo4TR3qxlCX5IqqmX6fFo2Lqg==",
+      "notices": [
+        {
+          "file": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681.txt",
+          "sha256": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681",
+          "url": "https://raw.githubusercontent.com/evanw/esbuild/609683d892977362a0f99026cb74b96263d728a9/LICENSE.md"
+        }
+      ]
+    },
+    {
+      "id": "npm/@esbuild/android-arm64@0.28.2",
+      "repository": "https://github.com/evanw/esbuild",
+      "revision": "609683d892977362a0f99026cb74b96263d728a9",
+      "registryIntegrity": "sha512-5YfKeeI8qWfBZIX+u2xZC3Zlb3Os/gLS2sbEKM+I4ZOcsWmHS2WLysCcQZDAFRslDUU5Oiq44gf6PYN1vGwG5A==",
+      "notices": [
+        {
+          "file": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681.txt",
+          "sha256": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681",
+          "url": "https://raw.githubusercontent.com/evanw/esbuild/609683d892977362a0f99026cb74b96263d728a9/LICENSE.md"
+        }
+      ]
+    },
+    {
+      "id": "npm/@esbuild/android-x64@0.28.2",
+      "repository": "https://github.com/evanw/esbuild",
+      "revision": "609683d892977362a0f99026cb74b96263d728a9",
+      "registryIntegrity": "sha512-O387ite7SzUyCcy3JQX4P4bLtEA7bLLkx+esve5JHnyYfNTxcVpXZo9jhdB0lTKN44gztELTdU7nS8Nr16Fs1Q==",
+      "notices": [
+        {
+          "file": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681.txt",
+          "sha256": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681",
+          "url": "https://raw.githubusercontent.com/evanw/esbuild/609683d892977362a0f99026cb74b96263d728a9/LICENSE.md"
+        }
+      ]
+    },
+    {
+      "id": "npm/@esbuild/darwin-x64@0.28.2",
+      "repository": "https://github.com/evanw/esbuild",
+      "revision": "609683d892977362a0f99026cb74b96263d728a9",
+      "registryIntegrity": "sha512-uq6suIWYP37qzGddBKPw5QEQPi6HiLGsO7UmkpfyaYNQ3D+rN6w6WfwH+nuqcGXWvawGwxOEroO4YGnFh95azw==",
+      "notices": [
+        {
+          "file": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681.txt",
+          "sha256": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681",
+          "url": "https://raw.githubusercontent.com/evanw/esbuild/609683d892977362a0f99026cb74b96263d728a9/LICENSE.md"
+        }
+      ]
+    },
+    {
+      "id": "npm/@esbuild/freebsd-arm64@0.28.2",
+      "repository": "https://github.com/evanw/esbuild",
+      "revision": "609683d892977362a0f99026cb74b96263d728a9",
+      "registryIntegrity": "sha512-n+I0BTSRIoy+d6RPKnEVwql5UwBJolytvY4mAOIEJorKlqgPII8ix6slVVrfZ5Tnj7glIZvloylbB/EJPMWEXw==",
+      "notices": [
+        {
+          "file": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681.txt",
+          "sha256": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681",
+          "url": "https://raw.githubusercontent.com/evanw/esbuild/609683d892977362a0f99026cb74b96263d728a9/LICENSE.md"
+        }
+      ]
+    },
+    {
+      "id": "npm/@esbuild/freebsd-x64@0.28.2",
+      "repository": "https://github.com/evanw/esbuild",
+      "revision": "609683d892977362a0f99026cb74b96263d728a9",
+      "registryIntegrity": "sha512-78XJTJkvPs0kz2w61301PJjXl4g7q3JqiYMZ/M/yVI73EHBrCRTgkhu9oqG7vPqq+a/yadEW8aD+agKlk5xrmg==",
+      "notices": [
+        {
+          "file": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681.txt",
+          "sha256": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681",
+          "url": "https://raw.githubusercontent.com/evanw/esbuild/609683d892977362a0f99026cb74b96263d728a9/LICENSE.md"
+        }
+      ]
+    },
+    {
+      "id": "npm/@esbuild/linux-arm@0.28.2",
+      "repository": "https://github.com/evanw/esbuild",
+      "revision": "609683d892977362a0f99026cb74b96263d728a9",
+      "registryIntegrity": "sha512-XlDnu2q5yoqems+xay6wSAcg9DDD7K9RLKZEBOMZm3ckNpJBvOX20tSfby8KfrrhINDyv9V2YVZKY/SpoGJI8w==",
+      "notices": [
+        {
+          "file": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681.txt",
+          "sha256": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681",
+          "url": "https://raw.githubusercontent.com/evanw/esbuild/609683d892977362a0f99026cb74b96263d728a9/LICENSE.md"
+        }
+      ]
+    },
+    {
+      "id": "npm/@esbuild/linux-arm64@0.28.2",
+      "repository": "https://github.com/evanw/esbuild",
+      "revision": "609683d892977362a0f99026cb74b96263d728a9",
+      "registryIntegrity": "sha512-pW4AC0P3it8c7do9MVM4p51FzHzdM/TZrerurgRcHJ2WTa1VQ1CIq18xncfpBJw4ojkiZZrKW2yIBWBP92j6Ug==",
+      "notices": [
+        {
+          "file": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681.txt",
+          "sha256": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681",
+          "url": "https://raw.githubusercontent.com/evanw/esbuild/609683d892977362a0f99026cb74b96263d728a9/LICENSE.md"
+        }
+      ]
+    },
+    {
+      "id": "npm/@esbuild/linux-ia32@0.28.2",
+      "repository": "https://github.com/evanw/esbuild",
+      "revision": "609683d892977362a0f99026cb74b96263d728a9",
+      "registryIntegrity": "sha512-CYbnj78HsIeA+DhgUKgFCfvNsTHFhMMrinUrMZpDXJXKN8T3XViTZ/+wtHeVxEWY8ewSzTFN+nRmSwO2tZaLUQ==",
+      "notices": [
+        {
+          "file": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681.txt",
+          "sha256": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681",
+          "url": "https://raw.githubusercontent.com/evanw/esbuild/609683d892977362a0f99026cb74b96263d728a9/LICENSE.md"
+        }
+      ]
+    },
+    {
+      "id": "npm/@esbuild/linux-loong64@0.28.2",
+      "repository": "https://github.com/evanw/esbuild",
+      "revision": "609683d892977362a0f99026cb74b96263d728a9",
+      "registryIntegrity": "sha512-buwkd8nsph4R+ajRvw0qM5Hja/TXQow3ptzWO2EbG/cqcIkHloRrdlBtQlshyYGTNFvfkfJ5tpPLVkY4DtsPfQ==",
+      "notices": [
+        {
+          "file": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681.txt",
+          "sha256": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681",
+          "url": "https://raw.githubusercontent.com/evanw/esbuild/609683d892977362a0f99026cb74b96263d728a9/LICENSE.md"
+        }
+      ]
+    },
+    {
+      "id": "npm/@esbuild/linux-mips64el@0.28.2",
+      "repository": "https://github.com/evanw/esbuild",
+      "revision": "609683d892977362a0f99026cb74b96263d728a9",
+      "registryIntegrity": "sha512-ZVykbDyk7519VwiNb9Lcj9m8XM6v5V9uKPvrEMkkEedVewf+0itkhahp4HDpgERXhwLRpWFypsGbG/J8s0QjJA==",
+      "notices": [
+        {
+          "file": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681.txt",
+          "sha256": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681",
+          "url": "https://raw.githubusercontent.com/evanw/esbuild/609683d892977362a0f99026cb74b96263d728a9/LICENSE.md"
+        }
+      ]
+    },
+    {
+      "id": "npm/@esbuild/linux-ppc64@0.28.2",
+      "repository": "https://github.com/evanw/esbuild",
+      "revision": "609683d892977362a0f99026cb74b96263d728a9",
+      "registryIntegrity": "sha512-CAXl+Dtd9UUuJd8pKKdwh6MLm3MUMiqMPmhZ3tTSXPqfyQ3vDl6R5hZdZ/kYojK4ofXtdfSv1tFq8XzWx3heNQ==",
+      "notices": [
+        {
+          "file": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681.txt",
+          "sha256": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681",
+          "url": "https://raw.githubusercontent.com/evanw/esbuild/609683d892977362a0f99026cb74b96263d728a9/LICENSE.md"
+        }
+      ]
+    },
+    {
+      "id": "npm/@esbuild/linux-riscv64@0.28.2",
+      "repository": "https://github.com/evanw/esbuild",
+      "revision": "609683d892977362a0f99026cb74b96263d728a9",
+      "registryIntegrity": "sha512-GeXCej4IQtU1B+QlDV8W/RRvbzI3O/Stss+/bCXv4lZls5WGRtu2a+3JkA3i4qIUlMXpcHebWpF8AkJhATowuA==",
+      "notices": [
+        {
+          "file": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681.txt",
+          "sha256": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681",
+          "url": "https://raw.githubusercontent.com/evanw/esbuild/609683d892977362a0f99026cb74b96263d728a9/LICENSE.md"
+        }
+      ]
+    },
+    {
+      "id": "npm/@esbuild/linux-s390x@0.28.2",
+      "repository": "https://github.com/evanw/esbuild",
+      "revision": "609683d892977362a0f99026cb74b96263d728a9",
+      "registryIntegrity": "sha512-3H1weTYZPxt/WOhByszQZybS9w5lKzUn1FDMsgEChbHWQwHYQQRfBxgCcZvPhjHfKyJjIievvMmEUawJrdY9Dg==",
+      "notices": [
+        {
+          "file": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681.txt",
+          "sha256": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681",
+          "url": "https://raw.githubusercontent.com/evanw/esbuild/609683d892977362a0f99026cb74b96263d728a9/LICENSE.md"
+        }
+      ]
+    },
+    {
+      "id": "npm/@esbuild/linux-x64@0.28.2",
+      "repository": "https://github.com/evanw/esbuild",
+      "revision": "609683d892977362a0f99026cb74b96263d728a9",
+      "registryIntegrity": "sha512-4xTZr1FUmSoQW4XIWmit3tzQrUTZM+N3P0XV8xROKYF50XfI7xeO90+1bZvNwxIufQ9hDQVRJH5YhgPVF8A/HQ==",
+      "notices": [
+        {
+          "file": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681.txt",
+          "sha256": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681",
+          "url": "https://raw.githubusercontent.com/evanw/esbuild/609683d892977362a0f99026cb74b96263d728a9/LICENSE.md"
+        }
+      ]
+    },
+    {
+      "id": "npm/@esbuild/netbsd-arm64@0.28.2",
+      "repository": "https://github.com/evanw/esbuild",
+      "revision": "609683d892977362a0f99026cb74b96263d728a9",
+      "registryIntegrity": "sha512-sSATRjPeDBg3pdgHoQfoYBob11Kk1FGa9lui5RIHZCoCkJa9QKlvl3/vKz2usCmYYjs7ymJR/2Nnsqe+Hjt5nw==",
+      "notices": [
+        {
+          "file": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681.txt",
+          "sha256": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681",
+          "url": "https://raw.githubusercontent.com/evanw/esbuild/609683d892977362a0f99026cb74b96263d728a9/LICENSE.md"
+        }
+      ]
+    },
+    {
+      "id": "npm/@esbuild/netbsd-x64@0.28.2",
+      "repository": "https://github.com/evanw/esbuild",
+      "revision": "609683d892977362a0f99026cb74b96263d728a9",
+      "registryIntegrity": "sha512-lqnzCV+mM0gIADaKihiCg6ifgfU2L3h5E33rNQBN1Y4MaVGnzryzmvvf7UHxprpQdE8hpqLolJ9Rl+SkIRDpyw==",
+      "notices": [
+        {
+          "file": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681.txt",
+          "sha256": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681",
+          "url": "https://raw.githubusercontent.com/evanw/esbuild/609683d892977362a0f99026cb74b96263d728a9/LICENSE.md"
+        }
+      ]
+    },
+    {
+      "id": "npm/@esbuild/openbsd-arm64@0.28.2",
+      "repository": "https://github.com/evanw/esbuild",
+      "revision": "609683d892977362a0f99026cb74b96263d728a9",
+      "registryIntegrity": "sha512-AL2qJILH7lNjrDmCQDvdxMfAUIv8KMNZOvrwAQ8i8//ntL9FflhOyMJ8OZSMBb8/AWXe3/5v5S20y3zCoZWKoQ==",
+      "notices": [
+        {
+          "file": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681.txt",
+          "sha256": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681",
+          "url": "https://raw.githubusercontent.com/evanw/esbuild/609683d892977362a0f99026cb74b96263d728a9/LICENSE.md"
+        }
+      ]
+    },
+    {
+      "id": "npm/@esbuild/openbsd-x64@0.28.2",
+      "repository": "https://github.com/evanw/esbuild",
+      "revision": "609683d892977362a0f99026cb74b96263d728a9",
+      "registryIntegrity": "sha512-QtiuPytchRyC4rwUKhexJdQKvDuZ6hWloi3igqPQNUJCS1/v9EiO3UTOXR6A3FoMo4fnAKbWJdqaIwhOzh8qEw==",
+      "notices": [
+        {
+          "file": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681.txt",
+          "sha256": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681",
+          "url": "https://raw.githubusercontent.com/evanw/esbuild/609683d892977362a0f99026cb74b96263d728a9/LICENSE.md"
+        }
+      ]
+    },
+    {
+      "id": "npm/@esbuild/openharmony-arm64@0.28.2",
+      "repository": "https://github.com/evanw/esbuild",
+      "revision": "609683d892977362a0f99026cb74b96263d728a9",
+      "registryIntegrity": "sha512-WkhYDmpTjLvGlScA1rwjRUmhl4k8oXR3cIbtqWmELgU/dFeHHlEllxDvdWcNJV9rbzCexB5vz8gtNewWLgCT7Q==",
+      "notices": [
+        {
+          "file": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681.txt",
+          "sha256": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681",
+          "url": "https://raw.githubusercontent.com/evanw/esbuild/609683d892977362a0f99026cb74b96263d728a9/LICENSE.md"
+        }
+      ]
+    },
+    {
+      "id": "npm/@esbuild/sunos-x64@0.28.2",
+      "repository": "https://github.com/evanw/esbuild",
+      "revision": "609683d892977362a0f99026cb74b96263d728a9",
+      "registryIntegrity": "sha512-GPMSkTOtMnv2U2F8gxe4Io6qmVs+YKyp832Etqqxr0hFngmXQ3rzwytelm3GIn7T4VviRUlf3sOgBOiTdvaf7g==",
+      "notices": [
+        {
+          "file": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681.txt",
+          "sha256": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681",
+          "url": "https://raw.githubusercontent.com/evanw/esbuild/609683d892977362a0f99026cb74b96263d728a9/LICENSE.md"
+        }
+      ]
+    },
+    {
+      "id": "npm/@esbuild/win32-arm64@0.28.2",
+      "repository": "https://github.com/evanw/esbuild",
+      "revision": "609683d892977362a0f99026cb74b96263d728a9",
+      "registryIntegrity": "sha512-PIhhEkE9uPBleRBrQEJpUn7MBnibZzbGzYWPmY3x+YoVg/95zbjB4CxPPOQ8l5tYYM4mMaCthF8/1DIfBQQyWQ==",
+      "notices": [
+        {
+          "file": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681.txt",
+          "sha256": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681",
+          "url": "https://raw.githubusercontent.com/evanw/esbuild/609683d892977362a0f99026cb74b96263d728a9/LICENSE.md"
+        }
+      ]
+    },
+    {
+      "id": "npm/@esbuild/win32-ia32@0.28.2",
+      "repository": "https://github.com/evanw/esbuild",
+      "revision": "609683d892977362a0f99026cb74b96263d728a9",
+      "registryIntegrity": "sha512-YmJbfTlvU7Sdn9BB+4PRES4oB6pxgS37MAONj+hBr/cpXS1aBPKXxNnDbu+QCWPj0o9dgyxeq79g6c5P8KeuYA==",
+      "notices": [
+        {
+          "file": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681.txt",
+          "sha256": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681",
+          "url": "https://raw.githubusercontent.com/evanw/esbuild/609683d892977362a0f99026cb74b96263d728a9/LICENSE.md"
+        }
+      ]
+    },
+    {
+      "id": "npm/@esbuild/win32-x64@0.28.2",
+      "repository": "https://github.com/evanw/esbuild",
+      "revision": "609683d892977362a0f99026cb74b96263d728a9",
+      "registryIntegrity": "sha512-5ebpxr3nWMzrL/rnUI755Jkuee0bHL/Gq0WTF9lvcpv73wAp5eu8MfBUgWK9bhWvZjj7yX8etf/8tI8Ney695g==",
+      "notices": [
+        {
+          "file": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681.txt",
+          "sha256": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681",
+          "url": "https://raw.githubusercontent.com/evanw/esbuild/609683d892977362a0f99026cb74b96263d728a9/LICENSE.md"
+        }
+      ]
+    },
+    {
+      "id": "npm/@napi-rs/canvas-android-arm64@1.0.11",
+      "repository": "https://github.com/Brooooooklyn/canvas",
+      "registryIntegrity": "sha512-dtJS4FQEfH9OwSYLtMrEnj7T8DzBbJc/97LI/OkiWOYpW/iW5t6R/gcxVrUXS8l45gCVpwMufgucRe/pe0ISqA==",
+      "notices": [
+        {
+          "file": "8802fecf9da4367bc23bcf20b21cc143785fc6c92b152f3fa7fbe6ce08d344d6.txt",
+          "sha256": "8802fecf9da4367bc23bcf20b21cc143785fc6c92b152f3fa7fbe6ce08d344d6",
+          "url": "https://raw.githubusercontent.com/Brooooooklyn/canvas/adce718ec8ff82f9e896875752fd621c46b1c04e/LICENSE"
+        }
+      ],
+      "revision": "adce718ec8ff82f9e896875752fd621c46b1c04e",
+      "provenance": "Published @napi-rs/canvas@1.0.11 gitHead; parent pins platform package to 1.0.11"
+    },
+    {
+      "id": "npm/@napi-rs/canvas-darwin-x64@1.0.11",
+      "repository": "https://github.com/Brooooooklyn/canvas",
+      "registryIntegrity": "sha512-nlecCk3xy06eAGC7krZtzNDm9UNTHKuHQYK8ZYegdjzgSL8anGt/eLJZm86OWaNgZkwQwvDqfSmG8Nqe6MPZNQ==",
+      "notices": [
+        {
+          "file": "8802fecf9da4367bc23bcf20b21cc143785fc6c92b152f3fa7fbe6ce08d344d6.txt",
+          "sha256": "8802fecf9da4367bc23bcf20b21cc143785fc6c92b152f3fa7fbe6ce08d344d6",
+          "url": "https://raw.githubusercontent.com/Brooooooklyn/canvas/adce718ec8ff82f9e896875752fd621c46b1c04e/LICENSE"
+        }
+      ],
+      "revision": "adce718ec8ff82f9e896875752fd621c46b1c04e",
+      "provenance": "Published @napi-rs/canvas@1.0.11 gitHead; parent pins platform package to 1.0.11"
+    },
+    {
+      "id": "npm/@napi-rs/canvas-linux-arm-gnueabihf@1.0.11",
+      "repository": "https://github.com/Brooooooklyn/canvas",
+      "registryIntegrity": "sha512-DKImmG+sTPolE0kGPsYPBxTtOjb3INALp32O2lW2CfSr0bAzSEKKuu+GrQbtilClyoPOahUErS3OrznFDraoWA==",
+      "notices": [
+        {
+          "file": "8802fecf9da4367bc23bcf20b21cc143785fc6c92b152f3fa7fbe6ce08d344d6.txt",
+          "sha256": "8802fecf9da4367bc23bcf20b21cc143785fc6c92b152f3fa7fbe6ce08d344d6",
+          "url": "https://raw.githubusercontent.com/Brooooooklyn/canvas/adce718ec8ff82f9e896875752fd621c46b1c04e/LICENSE"
+        }
+      ],
+      "revision": "adce718ec8ff82f9e896875752fd621c46b1c04e",
+      "provenance": "Published @napi-rs/canvas@1.0.11 gitHead; parent pins platform package to 1.0.11"
+    },
+    {
+      "id": "npm/@napi-rs/canvas-linux-arm64-gnu@1.0.11",
+      "repository": "https://github.com/Brooooooklyn/canvas",
+      "registryIntegrity": "sha512-55sykACGENj5j1rhj+81AO8JbR9HYgGjRZ7/H+pNr4VE1DvINKYNMTcutk8ZmWxk276jAQvUKJ3+Kdj9GXU3lQ==",
+      "notices": [
+        {
+          "file": "8802fecf9da4367bc23bcf20b21cc143785fc6c92b152f3fa7fbe6ce08d344d6.txt",
+          "sha256": "8802fecf9da4367bc23bcf20b21cc143785fc6c92b152f3fa7fbe6ce08d344d6",
+          "url": "https://raw.githubusercontent.com/Brooooooklyn/canvas/adce718ec8ff82f9e896875752fd621c46b1c04e/LICENSE"
+        }
+      ],
+      "revision": "adce718ec8ff82f9e896875752fd621c46b1c04e",
+      "provenance": "Published @napi-rs/canvas@1.0.11 gitHead; parent pins platform package to 1.0.11"
+    },
+    {
+      "id": "npm/@napi-rs/canvas-linux-arm64-musl@1.0.11",
+      "repository": "https://github.com/Brooooooklyn/canvas",
+      "registryIntegrity": "sha512-6Jz6jys17yXydO+WdJgu7JhoB4K7/w9sWHByzzTmLjQghUx3TDMWvLv+UcCdnWhg4oprET67EMymnrETdeGNAg==",
+      "notices": [
+        {
+          "file": "8802fecf9da4367bc23bcf20b21cc143785fc6c92b152f3fa7fbe6ce08d344d6.txt",
+          "sha256": "8802fecf9da4367bc23bcf20b21cc143785fc6c92b152f3fa7fbe6ce08d344d6",
+          "url": "https://raw.githubusercontent.com/Brooooooklyn/canvas/adce718ec8ff82f9e896875752fd621c46b1c04e/LICENSE"
+        }
+      ],
+      "revision": "adce718ec8ff82f9e896875752fd621c46b1c04e",
+      "provenance": "Published @napi-rs/canvas@1.0.11 gitHead; parent pins platform package to 1.0.11"
+    },
+    {
+      "id": "npm/@napi-rs/canvas-linux-riscv64-gnu@1.0.11",
+      "repository": "https://github.com/Brooooooklyn/canvas",
+      "registryIntegrity": "sha512-lf2XeEebWiUYVOVEjLXxF7dfXrBBSEOBn9AqBh39VYXrPt5cDqI+1t58IFSjn8npqkg5jIOs8TQbjKABbFW1gQ==",
+      "notices": [
+        {
+          "file": "8802fecf9da4367bc23bcf20b21cc143785fc6c92b152f3fa7fbe6ce08d344d6.txt",
+          "sha256": "8802fecf9da4367bc23bcf20b21cc143785fc6c92b152f3fa7fbe6ce08d344d6",
+          "url": "https://raw.githubusercontent.com/Brooooooklyn/canvas/adce718ec8ff82f9e896875752fd621c46b1c04e/LICENSE"
+        }
+      ],
+      "revision": "adce718ec8ff82f9e896875752fd621c46b1c04e",
+      "provenance": "Published @napi-rs/canvas@1.0.11 gitHead; parent pins platform package to 1.0.11"
+    },
+    {
+      "id": "npm/@napi-rs/canvas-linux-x64-gnu@1.0.11",
+      "repository": "https://github.com/Brooooooklyn/canvas",
+      "registryIntegrity": "sha512-iDapw7nFSE5tsmQxcH2+KotJhyfVPmHd6vUOQN/Em+8WNbkZJwJ/rDowlJMFnMl0SYSDSfgKCNUGi6Sn5++Smg==",
+      "notices": [
+        {
+          "file": "8802fecf9da4367bc23bcf20b21cc143785fc6c92b152f3fa7fbe6ce08d344d6.txt",
+          "sha256": "8802fecf9da4367bc23bcf20b21cc143785fc6c92b152f3fa7fbe6ce08d344d6",
+          "url": "https://raw.githubusercontent.com/Brooooooklyn/canvas/adce718ec8ff82f9e896875752fd621c46b1c04e/LICENSE"
+        }
+      ],
+      "revision": "adce718ec8ff82f9e896875752fd621c46b1c04e",
+      "provenance": "Published @napi-rs/canvas@1.0.11 gitHead; parent pins platform package to 1.0.11"
+    },
+    {
+      "id": "npm/@napi-rs/canvas-linux-x64-musl@1.0.11",
+      "repository": "https://github.com/Brooooooklyn/canvas",
+      "registryIntegrity": "sha512-26q26AyITo3CGZX4HWFIMgBMA1lu3YN07gxzBm4tW6Hglq/OVyTP50kDrmWuKybCX6dh3m8Ly+c7YhI+sqCgCQ==",
+      "notices": [
+        {
+          "file": "8802fecf9da4367bc23bcf20b21cc143785fc6c92b152f3fa7fbe6ce08d344d6.txt",
+          "sha256": "8802fecf9da4367bc23bcf20b21cc143785fc6c92b152f3fa7fbe6ce08d344d6",
+          "url": "https://raw.githubusercontent.com/Brooooooklyn/canvas/adce718ec8ff82f9e896875752fd621c46b1c04e/LICENSE"
+        }
+      ],
+      "revision": "adce718ec8ff82f9e896875752fd621c46b1c04e",
+      "provenance": "Published @napi-rs/canvas@1.0.11 gitHead; parent pins platform package to 1.0.11"
+    },
+    {
+      "id": "npm/@napi-rs/canvas-win32-arm64-msvc@1.0.11",
+      "repository": "https://github.com/Brooooooklyn/canvas",
+      "registryIntegrity": "sha512-cUO96IdsfvIj2S+2PNcDSkTcLhjPj8pIOEWRV1Kj70MOP4wnE9zSk7N4C1EKHlFGRcgdR5AkbnBZj0dfHK9nbQ==",
+      "notices": [
+        {
+          "file": "8802fecf9da4367bc23bcf20b21cc143785fc6c92b152f3fa7fbe6ce08d344d6.txt",
+          "sha256": "8802fecf9da4367bc23bcf20b21cc143785fc6c92b152f3fa7fbe6ce08d344d6",
+          "url": "https://raw.githubusercontent.com/Brooooooklyn/canvas/adce718ec8ff82f9e896875752fd621c46b1c04e/LICENSE"
+        }
+      ],
+      "revision": "adce718ec8ff82f9e896875752fd621c46b1c04e",
+      "provenance": "Published @napi-rs/canvas@1.0.11 gitHead; parent pins platform package to 1.0.11"
+    },
+    {
+      "id": "npm/@napi-rs/canvas-win32-x64-msvc@1.0.11",
+      "repository": "https://github.com/Brooooooklyn/canvas",
+      "registryIntegrity": "sha512-DFYp/ZQRdKunI/LPc0UkRXG1vlNjJKOJf8O8Ctb8+wm2Nt2ELg9Eamc31D2VoakkfGo8L+z0Iejz6WtFbQwyGw==",
+      "notices": [
+        {
+          "file": "8802fecf9da4367bc23bcf20b21cc143785fc6c92b152f3fa7fbe6ce08d344d6.txt",
+          "sha256": "8802fecf9da4367bc23bcf20b21cc143785fc6c92b152f3fa7fbe6ce08d344d6",
+          "url": "https://raw.githubusercontent.com/Brooooooklyn/canvas/adce718ec8ff82f9e896875752fd621c46b1c04e/LICENSE"
+        }
+      ],
+      "revision": "adce718ec8ff82f9e896875752fd621c46b1c04e",
+      "provenance": "Published @napi-rs/canvas@1.0.11 gitHead; parent pins platform package to 1.0.11"
+    },
+    {
+      "id": "npm/@rolldown/binding-android-arm-eabi@1.2.12",
+      "repository": "https://github.com/rolldown/rolldown",
+      "registryIntegrity": "sha512-dB/a1214qKfHMXCpgqR4OZT+jS4kTyEXbQGJPqzobt5EwH5rX080pxE37alt3RzvR1bf1Yz/yGqRfrYAxuPw0A==",
+      "notices": [
+        {
+          "file": "23ecfff35a5a2e80d92142f75228912c3b1abc4b5a8337a821ff4397e2f9f734.txt",
+          "sha256": "23ecfff35a5a2e80d92142f75228912c3b1abc4b5a8337a821ff4397e2f9f734",
+          "url": "https://raw.githubusercontent.com/rolldown/rolldown/45e407b177f5885d04a9795f37f8be71d91f6f17/LICENSE"
+        }
+      ],
+      "revision": "45e407b177f5885d04a9795f37f8be71d91f6f17",
+      "provenance": "Upstream v1.2.12 tag resolved to commit; rolldown parent pins binding version"
+    },
+    {
+      "id": "npm/@rolldown/binding-android-arm64@1.2.12",
+      "repository": "https://github.com/rolldown/rolldown",
+      "registryIntegrity": "sha512-7KHFgQ5VJxIHcLlrwrc3Xbds7oTNQT7Pgi9gQCJKrd2VGab/UksIOYp6VD8MzCstGxOKMgNamPwUCfxPdP1OHg==",
+      "notices": [
+        {
+          "file": "23ecfff35a5a2e80d92142f75228912c3b1abc4b5a8337a821ff4397e2f9f734.txt",
+          "sha256": "23ecfff35a5a2e80d92142f75228912c3b1abc4b5a8337a821ff4397e2f9f734",
+          "url": "https://raw.githubusercontent.com/rolldown/rolldown/45e407b177f5885d04a9795f37f8be71d91f6f17/LICENSE"
+        }
+      ],
+      "revision": "45e407b177f5885d04a9795f37f8be71d91f6f17",
+      "provenance": "Upstream v1.2.12 tag resolved to commit; rolldown parent pins binding version"
+    },
+    {
+      "id": "npm/@rolldown/binding-darwin-x64@1.2.12",
+      "repository": "https://github.com/rolldown/rolldown",
+      "registryIntegrity": "sha512-UuuJ35MFw4gmFOrE9pEqIV+K3syIKveph+Qc1/ljHZVdoDW4pz/JHR/eMVom+TZGl/5OOvGJOWaOCVt3ZfqhxA==",
+      "notices": [
+        {
+          "file": "23ecfff35a5a2e80d92142f75228912c3b1abc4b5a8337a821ff4397e2f9f734.txt",
+          "sha256": "23ecfff35a5a2e80d92142f75228912c3b1abc4b5a8337a821ff4397e2f9f734",
+          "url": "https://raw.githubusercontent.com/rolldown/rolldown/45e407b177f5885d04a9795f37f8be71d91f6f17/LICENSE"
+        }
+      ],
+      "revision": "45e407b177f5885d04a9795f37f8be71d91f6f17",
+      "provenance": "Upstream v1.2.12 tag resolved to commit; rolldown parent pins binding version"
+    },
+    {
+      "id": "npm/@rolldown/binding-freebsd-x64@1.2.12",
+      "repository": "https://github.com/rolldown/rolldown",
+      "registryIntegrity": "sha512-uMvssit0a4W+/7D8CbHUvG719mH3R2jwXAlh/XcPvuHTE0g++LymF88DCGNX0HM2rBOn0xrzgXktIB6fLSJBTQ==",
+      "notices": [
+        {
+          "file": "23ecfff35a5a2e80d92142f75228912c3b1abc4b5a8337a821ff4397e2f9f734.txt",
+          "sha256": "23ecfff35a5a2e80d92142f75228912c3b1abc4b5a8337a821ff4397e2f9f734",
+          "url": "https://raw.githubusercontent.com/rolldown/rolldown/45e407b177f5885d04a9795f37f8be71d91f6f17/LICENSE"
+        }
+      ],
+      "revision": "45e407b177f5885d04a9795f37f8be71d91f6f17",
+      "provenance": "Upstream v1.2.12 tag resolved to commit; rolldown parent pins binding version"
+    },
+    {
+      "id": "npm/@rolldown/binding-linux-arm-gnueabihf@1.2.12",
+      "repository": "https://github.com/rolldown/rolldown",
+      "registryIntegrity": "sha512-XcFu0R0xWnwzSf4IQgFH1rJIckPN1pLy2R+4r9IDB7Yfu/ys9cVqfa4pBrMHj7a3gl8mIR4nRNPg0e5IvEVs6g==",
+      "notices": [
+        {
+          "file": "23ecfff35a5a2e80d92142f75228912c3b1abc4b5a8337a821ff4397e2f9f734.txt",
+          "sha256": "23ecfff35a5a2e80d92142f75228912c3b1abc4b5a8337a821ff4397e2f9f734",
+          "url": "https://raw.githubusercontent.com/rolldown/rolldown/45e407b177f5885d04a9795f37f8be71d91f6f17/LICENSE"
+        }
+      ],
+      "revision": "45e407b177f5885d04a9795f37f8be71d91f6f17",
+      "provenance": "Upstream v1.2.12 tag resolved to commit; rolldown parent pins binding version"
+    },
+    {
+      "id": "npm/@rolldown/binding-linux-arm64-gnu@1.2.12",
+      "repository": "https://github.com/rolldown/rolldown",
+      "registryIntegrity": "sha512-260UrKgn8tz39ak+SMDOirKzr7V04M9dWPw5llW00SwBivCZoWcRBKV1d8cXnRkUmSZA3BdiUmBHWk7734Ulpw==",
+      "notices": [
+        {
+          "file": "23ecfff35a5a2e80d92142f75228912c3b1abc4b5a8337a821ff4397e2f9f734.txt",
+          "sha256": "23ecfff35a5a2e80d92142f75228912c3b1abc4b5a8337a821ff4397e2f9f734",
+          "url": "https://raw.githubusercontent.com/rolldown/rolldown/45e407b177f5885d04a9795f37f8be71d91f6f17/LICENSE"
+        }
+      ],
+      "revision": "45e407b177f5885d04a9795f37f8be71d91f6f17",
+      "provenance": "Upstream v1.2.12 tag resolved to commit; rolldown parent pins binding version"
+    },
+    {
+      "id": "npm/@rolldown/binding-linux-arm64-musl@1.2.12",
+      "repository": "https://github.com/rolldown/rolldown",
+      "registryIntegrity": "sha512-5YK1I9SqDkbPgc1IA8BgDl34suqUS2q0KWnBrirm0E51YjOs6eo6dV6jbQfNE/argHRSvd0QUGgtpIoYx+WWpw==",
+      "notices": [
+        {
+          "file": "23ecfff35a5a2e80d92142f75228912c3b1abc4b5a8337a821ff4397e2f9f734.txt",
+          "sha256": "23ecfff35a5a2e80d92142f75228912c3b1abc4b5a8337a821ff4397e2f9f734",
+          "url": "https://raw.githubusercontent.com/rolldown/rolldown/45e407b177f5885d04a9795f37f8be71d91f6f17/LICENSE"
+        }
+      ],
+      "revision": "45e407b177f5885d04a9795f37f8be71d91f6f17",
+      "provenance": "Upstream v1.2.12 tag resolved to commit; rolldown parent pins binding version"
+    },
+    {
+      "id": "npm/@rolldown/binding-linux-ppc64-gnu@1.2.12",
+      "repository": "https://github.com/rolldown/rolldown",
+      "registryIntegrity": "sha512-Rkcrmp7eFRg74yL5fXEU91JEWbdEPLevWwGtXpmhbjlD1StScbWTmO94Bhly+Mo+ketKYkdmM1vNUKeWSlx8cQ==",
+      "notices": [
+        {
+          "file": "23ecfff35a5a2e80d92142f75228912c3b1abc4b5a8337a821ff4397e2f9f734.txt",
+          "sha256": "23ecfff35a5a2e80d92142f75228912c3b1abc4b5a8337a821ff4397e2f9f734",
+          "url": "https://raw.githubusercontent.com/rolldown/rolldown/45e407b177f5885d04a9795f37f8be71d91f6f17/LICENSE"
+        }
+      ],
+      "revision": "45e407b177f5885d04a9795f37f8be71d91f6f17",
+      "provenance": "Upstream v1.2.12 tag resolved to commit; rolldown parent pins binding version"
+    },
+    {
+      "id": "npm/@rolldown/binding-linux-s390x-gnu@1.2.12",
+      "repository": "https://github.com/rolldown/rolldown",
+      "registryIntegrity": "sha512-qvK4DuAsQc2BSjlx+Xr+IzOIvvxbGZqxFwdWfG6F518Erj0GGISyQbJ6pIappnOxlNPzNHvo/L0BwB30GZ+zVw==",
+      "notices": [
+        {
+          "file": "23ecfff35a5a2e80d92142f75228912c3b1abc4b5a8337a821ff4397e2f9f734.txt",
+          "sha256": "23ecfff35a5a2e80d92142f75228912c3b1abc4b5a8337a821ff4397e2f9f734",
+          "url": "https://raw.githubusercontent.com/rolldown/rolldown/45e407b177f5885d04a9795f37f8be71d91f6f17/LICENSE"
+        }
+      ],
+      "revision": "45e407b177f5885d04a9795f37f8be71d91f6f17",
+      "provenance": "Upstream v1.2.12 tag resolved to commit; rolldown parent pins binding version"
+    },
+    {
+      "id": "npm/@rolldown/binding-linux-x64-gnu@1.2.12",
+      "repository": "https://github.com/rolldown/rolldown",
+      "registryIntegrity": "sha512-Q9uLBO53Xd4QIq1WOycVQyPP1O4HhraEV2qqb3uTrnVw6QZih9duY4vNXOivL1xoUS1/z+W8eF4NMfl2a8Sdjw==",
+      "notices": [
+        {
+          "file": "23ecfff35a5a2e80d92142f75228912c3b1abc4b5a8337a821ff4397e2f9f734.txt",
+          "sha256": "23ecfff35a5a2e80d92142f75228912c3b1abc4b5a8337a821ff4397e2f9f734",
+          "url": "https://raw.githubusercontent.com/rolldown/rolldown/45e407b177f5885d04a9795f37f8be71d91f6f17/LICENSE"
+        }
+      ],
+      "revision": "45e407b177f5885d04a9795f37f8be71d91f6f17",
+      "provenance": "Upstream v1.2.12 tag resolved to commit; rolldown parent pins binding version"
+    },
+    {
+      "id": "npm/@rolldown/binding-linux-x64-musl@1.2.12",
+      "repository": "https://github.com/rolldown/rolldown",
+      "registryIntegrity": "sha512-3IBxWFMjbOZskDPKv8Lf9BCnahlKuHthWkYnyIxOH/QcJrFcS4EmcenthApkwr/5+nEqZlLzeYbxeMaX7A5u4g==",
+      "notices": [
+        {
+          "file": "23ecfff35a5a2e80d92142f75228912c3b1abc4b5a8337a821ff4397e2f9f734.txt",
+          "sha256": "23ecfff35a5a2e80d92142f75228912c3b1abc4b5a8337a821ff4397e2f9f734",
+          "url": "https://raw.githubusercontent.com/rolldown/rolldown/45e407b177f5885d04a9795f37f8be71d91f6f17/LICENSE"
+        }
+      ],
+      "revision": "45e407b177f5885d04a9795f37f8be71d91f6f17",
+      "provenance": "Upstream v1.2.12 tag resolved to commit; rolldown parent pins binding version"
+    },
+    {
+      "id": "npm/@rolldown/binding-openharmony-arm64@1.2.12",
+      "repository": "https://github.com/rolldown/rolldown",
+      "registryIntegrity": "sha512-xtX61xg4LKPkPWilZU1ynKClz5Gj4bf74LML4r3eVLWumKnGjoEr1OSHQhMdbBDoYTi+yjrujvpZe2pUnqCrrA==",
+      "notices": [
+        {
+          "file": "23ecfff35a5a2e80d92142f75228912c3b1abc4b5a8337a821ff4397e2f9f734.txt",
+          "sha256": "23ecfff35a5a2e80d92142f75228912c3b1abc4b5a8337a821ff4397e2f9f734",
+          "url": "https://raw.githubusercontent.com/rolldown/rolldown/45e407b177f5885d04a9795f37f8be71d91f6f17/LICENSE"
+        }
+      ],
+      "revision": "45e407b177f5885d04a9795f37f8be71d91f6f17",
+      "provenance": "Upstream v1.2.12 tag resolved to commit; rolldown parent pins binding version"
+    },
+    {
+      "id": "npm/@rolldown/binding-win32-arm64-msvc@1.2.12",
+      "repository": "https://github.com/rolldown/rolldown",
+      "registryIntegrity": "sha512-At7fPB6PCaIjzgIhEZFxuT+BBFqiQibJDT4d3PhiR3f4E7bbMZF4aKblbFfEM3sETRDd1YiQx/+U/g/B/ou5Ew==",
+      "notices": [
+        {
+          "file": "23ecfff35a5a2e80d92142f75228912c3b1abc4b5a8337a821ff4397e2f9f734.txt",
+          "sha256": "23ecfff35a5a2e80d92142f75228912c3b1abc4b5a8337a821ff4397e2f9f734",
+          "url": "https://raw.githubusercontent.com/rolldown/rolldown/45e407b177f5885d04a9795f37f8be71d91f6f17/LICENSE"
+        }
+      ],
+      "revision": "45e407b177f5885d04a9795f37f8be71d91f6f17",
+      "provenance": "Upstream v1.2.12 tag resolved to commit; rolldown parent pins binding version"
+    },
+    {
+      "id": "npm/@rolldown/binding-win32-x64-msvc@1.2.12",
+      "repository": "https://github.com/rolldown/rolldown",
+      "registryIntegrity": "sha512-WIw2haVKwjuYdXkHaoC0mF8Le71TuCBxjrdKqLbJGctbBABj+ClfmNvtbOnzpq3RokNo5+V1qhtSzJyXorsklQ==",
+      "notices": [
+        {
+          "file": "23ecfff35a5a2e80d92142f75228912c3b1abc4b5a8337a821ff4397e2f9f734.txt",
+          "sha256": "23ecfff35a5a2e80d92142f75228912c3b1abc4b5a8337a821ff4397e2f9f734",
+          "url": "https://raw.githubusercontent.com/rolldown/rolldown/45e407b177f5885d04a9795f37f8be71d91f6f17/LICENSE"
+        }
+      ],
+      "revision": "45e407b177f5885d04a9795f37f8be71d91f6f17",
+      "provenance": "Upstream v1.2.12 tag resolved to commit; rolldown parent pins binding version"
+    },
+    {
+      "id": "npm/@tauri-apps/cli-darwin-x64@2.12.1",
+      "repository": "https://github.com/tauri-apps/tauri",
+      "registryIntegrity": "sha512-G+2qte8GNqNlEZ9ftd21rbu/APVkl3r/nzNDI7LVxEoqJWVNe9GbEgQUMH1r4PHT20Z2UxR3KjCkltIb0e/Wjg==",
+      "notices": [
+        {
+          "file": "9dd42ea92cff2ede5cd477cbfcce051b2d0115c0ac7f368ee88cb545055dff1d.txt",
+          "sha256": "9dd42ea92cff2ede5cd477cbfcce051b2d0115c0ac7f368ee88cb545055dff1d",
+          "url": "https://raw.githubusercontent.com/tauri-apps/tauri/30da1fd6e17de6107ecc850c95dfb16b5729f2dd/LICENSE-MIT"
+        }
+      ],
+      "revision": "30da1fd6e17de6107ecc850c95dfb16b5729f2dd",
+      "provenance": "Published @tauri-apps/cli@2.12.1 gitHead; parent pins platform package"
+    },
+    {
+      "id": "npm/@tauri-apps/cli-linux-arm-gnueabihf@2.12.1",
+      "repository": "https://github.com/tauri-apps/tauri",
+      "registryIntegrity": "sha512-5b3n4DaTW+A1Zntnh4Yn44VyLrlPEpB8kMOBRfWkzNnzolBk+AYhKIfKjCLmoC8Mob3ETodxAEOMkE2YPKEWzQ==",
+      "notices": [
+        {
+          "file": "9dd42ea92cff2ede5cd477cbfcce051b2d0115c0ac7f368ee88cb545055dff1d.txt",
+          "sha256": "9dd42ea92cff2ede5cd477cbfcce051b2d0115c0ac7f368ee88cb545055dff1d",
+          "url": "https://raw.githubusercontent.com/tauri-apps/tauri/30da1fd6e17de6107ecc850c95dfb16b5729f2dd/LICENSE-MIT"
+        }
+      ],
+      "revision": "30da1fd6e17de6107ecc850c95dfb16b5729f2dd",
+      "provenance": "Published @tauri-apps/cli@2.12.1 gitHead; parent pins platform package"
+    },
+    {
+      "id": "npm/@tauri-apps/cli-linux-arm64-gnu@2.12.1",
+      "repository": "https://github.com/tauri-apps/tauri",
+      "registryIntegrity": "sha512-APArHhDu+8pXSCkCQmvaz1nD3d8WTmlCoSS/oG475TJ6AATBvyQOAmf5qELgsQ4s2+8MOsop0Zd699RKELF1Cw==",
+      "notices": [
+        {
+          "file": "9dd42ea92cff2ede5cd477cbfcce051b2d0115c0ac7f368ee88cb545055dff1d.txt",
+          "sha256": "9dd42ea92cff2ede5cd477cbfcce051b2d0115c0ac7f368ee88cb545055dff1d",
+          "url": "https://raw.githubusercontent.com/tauri-apps/tauri/30da1fd6e17de6107ecc850c95dfb16b5729f2dd/LICENSE-MIT"
+        }
+      ],
+      "revision": "30da1fd6e17de6107ecc850c95dfb16b5729f2dd",
+      "provenance": "Published @tauri-apps/cli@2.12.1 gitHead; parent pins platform package"
+    },
+    {
+      "id": "npm/@tauri-apps/cli-linux-arm64-musl@2.12.1",
+      "repository": "https://github.com/tauri-apps/tauri",
+      "registryIntegrity": "sha512-JaCxcLoV0oGtllVkLr4UAHWG/wTfkEunnUqnsEsGYOp0VRxnUwHg63wFBD0jU2ul5eFfSLIDS4RF2gfzsSo5Jg==",
+      "notices": [
+        {
+          "file": "9dd42ea92cff2ede5cd477cbfcce051b2d0115c0ac7f368ee88cb545055dff1d.txt",
+          "sha256": "9dd42ea92cff2ede5cd477cbfcce051b2d0115c0ac7f368ee88cb545055dff1d",
+          "url": "https://raw.githubusercontent.com/tauri-apps/tauri/30da1fd6e17de6107ecc850c95dfb16b5729f2dd/LICENSE-MIT"
+        }
+      ],
+      "revision": "30da1fd6e17de6107ecc850c95dfb16b5729f2dd",
+      "provenance": "Published @tauri-apps/cli@2.12.1 gitHead; parent pins platform package"
+    },
+    {
+      "id": "npm/@tauri-apps/cli-linux-riscv64-gnu@2.12.1",
+      "repository": "https://github.com/tauri-apps/tauri",
+      "registryIntegrity": "sha512-K5+VXM7+SGVDwZleA2+lMgvbTVuA5e1tkiVEawu1Yxj26ZyEfO8h8xTC1rBdRX2xgJDSwCk6vPUBCS6i+Z5slQ==",
+      "notices": [
+        {
+          "file": "9dd42ea92cff2ede5cd477cbfcce051b2d0115c0ac7f368ee88cb545055dff1d.txt",
+          "sha256": "9dd42ea92cff2ede5cd477cbfcce051b2d0115c0ac7f368ee88cb545055dff1d",
+          "url": "https://raw.githubusercontent.com/tauri-apps/tauri/30da1fd6e17de6107ecc850c95dfb16b5729f2dd/LICENSE-MIT"
+        }
+      ],
+      "revision": "30da1fd6e17de6107ecc850c95dfb16b5729f2dd",
+      "provenance": "Published @tauri-apps/cli@2.12.1 gitHead; parent pins platform package"
+    },
+    {
+      "id": "npm/@tauri-apps/cli-linux-x64-gnu@2.12.1",
+      "repository": "https://github.com/tauri-apps/tauri",
+      "registryIntegrity": "sha512-Z1QGPr49HJZMktu+Spu6Q1b/f9ANadXvqZZZt2645ua1x1ev6prOgp85eiGv2jRzohFEMLo6aJyaLjLUX5KIvA==",
+      "notices": [
+        {
+          "file": "9dd42ea92cff2ede5cd477cbfcce051b2d0115c0ac7f368ee88cb545055dff1d.txt",
+          "sha256": "9dd42ea92cff2ede5cd477cbfcce051b2d0115c0ac7f368ee88cb545055dff1d",
+          "url": "https://raw.githubusercontent.com/tauri-apps/tauri/30da1fd6e17de6107ecc850c95dfb16b5729f2dd/LICENSE-MIT"
+        }
+      ],
+      "revision": "30da1fd6e17de6107ecc850c95dfb16b5729f2dd",
+      "provenance": "Published @tauri-apps/cli@2.12.1 gitHead; parent pins platform package"
+    },
+    {
+      "id": "npm/@tauri-apps/cli-linux-x64-musl@2.12.1",
+      "repository": "https://github.com/tauri-apps/tauri",
+      "registryIntegrity": "sha512-nHuEhRPOMSJ/8RRhtMRxB9B9lVr7xxpe4DapBz8x1GIau3vdzjHHJ1hAfmw+PyayPLZ6XoaVIHPgI17rX6ii8w==",
+      "notices": [
+        {
+          "file": "9dd42ea92cff2ede5cd477cbfcce051b2d0115c0ac7f368ee88cb545055dff1d.txt",
+          "sha256": "9dd42ea92cff2ede5cd477cbfcce051b2d0115c0ac7f368ee88cb545055dff1d",
+          "url": "https://raw.githubusercontent.com/tauri-apps/tauri/30da1fd6e17de6107ecc850c95dfb16b5729f2dd/LICENSE-MIT"
+        }
+      ],
+      "revision": "30da1fd6e17de6107ecc850c95dfb16b5729f2dd",
+      "provenance": "Published @tauri-apps/cli@2.12.1 gitHead; parent pins platform package"
+    },
+    {
+      "id": "npm/@tauri-apps/cli-win32-arm64-msvc@2.12.1",
+      "repository": "https://github.com/tauri-apps/tauri",
+      "registryIntegrity": "sha512-I0oPk2uGh86R8dAs2X5OxSP+/GqSc8jh1Px3l8EqrocSNivsRHDTh2k3PVOqdv163dlV6PIVvmhZAbH/lPfZrA==",
+      "notices": [
+        {
+          "file": "9dd42ea92cff2ede5cd477cbfcce051b2d0115c0ac7f368ee88cb545055dff1d.txt",
+          "sha256": "9dd42ea92cff2ede5cd477cbfcce051b2d0115c0ac7f368ee88cb545055dff1d",
+          "url": "https://raw.githubusercontent.com/tauri-apps/tauri/30da1fd6e17de6107ecc850c95dfb16b5729f2dd/LICENSE-MIT"
+        }
+      ],
+      "revision": "30da1fd6e17de6107ecc850c95dfb16b5729f2dd",
+      "provenance": "Published @tauri-apps/cli@2.12.1 gitHead; parent pins platform package"
+    },
+    {
+      "id": "npm/@tauri-apps/cli-win32-ia32-msvc@2.12.1",
+      "repository": "https://github.com/tauri-apps/tauri",
+      "registryIntegrity": "sha512-baNZRBfepAJ5qNFRMwzgBk94xQmkcmTZrNDjZjnzrq2vAaTC3NAhallb/zo3hyoCGQlMS13sdovktrg46NZz6Q==",
+      "notices": [
+        {
+          "file": "9dd42ea92cff2ede5cd477cbfcce051b2d0115c0ac7f368ee88cb545055dff1d.txt",
+          "sha256": "9dd42ea92cff2ede5cd477cbfcce051b2d0115c0ac7f368ee88cb545055dff1d",
+          "url": "https://raw.githubusercontent.com/tauri-apps/tauri/30da1fd6e17de6107ecc850c95dfb16b5729f2dd/LICENSE-MIT"
+        }
+      ],
+      "revision": "30da1fd6e17de6107ecc850c95dfb16b5729f2dd",
+      "provenance": "Published @tauri-apps/cli@2.12.1 gitHead; parent pins platform package"
+    },
+    {
+      "id": "npm/@tauri-apps/cli-win32-x64-msvc@2.12.1",
+      "repository": "https://github.com/tauri-apps/tauri",
+      "registryIntegrity": "sha512-dIFaKslrzcbesb+bBh+E1R9km241pHyj32w6D9FPtvQeYpRUFbiCLEa/2S+S0UnIytfxepp4P+X8IerGqnXeYg==",
+      "notices": [
+        {
+          "file": "9dd42ea92cff2ede5cd477cbfcce051b2d0115c0ac7f368ee88cb545055dff1d.txt",
+          "sha256": "9dd42ea92cff2ede5cd477cbfcce051b2d0115c0ac7f368ee88cb545055dff1d",
+          "url": "https://raw.githubusercontent.com/tauri-apps/tauri/30da1fd6e17de6107ecc850c95dfb16b5729f2dd/LICENSE-MIT"
+        }
+      ],
+      "revision": "30da1fd6e17de6107ecc850c95dfb16b5729f2dd",
+      "provenance": "Published @tauri-apps/cli@2.12.1 gitHead; parent pins platform package"
+    }
+  ]
+}
