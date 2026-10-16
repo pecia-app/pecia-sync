@@ -8,9 +8,9 @@ Thanks for helping make a local, inspectable importer for readers.
 npm install
 npm test
 npm run build
-cargo test --manifest-path src-tauri/Cargo.toml
 npm run licenses:generate
 npm run licenses:check
+cargo test --manifest-path src-tauri/Cargo.toml
 ```
 
 Use `npm run tauri dev` to run the desktop app locally. CI also verifies builds

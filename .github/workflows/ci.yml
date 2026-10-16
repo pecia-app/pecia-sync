@@ -27,6 +27,7 @@ jobs:
       - run: npm test
       - run: npm run licenses:test
       - run: npm run build
+      - run: npm run licenses:generate
       - run: cargo check --manifest-path src-tauri/Cargo.toml
       - run: npm run tauri build
       - run: npm run licenses:check
