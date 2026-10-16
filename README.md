@@ -3,6 +3,13 @@
 An open-source, offline, read-only Kindle and Kobo library importer for
 [Pecia](https://pecia.app).
 
+## Licensing of development builds
+
+The combined desktop app is distributed under **GPL-3.0-or-later**; existing
+MIT component notices are preserved. See [distribution licensing](docs/LICENSING.md)
+for dependency notices, matching-source delivery and the pending release audit.
+This does not change the license of previously distributed MIT components.
+
 ## Beta status
 
 Pecia Sync is currently `0.2.0` beta and intended for testing. Kindle MTP and

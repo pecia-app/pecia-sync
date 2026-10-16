@@ -9,10 +9,18 @@ npm install
 npm test
 npm run build
 cargo test --manifest-path src-tauri/Cargo.toml
+npm run licenses:generate
+npm run licenses:check
 ```
 
 Use `npm run tauri dev` to run the desktop app locally. CI also verifies builds
 on macOS, Linux, and Windows.
+
+Native packaging generates dependency notices automatically. For development
+after a clean checkout, run `npm run licenses:generate` once before starting
+Tauri so its configured license resources exist. Generated `build/` output is
+ignored. See `docs/LICENSING.md` for distribution terms, source candidates and
+the release review gate. Do not publish binaries while that review is pending.
 
 ## Privacy and device safety
 

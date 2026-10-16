@@ -24,6 +24,11 @@ and its pinned GPL-3.0-or-later boko dependency. Do not describe or distribute
 this combined executable as MIT-only. The existing MIT source notices remain
 in place; the decoder license is in `experiments/kfx/LICENSE`.
 
+The approved distribution policy is GPL-3.0-or-later for the combined desktop
+application, preserving existing MIT component permissions. See
+[distribution licensing](LICENSING.md) and the machine-checked pending review in
+`release/licensing-review.json`. Policy approval alone does not clear the gate.
+
 Before release, complete a GPL-compatible distribution review: corresponding
 source (including pinned dependencies and build instructions), license texts,
 attributions, and installer/release documentation. No release is authorized by

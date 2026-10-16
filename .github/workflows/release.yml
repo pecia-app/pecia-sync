@@ -8,7 +8,29 @@ permissions:
   contents: write
 
 jobs:
+  compliance:
+    name: Verify licensing and prepare matching source
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - uses: dtolnay/rust-toolchain@stable
+      - run: npm run licenses:release-check
+      - run: npm ci
+      - run: npm run licenses:generate
+      - run: npm run licenses:check
+      - run: node scripts/source-bundle.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pecia-sync-source
+          path: build/source/
+          if-no-files-found: error
+
   package:
+    needs: compliance
     name: Package (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
     strategy:
@@ -43,9 +65,14 @@ jobs:
 
   publish:
     name: Publish GitHub Release
-    needs: package
+    needs: [compliance, package]
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm run licenses:release-check
       - uses: actions/download-artifact@v4
         with:
           path: release
@@ -53,6 +80,7 @@ jobs:
       - name: Generate checksums
         run: |
           find release -type f \( \
+            -name 'pecia-sync-source-*.tar.gz' -o \
             -name '*.dmg' -o \
             -name '*.msi' -o \
             -name '*-setup.exe' -o \
@@ -66,7 +94,15 @@ jobs:
           draft: true
           prerelease: true
           generate_release_notes: true
+          body: |
+            The combined Pecia Sync desktop application is GPL-3.0-or-later.
+            Existing component notices and licenses remain intact.
+            Matching source is supplied in the attached pecia-sync-source archive.
+            See docs/LICENSING.md in that archive for build instructions and notices.
+            No warranty is provided; see the bundled GPL license for full terms.
           files: |
+            release/pecia-sync-source-*.tar.gz
+            release/SOURCE-SHA256SUMS.txt
             release/**/*.dmg
             release/**/*.msi
             release/**/*-setup.exe
