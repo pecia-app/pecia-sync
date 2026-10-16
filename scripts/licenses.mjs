@@ -11,6 +11,7 @@ const read=path=>readFile(resolve(root,path),'utf8');
 const hash=value=>createHash('sha256').update(value).digest('hex');
 const inputs=['package.json','package-lock.json','src-tauri/Cargo.toml','src-tauri/Cargo.lock','experiments/kfx/Cargo.toml','experiments/kfx/Cargo.lock','src-tauri/tauri.conf.json','src-tauri/tauri.macos.conf.json','scripts/licenses.mjs','scripts/licensing-review.mjs','scripts/source-bundle.mjs','.github/workflows/release.yml'];
 const inputSha256=Object.fromEntries(await Promise.all(inputs.map(async path=>[path,hash(await read(path))])));
+inputSha256['.gitattributes']=hash(await read('.gitattributes'));
 for(const path of ['scripts/notice-supplements.mjs','release/notice-supplements.json','scripts/preferred-source.mjs','release/preferred-source.json','scripts/verify-source.mjs','.github/workflows/source-audit.yml'])inputSha256[path]=hash(await read(path));
 const supplements=await loadSupplements(root);
 for(const supplement of supplements.values())for(const notice of supplement.notices)inputSha256[`LICENSES/third-party/${notice.file}`]=notice.sha256;

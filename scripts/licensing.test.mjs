@@ -2,10 +2,26 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {validateReview} from './licensing-review.mjs';
 import {isNoticeFile,loadSupplements} from './notice-supplements.mjs';
-import {mkdtemp,mkdir,writeFile} from 'node:fs/promises';
+import {mkdtemp,mkdir,writeFile,readFile,copyFile,rm} from 'node:fs/promises';
+import {execFileSync} from 'node:child_process';
 import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 import {createHash} from 'node:crypto';
+test('Git preserves upstream notice bytes with Windows autocrlf enabled',async()=>{
+  const root=await mkdtemp(join(tmpdir(),'pecia-notice-checkout-'));
+  try {
+    const git=(...args)=>execFileSync('git',args,{cwd:root,stdio:'pipe'});
+    git('init');git('config','core.autocrlf','true');
+    await copyFile(new URL('../.gitattributes',import.meta.url),join(root,'.gitattributes'));
+    await mkdir(join(root,'LICENSES/third-party'),{recursive:true});
+    const fixtures=['Upstream notice\nSecond line\n','Upstream notice\r\nSecond line\r\n'];
+    for(const [index,contents] of fixtures.entries())await writeFile(join(root,`LICENSES/third-party/${index}.txt`),contents);
+    git('add','.gitattributes','LICENSES/third-party');
+    for(const index of fixtures.keys())await rm(join(root,`LICENSES/third-party/${index}.txt`));
+    git('checkout-index','--all','--force');
+    for(const [index,contents] of fixtures.entries())assert.equal(await readFile(join(root,`LICENSES/third-party/${index}.txt`),'utf8'),contents);
+  } finally {await rm(root,{recursive:true,force:true});}
+});
 test('notice names exclude code modules',()=>{
   for(const name of ['LICENSE','LICENSE-MIT','LICENSE.MIT','LICENSE.BSD-3-Clause','LICENSE.spdx','LICENSE-APACHE-2.0','license.txt','COPYING.md','NOTICE'])assert.equal(isNoticeFile(name),true,name);
   for(const name of ['copying.rs','copyright.js','LICENSE.ts','authors.py'])assert.equal(isNoticeFile(name),false,name);

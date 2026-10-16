@@ -1,0 +1,2 @@
+# Preserve the exact upstream bytes used by the notice SHA-256 manifest.
+LICENSES/third-party/*.txt -text
