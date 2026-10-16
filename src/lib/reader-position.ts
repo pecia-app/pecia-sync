@@ -7,7 +7,7 @@ export function parsePosition(value: string | null, sections: number): ReaderPos
   } catch { /* Invalid local state starts at the beginning. */ }
   return { section: 0, offset: 0 };
 }
-export function readerFormat(filename: string): "epub" | "pdf" | "mobi" | "azw3" | null {
+export function readerFormat(filename: string): "epub" | "pdf" | "mobi" | "azw3" | "kfx" | null {
   const extension = filename.split(".").pop()?.toLowerCase();
-  return extension === "epub" || extension === "pdf" || extension === "mobi" || extension === "azw3" ? extension : null;
+  return extension === "epub" || extension === "pdf" || extension === "mobi" || extension === "azw3" || extension === "kfx" ? extension : null;
 }

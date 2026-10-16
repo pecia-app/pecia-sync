@@ -22,6 +22,19 @@ button.primary:active:not(:disabled) {
   vertical-align: -2px;
   animation: scan-spin .8s linear infinite;
 }
+/* Keep secondary copy compact on laptop windows, including after imports.
+   All actions remain visible; long annotation content lives in its own view. */
+@media (min-width:1120px) and (min-height:680px) and (max-height:800px) {
+  .shell main { padding-top:18px; }
+  .shell .device-panel { padding:12px 18px; margin:10px 0 14px; }
+  .shell .reader-art { height:70px; }
+  .shell #annotations { padding:14px; }
+  .shell .pecia-panel { padding:14px; }
+  .shell .pecia-panel h2 { font-size:15px; line-height:1.3; margin:0; }
+  .shell .pecia-panel p { font-size:11px; line-height:1.4; margin:6px 0; }
+  .shell .pecia-panel .eyebrow { font-size:9px; }
+  .shell .pecia-panel a { font-size:11px; padding:5px 10px; margin:0; }
+}
 @keyframes scan-spin { to { transform: rotate(360deg); } }
 @media (prefers-reduced-motion: reduce) {
   #device-check[aria-busy="true"]::before { animation: none; }
@@ -85,4 +98,9 @@ button.primary:active:not(:disabled) {
   .pecia-panel p { margin: 8px 0; }
   .pecia-panel a { margin-top: 2px; }
   footer { flex: none; margin-top: 12px; }
+}
+.device-metric {
+  /* Reserve the optional status row in both counters to align their baselines. */
+  font-size: 11px;
+  grid-template-rows: auto auto minmax(1.5em, auto);
 }

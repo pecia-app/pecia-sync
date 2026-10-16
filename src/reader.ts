@@ -23,18 +23,19 @@ export async function openReader(language: Language, filename?: string): Promise
   opening = true;
   status.textContent = t.loading;
   try {
-    const file = await invoke<{ name: string; bytes: number[] } | null>("open_reader_file", { filename: filename ?? null });
+    const file = await invoke<{ name: string; bytes: number[]; kfx_epub?:number[]|null } | null>("open_reader_file", { filename: filename ?? null });
     if (!file) { status.textContent = ""; return; }
     const bytes = new Uint8Array(file.bytes);
     const reader = new Reader(language);
     active = reader;
-    await reader.open(file.name, bytes);
+    await reader.open(file.name, bytes, file.kfx_epub ? new Uint8Array(file.kfx_epub) : undefined);
     status.textContent = "";
   } catch (error) {
     active?.close(); active = null;
     const code = error instanceof Error ? error.message : String(error);
     status.textContent = code === "drm"
       ? language === "es" ? "Este libro está protegido con DRM. Pecia Sync no puede abrirlo ni eliminar su protección." : "This book is DRM-protected. Pecia Sync cannot open it or remove its protection."
+      : code === "kfx-unsupported" ? (language === "es" ? "Este KFX usa una estructura que aún no admitimos. Prueba una copia EPUB sin DRM." : "This KFX uses a structure we do not support yet. Try a DRM-free EPUB copy.")
       : t[code as keyof typeof t] || t.invalid;
     const dialog = document.createElement("dialog"); dialog.className = "reader-format-dialog";
     dialog.setAttribute("aria-label", language === "es" ? "No se pudo abrir el libro" : "Could not open book");
@@ -138,13 +139,14 @@ class Reader {
     const button = document.createElement("button"); button.type = "button"; button.textContent = text;
     button.addEventListener("click", action); return button;
   }
-  async open(name: string, bytes: Uint8Array) {
+  async open(name: string, bytes: Uint8Array, kfxEpub?:Uint8Array) {
     const digest = await crypto.subtle.digest("SHA-256", bytes.slice().buffer);
     this.key = "pecia-reader-v1:" + Array.from(new Uint8Array(digest), byte => byte.toString(16).padStart(2,"0")).join("");
     let title = name, author = "";
     const format = readerFormat(name);
-    if (format === "epub" || format === "mobi" || format === "azw3") {
-      this.epub = format === "epub" ? parseEpub(bytes) : await parseMobi(bytes);
+    if (format === "epub" || format === "mobi" || format === "azw3" || format === "kfx") {
+      if(format==="kfx" && !kfxEpub)throw new Error("kfx-unsupported");
+      this.epub = format === "kfx" ? parseEpub(kfxEpub!, { generatedTitles: true }) : format === "epub" ? parseEpub(bytes) : await parseMobi(bytes);
       title = this.epub.title; author = this.epub.author;
       this.sections = this.epub.chapters.length;
     } else if (format === "pdf") {

@@ -1,0 +1,12 @@
+[package]
+name = "pecia-kfx-prototype"
+version = "0.0.1"
+edition = "2024"
+publish = false
+license = "GPL-3.0-or-later"
+
+[dependencies]
+boko = { git = "https://github.com/zacharydenton/boko", rev = "b148716498fdac70134555293a7405913988256a", default-features = false }
+
+[dev-dependencies]
+zip = { version = "8.6", default-features = false, features = ["deflate-flate2"] }

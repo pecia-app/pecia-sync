@@ -18,6 +18,9 @@ export function archivePath(base: string, reference: string): string {
 }
 
 function xml(value: string): Document {
+  // The converter emits the inert HTML5 declaration. Strip only this exact
+  // prolog form; external DTDs, internal subsets and entities remain forbidden.
+  value = value.replace(/^(\uFEFF?\s*(?:<\?xml\s[^?]*\?>\s*)?)<!DOCTYPE html>/, "$1");
   if (/<!DOCTYPE|<!ENTITY/i.test(value)) throw new Error("invalid");
   const result = new DOMParser().parseFromString(value, "application/xml");
   if (result.querySelector("parsererror")) throw new Error("invalid");
@@ -27,7 +30,7 @@ function elements(doc: Document | Element, tag: string): Element[] {
   return Array.from(doc.getElementsByTagNameNS("*", tag));
 }
 
-export function parseEpub(bytes: Uint8Array): Epub {
+export function parseEpub(bytes: Uint8Array, options: { generatedTitles?: boolean } = {}): Epub {
   let total = 0, count = 0;
   const files = unzipSync(bytes, { filter: (file) => {
     if (++count > 5000 || file.originalSize > 16 * 1024 * 1024 || (total += file.originalSize) > MAX_TOTAL) throw new Error("too-large");
@@ -50,7 +53,10 @@ export function parseEpub(bytes: Uint8Array): Epub {
     if (!href || !/^(application\/xhtml\+xml|text\/html)$/.test(target?.getAttribute("media-type") ?? "")) throw new Error("invalid");
     const path = archivePath(opfPath, href);
     const doc = read(path);
-    const heading = doc.querySelector("h1,h2,title")?.textContent?.trim();
+    // A combined selector returns document order: <title> precedes headings.
+    // KFX conversion uses opaque section IDs for untitled document titles.
+    const heading = doc.querySelector("h1,h2")?.textContent?.trim()
+      || (!options.generatedTitles ? doc.querySelector("title")?.textContent?.trim() : "");
     return { path, label: heading || String(index + 1) };
   });
   if (!chapters.length || chapters.length > 2000) throw new Error("invalid");

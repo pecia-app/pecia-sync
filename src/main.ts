@@ -7,6 +7,7 @@ import { toSyncCsv, type SyncBook } from "./lib/csv";
 import { reviewBooksForGoodreads, type ReviewBook } from "./lib/goodreads-review";
 import { kindleBook, progressLabel, type ProgressObservation } from "./lib/progress";
 import { readerFormat } from "./lib/reader-position";
+import { renderAnnotationsPanel, setAnnotationDeviceBusy } from "./annotations";
 
 type ConnectedDevice = {
     manufacturer: string | null;
@@ -40,7 +41,7 @@ const copy = {
     eyebrow: "Pecia Sync · beta sin conexión",
     overview: "Vista general", booksNav: "Libros", annotationsNav: "Subrayados", yourReader: "Tu lector", notConnected: "Sin conectar", localOnly: "Local. Privado. Solo lectura.", notImported: "Sin importar", booksHeading: "En tu lector", readOnly: "Solo lectura", search: "Buscar título o autor", filters: "Filtrar libros", allBooks: "Todos", withProgress: "Con progreso", unavailable: "Sin datos", emptyTitle: "Tu biblioteca empieza aquí", emptyBody: "Conecta tu Kindle o Kobo por USB y busca el lector para revisar sus libros.", noMatches: "No hay libros que coincidan.", missingNotice: "Sin datos no significa sin leer. El progreso refleja la última observación disponible, no una lectura en directo.", annotationsHeading: "Subrayados y notas", soon: "Próximamente", annotationsEmpty: "Tus ideas, en un solo lugar.", annotationsBody: "La importación de subrayados aún no está conectada. Esta versión revisa libros y el progreso disponible.", annotationsPrivacy: "No se han leído ni exportado tus notas.", readyHeading: "Haz espacio para tu próxima lectura.", readyBody: "Guarda el CSV e impórtalo en tu biblioteca de Pecia. Tú decides qué compartir.", openPecia: "Abrir Pecia ↗",
     title: "Tu lector, de un vistazo.",
-    lede: "Tu biblioteca, sin conexión y de solo lectura. El contenido de un libro solo se lee cuando eliges abrirlo.",
+    lede: "Tu biblioteca, sin conexión y de solo lectura. Leemos libros al abrirlos o recuperar tus subrayados.",
     connectHeading: "Conecta un dispositivo",
     connectLede: "Cada paso es local y de solo lectura hasta que guardes un CSV de forma explícita.",
     flowLabel: "Pasos de importación de Kindle",
@@ -76,7 +77,7 @@ const copy = {
     eyebrow: "Pecia Sync · offline beta",
     overview: "Overview", booksNav: "Books", annotationsNav: "Highlights", yourReader: "Your reader", notConnected: "Not connected", localOnly: "Local. Private. Read-only.", notImported: "Not imported", booksHeading: "On your reader", readOnly: "Read-only", search: "Search title or author", filters: "Filter books", allBooks: "All books", withProgress: "With progress", unavailable: "Unavailable", emptyTitle: "Your library starts here", emptyBody: "Connect your Kindle or Kobo by USB, then find your reader to review its books.", noMatches: "No matching books.", missingNotice: "Missing data does not mean unread. Progress reflects the latest available observation, not a live reading.", annotationsHeading: "Highlights & notes", soon: "Coming soon", annotationsEmpty: "Your ideas, in one place.", annotationsBody: "Highlight importing is not connected yet. This version reviews books and available reading progress.", annotationsPrivacy: "Your notes have not been read or exported.", readyHeading: "Make room for your next read.", readyBody: "Save the CSV and import it into your Pecia library. You decide what to share.", openPecia: "Open Pecia ↗",
     title: "Your reader, at a glance.",
-    lede: "Your library, offline and read-only. Book contents are read only when you choose to open them.",
+    lede: "Your library, offline and read-only. Books are read when you open them or recover highlights.",
     connectHeading: "Connect a device",
     connectLede: "Each step is local and read-only until you explicitly save a CSV.",
     flowLabel: "Kindle import steps",
@@ -130,8 +131,8 @@ function explainReaderFormat(book: SyncBook, filename?: string) {
   const format = filename?.split(".").pop()?.toUpperCase();
   message.textContent = filename && !readerFormat(filename)
     ? language === "es"
-      ? `Este archivo es ${format}. El lector de Pecia Sync solo admite EPUB, PDF, MOBI y AZW3 sin DRM. Si tienes una copia compatible, puedes seleccionarla aquí.`
-      : `This file is ${format}. Pecia Sync’s reader supports only DRM-free EPUB, PDF, MOBI and AZW3. If you have a compatible copy, you can select it here.`
+      ? `Este archivo es ${format}. El lector admite EPUB, PDF, MOBI, AZW3 y KFX compatible sin DRM. Puedes seleccionar una copia compatible aquí.`
+      : `This file is ${format}. The reader supports DRM-free EPUB, PDF, MOBI, AZW3 and compatible KFX. You can select a compatible copy here.`
     : language === "es"
       ? "No podemos abrir este archivo directamente desde esta conexión. Puedes seleccionar una copia EPUB, PDF, MOBI o AZW3 local."
       : "This file cannot be opened directly over this connection. You can select a local EPUB, PDF, MOBI or AZW3 copy.";
@@ -183,9 +184,10 @@ function setLanguage(nextLanguage: Language) {
   if (openFile) openFile.textContent = language === "es" ? "Abrir libro" : "Open book";
   const hint = document.querySelector<HTMLElement>("#reader-hint");
   if (hint) hint.textContent = language === "es"
-    ? "Doble clic o Intro para leer EPUB, PDF, MOBI o AZW3. Solo se abre el contenido al elegir un libro."
-    : "Double-click or press Enter to read EPUB, PDF, MOBI or AZW3. Content is opened only when you choose a book.";
+    ? "Doble clic o Intro para leer EPUB, PDF, MOBI, AZW3 o KFX compatible sin DRM."
+    : "Double-click or press Enter to read DRM-free EPUB, PDF, MOBI, AZW3 or compatible KFX.";
   updateDevicePanel();
+  renderAnnotationsPanel(language);
   if (lastReview) renderReviewResult(lastReview);
 }
 
@@ -234,7 +236,7 @@ function renderReviewResult(review: MetadataReview) {
           explainReaderFormat(entry.book, filename);
           return;
         }
-        if (connectedDevices.some(device => device.connection === "usb-drive")) { void launchReader(filename); return; }
+        if (connectedDevices.some(device => device.connection === "usb-drive") || readerFormat(filename)==="kfx") { void launchReader(filename); return; }
       }
       explainReaderFormat(entry.book, filename);
     };
@@ -305,6 +307,7 @@ async function checkConnectedDevice() {
   if (!button || !status) return;
 
   scanning = true;
+  setAnnotationDeviceBusy(true);
   button.disabled = true;
   button.setAttribute("aria-busy", "true");
   button.textContent = t().scanning;
@@ -333,6 +336,7 @@ async function checkConnectedDevice() {
     status.textContent = t().deviceUnavailable;
   } finally {
     scanning = false;
+    setAnnotationDeviceBusy(false);
     button.disabled = false;
     button.removeAttribute("aria-busy");
     button.textContent = lastReview ? t().refresh : t().find;
