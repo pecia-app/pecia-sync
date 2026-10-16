@@ -15,10 +15,12 @@ We will acknowledge reports and coordinate a fix before public disclosure.
 Scanning remains metadata-only. Book contents are read only after an explicit
 open action. The file picker grants access to the selected supported file;
 direct device opens accept a basename rather than an arbitrary path and search
-only mounted Kindle documents directories. Symlinks are skipped and duplicate
+mounted Kindle documents directories. Development KFX opens also support exact
+basename lookup under MTP documents, with bounded enumeration, a shared device
+lock, and unique device/file requirements. Symlinks are skipped and duplicate
 matches are refused. The app never writes to a device.
 
-EPUB/MOBI/AZW3 documents are rebuilt using an allowlist of inert markup and local
+EPUB/MOBI/AZW3 and converted KFX documents are rebuilt using an allowlist of inert markup and local
 raster images. The original document is never mounted as executable HTML.
 Scripts, styles, external links, remote images, embedded fonts and media are
 not loaded. PDF.js renders supplied bytes with XFA disabled; password-protected
@@ -27,6 +29,13 @@ PDFs are not supported. Network policy is not expanded for the reader.
 Encrypted MOBI/KF8 headers, including hybrid records, are rejected before
 parsing. EPUB encryption declarations are rejected. No DRM licences or
 credentials are used and no protection is removed.
+
+Development KFX conversion is in memory, after container/encryption preflight.
+Source files are limited to 32 MiB, converted output to 80 MiB and the spine to
+2,000 sections; EPUB expansion limits still apply. The inert HTML5 DOCTYPE is
+stripped before XML parsing; external DTDs and entity declarations remain blocked.
+Unsupported KFX structures fail closed. These bounds do not isolate the parser
+or guarantee a hard process-memory limit. See [KFX reader scope](docs/KFX-READER.md).
 
 Local reading positions and bookmarks are persisted, keyed by a content
 hash. They are separate from device progress, CSV exports and support reports.

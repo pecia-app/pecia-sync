@@ -79,10 +79,12 @@ proof of current annotations or an exhaustive collection. No device writes.
 | PDF | Local page renderer and zoom | Production build verified; end-to-end manual PDF validation pending |
 | DRM-free MOBI | Bundled Foliate-js parser | Synthetic tests, read-only physical-file parser check, user exercised native macOS reader |
 | DRM-free AZW3 / KF8 | Bundled Foliate-js parser | One physical-file parser check; broader visual validation pending |
-| KFX / AZW | No | Clear unsupported-format dialog |
+| DRM-free KFX (development only) | Bounded single-container conversion in memory | Synthetic round trip and frontend regression tests; user confirmed native macOS reading and corrected contents labels on 16 October 2026; broader compatibility unverified |
+| AZW | No | Unsupported-format dialog |
 | Encrypted books | No | Encryption rejection tests; no DRM removal |
 | Mounted Kindle USB content | Yes, for supported formats | Read-only open; bounded basename lookup, symlinks skipped, ambiguity rejected |
-| MTP / Kobo direct content | No | Select a local copy instead |
+| Kindle MTP KFX content (development only) | Yes | Exact selected filename; unique device/file, bounded lookup and read; no device writes |
+| Other MTP formats / Kobo direct content | No | Select a local copy instead |
 
 Reader position is local to this app and is never written to the device or
 merged into the dashboard's observed progress. Reflowable rendering deliberately

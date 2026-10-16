@@ -1,5 +1,6 @@
 //! Experimental, memory-only single-container KFX highlight resolver.
 pub mod positions;
+pub mod reader;
 use boko::kfx::{
     container,
     ion::{IonParser, IonValue},

@@ -2,7 +2,10 @@
 
 Standalone GPL-3.0-or-later evaluation crate using boko at revision
 `b148716498fdac70134555293a7405913988256a`, with default features disabled.
-The development application now depends on this crate for experimental previews.
+The development application now depends on this crate for experimental previews
+and bounded, in-memory KFX-to-EPUB reading. See [reader scope](../../docs/KFX-READER.md)
+for supported inputs, limits and validation. Conversion is never used to infer
+native annotation positions.
 Existing MIT source notices remain in place. Before distributing the integrated
 application, review GPL compliance, dependency notices, and corresponding-source
 delivery. This is not a determination that process separation avoids obligations.

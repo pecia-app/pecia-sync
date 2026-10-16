@@ -4,6 +4,7 @@ import { JSDOM } from "jsdom";
 import { zipSync, strToU8 } from "fflate";
 import { archivePath, parseEpub, renderChapter } from "./epub";
 import { parsePosition, readerFormat } from "./reader-position";
+import { readerContents } from "./reader-contents";
 
 const dom = new JSDOM();
 Object.assign(globalThis, { DOMParser:dom.window.DOMParser });
@@ -23,6 +24,16 @@ test("EPUB resolves its spine and metadata", () => {
   assert.equal(book.author, "Test Author");
   assert.deepEqual(book.chapters, [{path:"OPS/chapter.xhtml",label:"A chapter"}]);
 });
+test("KFX generated titles never appear as chapter names", () => {
+  const bytes = fixture({"OPS/chapter.xhtml": chapter.replace("<title>A chapter</title>", "<title>cWP</title>")});
+  assert.equal(parseEpub(bytes).chapters[0]?.label, "A chapter");
+  assert.equal(parseEpub(bytes, { generatedTitles: true }).chapters[0]?.label, "A chapter");
+  const untitled = parseEpub(fixture({"OPS/chapter.xhtml": '<html><head><title>c18J</title></head><body><p>Front matter</p></body></html>'}), { generatedTitles: true });
+  assert.equal(untitled.chapters[0]?.label, "1");
+  assert.deepEqual(readerContents(untitled, "Capítulo"), [{section:0,label:"Capítulo 1"}]);
+  assert.deepEqual(readerContents({chapters:[...untitled.chapters, ...parseEpub(bytes).chapters]}, "Capítulo"), [{section:1,label:"A chapter"}]);
+  assert.equal(renderChapter(untitled, 0, dom.window.document).textContent, "Front matter");
+});
 test("EPUB sanitization retains text but no executable attributes or network URLs", () => {
   const book = parseEpub(fixture());
   const wrapper = dom.window.document.createElement("div");
@@ -33,9 +44,26 @@ test("EPUB sanitization retains text but no executable attributes or network URL
   assert.match(wrapper.querySelector("img")!.src, /^data:image\/png;base64,/);
   assert.doesNotMatch(wrapper.innerHTML, /https:|alert/);
 });
-test("EPUB rejects encryption and entity declarations", () => {
+test("converter HTML5 declaration parses and renders with sanitization intact", () => {
+  const book = parseEpub(fixture({"OPS/chapter.xhtml": `<?xml version="1.0" encoding="utf-8"?>\n<!DOCTYPE html>\n${chapter}`}));
+  const wrapper = dom.window.document.createElement("div");
+  wrapper.append(renderChapter(book, 0, dom.window.document));
+  assert.equal(book.chapters[0]?.label, "A chapter");
+  assert.match(wrapper.textContent!, /Safe text link/);
+  assert.equal(wrapper.querySelector("script,iframe,style,svg,a,[onclick],[onload]"), null);
+  assert.doesNotMatch(wrapper.innerHTML, /https:|alert/);
+});
+test("EPUB rejects encryption, external DTDs and entity declarations", () => {
   assert.throws(() => parseEpub(fixture({"META-INF/encryption.xml":"<encryption/>"})), /encrypted/);
-  assert.throws(() => parseEpub(fixture({"OPS/chapter.xhtml":'<!DOCTYPE html><html/>'})), /invalid/);
+  for (const declaration of [
+    '<!DOCTYPE html SYSTEM "https://example.com/evil.dtd">',
+    '<!DOCTYPE html PUBLIC "test" "file:///etc/passwd">',
+    '<!DOCTYPE html [<!ENTITY secret SYSTEM "file:///etc/passwd">]>',
+    '<!DOCTYPE html><!ENTITY secret "value">',
+    '<!DOCTYPE html><!DOCTYPE html>',
+  ]) {
+    assert.throws(() => parseEpub(fixture({"OPS/chapter.xhtml": declaration + chapter})), /invalid/);
+  }
 });
 test("archive resolution blocks external URLs, encoded traversal and absolute paths", () => {
   assert.equal(archivePath("OPS/chapter.xhtml", "../images/a.png"), "images/a.png");
@@ -53,5 +81,5 @@ test("local position validation never changes device progress", () => {
   }
   assert.equal(readerFormat("a.PDF"), "pdf");
   assert.equal(readerFormat("a.epub"), "epub");
-  assert.equal(readerFormat("a.kfx"), null);
+  assert.equal(readerFormat("a.kfx"), "kfx");
 });

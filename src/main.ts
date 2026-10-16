@@ -131,8 +131,8 @@ function explainReaderFormat(book: SyncBook, filename?: string) {
   const format = filename?.split(".").pop()?.toUpperCase();
   message.textContent = filename && !readerFormat(filename)
     ? language === "es"
-      ? `Este archivo es ${format}. El lector de Pecia Sync solo admite EPUB, PDF, MOBI y AZW3 sin DRM. Si tienes una copia compatible, puedes seleccionarla aquí.`
-      : `This file is ${format}. Pecia Sync’s reader supports only DRM-free EPUB, PDF, MOBI and AZW3. If you have a compatible copy, you can select it here.`
+      ? `Este archivo es ${format}. El lector admite EPUB, PDF, MOBI, AZW3 y KFX compatible sin DRM. Puedes seleccionar una copia compatible aquí.`
+      : `This file is ${format}. The reader supports DRM-free EPUB, PDF, MOBI, AZW3 and compatible KFX. You can select a compatible copy here.`
     : language === "es"
       ? "No podemos abrir este archivo directamente desde esta conexión. Puedes seleccionar una copia EPUB, PDF, MOBI o AZW3 local."
       : "This file cannot be opened directly over this connection. You can select a local EPUB, PDF, MOBI or AZW3 copy.";
@@ -184,8 +184,8 @@ function setLanguage(nextLanguage: Language) {
   if (openFile) openFile.textContent = language === "es" ? "Abrir libro" : "Open book";
   const hint = document.querySelector<HTMLElement>("#reader-hint");
   if (hint) hint.textContent = language === "es"
-    ? "Doble clic o Intro para leer EPUB, PDF, MOBI o AZW3. Solo se abre el contenido al elegir un libro."
-    : "Double-click or press Enter to read EPUB, PDF, MOBI or AZW3. Content is opened only when you choose a book.";
+    ? "Doble clic o Intro para leer EPUB, PDF, MOBI, AZW3 o KFX compatible sin DRM."
+    : "Double-click or press Enter to read DRM-free EPUB, PDF, MOBI, AZW3 or compatible KFX.";
   updateDevicePanel();
   renderAnnotationsPanel(language);
   if (lastReview) renderReviewResult(lastReview);
@@ -236,7 +236,7 @@ function renderReviewResult(review: MetadataReview) {
           explainReaderFormat(entry.book, filename);
           return;
         }
-        if (connectedDevices.some(device => device.connection === "usb-drive")) { void launchReader(filename); return; }
+        if (connectedDevices.some(device => device.connection === "usb-drive") || readerFormat(filename)==="kfx") { void launchReader(filename); return; }
       }
       explainReaderFormat(entry.book, filename);
     };

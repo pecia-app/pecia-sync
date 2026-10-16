@@ -99,3 +99,8 @@ button.primary:active:not(:disabled) {
   .pecia-panel a { margin-top: 2px; }
   footer { flex: none; margin-top: 12px; }
 }
+.device-metric {
+  /* Reserve the optional status row in both counters to align their baselines. */
+  font-size: 11px;
+  grid-template-rows: auto auto minmax(1.5em, auto);
+}

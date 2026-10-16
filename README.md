@@ -82,7 +82,13 @@ Double-click a supported book (or focus it and press Enter), or use **Open book*
 to select a local file. EPUB, PDF, DRM-free MOBI and AZW3 are supported by bundled
 parsers: no Calibre installation or network conversion is required. Direct
 device opening currently supports mounted Kindle USB drives; MTP and Kobo users
-can select a local copy. KFX and AZW are not supported.
+can select a local copy. AZW is not supported.
+
+Development builds additionally open a bounded subset of DRM-free,
+single-container KFX, including a selected Kindle book over MTP. Conversion to
+EPUB stays in memory and uses the existing inert renderer. This is not part of
+the 0.2.0 installer. See the [KFX reader scope and validation](docs/KFX-READER.md)
+and its GPL distribution release gate before distributing a build.
 
 The reader provides section/page navigation, text sizing or PDF zoom, a local
 bookmark and resume position. Positions are keyed by a content hash and stored

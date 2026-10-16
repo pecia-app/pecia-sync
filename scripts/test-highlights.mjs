@@ -54,6 +54,18 @@ try {for(const [name,engine] of [['chromium',chromium],['webkit',webkit]]) {
  }
  await page.getByRole('button',{name:'Import from Kindle',exact:true}).click();
  await page.locator('.clipping-navigation span').filter({hasText:'1 / 105'}).waitFor();
+ for (const width of [1200, 800, 500]) {
+  await page.setViewportSize({width,height:760});
+  const aligned=await page.evaluate(()=>{
+   const metrics=[...document.querySelectorAll('.device-metric')];
+   return ['strong','span'].every(tag=>{
+    const tops=metrics.map(metric=>metric.querySelector(tag).getBoundingClientRect().top);
+    return Math.abs(tops[0]-tops[1])<1;
+   });
+  });
+  if(!aligned)throw Error('device counter rows misaligned at '+width);
+ }
+ await page.setViewportSize({width:1200,height:760});
  await page.getByRole('button',{name:'Next clipping',exact:true}).click();
  await page.locator('.clipping-navigation span').filter({hasText:'2 / 105'}).waitFor();
  await page.getByRole('button',{name:'Previous clipping',exact:true}).click();

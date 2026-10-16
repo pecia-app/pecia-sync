@@ -1,7 +1,8 @@
 # Reading locally with Pecia Sync
 
 This guide describes the reader in 0.2.0 beta. The older 0.1.2 installer does not
-include it. Reading is offline; no Calibre installation or account is required.
+include it. KFX additions below apply only to development builds, not the 0.2.0
+installer. Reading is offline; no Calibre installation or account is required.
 
 ![The reader with a fictional book and original demonstration text](screenshots/reader.png)
 
@@ -16,8 +17,9 @@ It does not show a personal library or native window decorations.
    **Open book / Abrir libro** and select a local file.
 
 Direct device opening currently works for supported files on a mounted Kindle
-USB drive. MTP and Kobo metadata can be scanned, but their content cannot be
-opened directly yet. Duplicate filenames require selecting the intended file
+USB drive. Development builds can also open a selected DRM-free KFX book from
+a Kindle over MTP. Other MTP formats and Kobo require a local copy.
+Duplicate filenames require selecting the intended file
 with the picker.
 
 | File | Reader behaviour |
@@ -25,7 +27,8 @@ with the picker.
 | EPUB | Reflowable text and embedded raster images |
 | PDF | Page view, zoom, and an expandable accessible-text view |
 | DRM-free MOBI / AZW3 | Bundled parser; no external converter needed |
-| KFX / AZW | Unsupported-format dialog |
+| DRM-free KFX (development) | Supported single-container subset; in-memory conversion, no external converter |
+| AZW | Unsupported-format dialog |
 | Encrypted ebook | Refused; Sync does not remove DRM |
 | Password-protected PDF | Not supported yet |
 
@@ -38,13 +41,15 @@ EPUB encryption declarations, including font obfuscation, are currently rejected
 
 - Use the contents sidebar or bottom arrows to move between sections. For PDF,
   use the page selector or page arrows.
-- The top slider changes text size for EPUB/MOBI/AZW3, or zoom for PDF.
+- The top slider changes text size for EPUB/MOBI/AZW3/KFX, or zoom for PDF.
 - The heart-outline button saves one bookmark for the current book. **Go to
   bookmark / Ir al marcador** returns to it; saving again replaces it.
 - **Back to library / Volver a biblioteca**, or Escape, closes the reader.
 
 The sidebar prefers named contents entries. If none are available, it uses
 section headings. Unnamed sections remain reachable with the bottom arrows.
+Converted KFX internal identifiers are not shown as chapter names. If no named
+sections exist, numbered section labels are used instead.
 Multiple contents links within the same section currently share one destination.
 Book styles, embedded fonts, scripts and external resources are not loaded, so
 appearance can differ from the Kindle.
@@ -70,7 +75,7 @@ Reading never updates the Kindle, the device-observed progress in the dashboard,
 or progress exported to CSV. Scanning still reads metadata only; opening a book
 is a separate explicit action.
 
-See the [compatibility matrix](compatibility.md) for tested scope and the
+See the [KFX limitations](KFX-READER.md), [compatibility matrix](compatibility.md) for tested scope and the
 [security policy](../SECURITY.md) for the content-handling boundary.
 
 ## Reproduce documentation screenshots

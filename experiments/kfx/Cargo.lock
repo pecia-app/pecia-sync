@@ -340,6 +340,7 @@ name = "pecia-kfx-prototype"
 version = "0.0.1"
 dependencies = [
  "boko",
+ "zip",
 ]
 
 [[package]]
