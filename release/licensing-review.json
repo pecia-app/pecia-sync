@@ -1,0 +1,11 @@
+{
+  "status": "pending",
+  "reviewedBy": "",
+  "inputSha256": {},
+  "evidence": {
+    "notices": "",
+    "preferredSource": "",
+    "platformRebuilds": "",
+    "bundledNativeLibraries": ""
+  }
+}

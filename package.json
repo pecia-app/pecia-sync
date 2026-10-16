@@ -1,9 +1,14 @@
 {
   "name": "pecia-sync",
   "private": true,
+  "license": "GPL-3.0-or-later",
   "version": "0.2.0",
   "type": "module",
   "scripts": {
+    "licenses:generate": "node scripts/licenses.mjs",
+    "licenses:check": "node scripts/licenses.mjs --check",
+    "licenses:test": "node --test scripts/licensing.test.mjs",
+    "licenses:release-check": "node scripts/licenses.mjs --release",
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
