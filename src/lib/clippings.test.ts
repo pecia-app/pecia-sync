@@ -31,6 +31,18 @@ test("Markdown escapes HTML, links, embeds and multiline injected headings",asyn
  assert.ok(!md.includes("<script>")); assert.ok(!md.includes("![image]")); assert.ok(!md.includes("\n# heading"));
  assert.match(md,/### Note/); assert.match(md,/Location 1/);
 });
+test("readable Markdown groups books with authors, quotes and separate notes",async()=>{
+ const result=await parseClippings(entry("Your Note at location 2","My thought")+entry("Your Highlight at location 1","First line\nSecond line")+entry("Your Highlight","Another quote","Second book"));
+ const md=clippingsMarkdown(result.entries);
+ assert.match(md,/## A Synthetic Book\n\nAuthor: Demo Author/);
+ assert.match(md,/### Highlights\n\n> First line\n> Second line/);
+ assert.match(md,/### Notes\n\nMy thought/);
+ assert.ok(!md.includes('> My thought'));
+ assert.ok(md.indexOf('### Highlights')<md.indexOf('### Notes'));
+ assert.match(md,/## Second book/);
+ const es=clippingsMarkdown(result.entries,"es");
+ assert.match(es,/# Subrayados y notas/);assert.match(es,/Autor: Demo Author/);assert.match(es,/Posición 2/);
+});
 test("rejects oversized sources and excessive entry counts",async()=>{
  await assert.rejects(parseClippings("x".repeat(20*1024*1024+1)),/too-large/);
  await assert.rejects(parseClippings("==========\n".repeat(50002)),/too-large/);

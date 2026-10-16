@@ -132,11 +132,9 @@ function openAnnotations() {
   const status=el("p","","annotation-status"); status.setAttribute("role","status");
   let limit=100, filtered:Clipping[]=[];
   const more=button(t.more,()=>{limit+=100; render();});
-  const save=button(t.export,()=>void (async()=>{
-    save.disabled=true;
-    try {status.textContent=await invoke<boolean>("save_annotations",{contents:clippingsMarkdown(filtered)}) ? t.saved:t.saveCancel;}
-    catch {status.textContent=t.saveError;} finally {save.disabled=!filtered.length;}
-  })());
+  const save=button(t.export,()=>{
+    if (!experimental) openMarkdownExport(shown, filtered);
+  });
   function render() {
     const query=search.value.trim().toLocaleLowerCase();
     filtered=shown.filter(e=>(!books.value || e.book===books.value) && (!freshOnly.checked || fresh.has(e.id)) && `${e.book}\n${e.text}`.toLocaleLowerCase().includes(query));
@@ -153,7 +151,7 @@ function openAnnotations() {
       list.append(section);
     }
     if(!filtered.length) list.append(el("p",t.empty));
-    more.hidden=filtered.length<=limit; save.disabled=experimental||!filtered.length;
+    more.hidden=filtered.length<=limit; save.disabled=experimental||!shown.length;
     count.textContent=`${Math.min(limit,filtered.length)} / ${filtered.length}`;
   }
   const count=el("span"), footer=el("footer"); footer.append(count,more,history,save);
@@ -162,4 +160,48 @@ function openAnnotations() {
   dialog.append(heading,el("p",(language==="es"?"Importación desde Kindle por USB/MTP o desde un archivo local. Inglés y español. Kobo aún no disponible. ":"Import from Kindle over USB/MTP or from a local file. English and Spanish. Kobo is not supported yet. ")+t.history,"muted"),filters,list,el("p",t.privacy,"muted"),status,footer);
   if(previewNotice) heading.after(previewNotice);
   dialog.addEventListener("close",()=>dialog.remove(),{once:true}); document.body.append(dialog); render(); dialog.showModal(); search.focus();
+}
+
+function openMarkdownExport(all: readonly Clipping[], filtered: readonly Clipping[]) {
+  const t=words[language], es=language==="es";
+  const dialog=el("dialog","","annotations-dialog markdown-export-dialog");
+  const title=es?"Exportar Markdown":"Export Markdown";
+  dialog.setAttribute("aria-label",title);
+  const close=button(t.back,()=>dialog.close());
+  const header=el("header"); header.append(el("h2",title),close);
+  const scope=el("select"); scope.setAttribute("aria-label",es?"Contenido del documento":"Document scope");
+  for (const [value,label] of [["filtered",es?"Resultados filtrados":"Current filtered results"],["all",es?"Todos los subrayados y notas":"All highlights and notes"]]) {
+    const option=el("option",label); option.value=value!; scope.append(option);
+  }
+  const count=el("p","","muted");
+  const preview=el("textarea"); preview.readOnly=true;
+  preview.setAttribute("aria-label",es?"Vista previa Markdown":"Markdown preview");
+  const status=el("p","","annotation-status"); status.setAttribute("role","status");
+  let contents="", saving=false;
+  const save=button(es?"Guardar Markdown…":"Save Markdown…",()=>void (async()=>{
+    if(saving || !contents)return;
+    saving=true; save.disabled=true; scope.disabled=true; close.disabled=true;
+    try {
+      const saved=await invoke<boolean>("save_annotations",{contents});
+      status.textContent=saved?t.saved:t.saveCancel;
+    } catch {status.textContent=t.saveError;}
+    finally {saving=false; scope.disabled=false; close.disabled=false; save.disabled=!contents;}
+  })());
+  save.classList.add("primary");
+  function render() {
+    const selected=scope.value==="all"?all:filtered;
+    contents=selected.length?clippingsMarkdown(selected,language):"";
+    preview.value=contents;
+    const books=new Set(selected.map(entry=>entry.book)).size;
+    count.textContent=es
+      ? `${selected.length} ${selected.length===1?"entrada":"entradas"} · ${books} ${books===1?"libro":"libros"} · Un archivo .md`
+      : `${selected.length} ${selected.length===1?"entry":"entries"} · ${books} ${books===1?"book":"books"} · One .md file`;
+    save.disabled=!selected.length; status.textContent="";
+  }
+  scope.addEventListener("change",render);
+  dialog.addEventListener("cancel",event=>{if(saving)event.preventDefault();});
+  dialog.addEventListener("close",()=>dialog.remove(),{once:true});
+  const footer=el("footer"); footer.append(save);
+  dialog.append(header,el("p",es?"Revisa tus notas personales antes de compartir. Solo se guarda al elegir un destino; no se envía ningún texto.":"Review personal notes before sharing. Nothing is saved until you choose a destination; no text is uploaded.","muted"),scope,count,preview,status,footer);
+  document.body.append(dialog);render();dialog.showModal();scope.focus();
 }

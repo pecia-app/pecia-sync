@@ -82,9 +82,32 @@ try {for(const [name,engine] of [['chromium',chromium],['webkit',webkit]]) {
  if(await page.locator('.annotation-card').count()!==105)throw Error('more');
  await page.getByRole('searchbox',{name:'Search book, author or text'}).fill('Synthetic thought 105');
  await page.getByRole('button',{name:'Export selection as Markdown',exact:true}).click();
+ const exportDialog=page.getByRole('dialog',{name:'Export Markdown',exact:true});
+ for (const width of [1200,500]) {
+  await page.setViewportSize({width,height:680});
+  if(await exportDialog.evaluate(e=>e.scrollWidth>e.clientWidth+1||e.scrollHeight>e.clientHeight+1))throw Error('export dialog overflow');
+ }
+ if(process.env.HIGHLIGHTS_SCREENSHOTS) await page.screenshot({path:process.env.HIGHLIGHTS_SCREENSHOTS+'/export-'+name+'.png'});
+ await page.setViewportSize({width:1200,height:760});
+ if((await page.evaluate(()=>window.exports)).length)throw Error('export saved before confirmation');
+ const previewText=await exportDialog.getByRole('textbox',{name:'Markdown preview'}).inputValue();
+ if(!previewText.includes('Synthetic thought 105')||previewText.includes('Synthetic thought 104'))throw Error('filtered preview');
+ await exportDialog.getByRole('combobox',{name:'Document scope'}).selectOption('all');
+ if(!(await exportDialog.getByRole('textbox',{name:'Markdown preview'}).inputValue()).includes('Synthetic thought 104'))throw Error('all preview');
+ await exportDialog.getByRole('combobox',{name:'Document scope'}).selectOption('filtered');
+ await exportDialog.getByRole('button',{name:'Save Markdown…',exact:true}).click();
  await page.getByText('Markdown saved.',{exact:true}).waitFor();
  const exported=await page.evaluate(()=>window.exports[0]);
  if(!exported.includes('Synthetic thought 105')||exported.includes('Synthetic thought 104')||exported.includes('<img'))throw Error('export filter or escaping');
+ if(exported!==previewText)throw Error('preview differs from saved document');
+ await exportDialog.getByRole('button',{name:'Close',exact:true}).click();
+ await page.getByRole('searchbox',{name:'Search book, author or text'}).fill('no matching synthetic entry');
+ await page.getByRole('button',{name:'Export selection as Markdown',exact:true}).click();
+ if(!(await exportDialog.getByRole('button',{name:'Save Markdown…',exact:true}).isDisabled()))throw Error('empty export enabled');
+ await exportDialog.getByRole('combobox',{name:'Document scope'}).selectOption('all');
+ if(await exportDialog.getByRole('button',{name:'Save Markdown…',exact:true}).isDisabled())throw Error('all export unavailable with empty filter');
+ await exportDialog.getByRole('button',{name:'Close',exact:true}).click();
+ if((await page.evaluate(()=>window.exports)).length!==1)throw Error('closing preview exported text');
  await page.getByRole('searchbox',{name:'Search book, author or text'}).fill('');
  if(process.env.HIGHLIGHTS_SCREENSHOTS) await page.screenshot({path:process.env.HIGHLIGHTS_SCREENSHOTS+'/review-'+name+'.png'});
  await page.getByRole('button',{name:'Close',exact:true}).click();
