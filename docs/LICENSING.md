@@ -27,6 +27,11 @@ membership does not assert that every package is linked into every installer.
 Missing metadata or missing notice files is flagged for review, not silently
 treated as permission. An SPDX identifier alone is not a complete legal audit.
 
+Version-specific supplements in `release/notice-supplements.json` preserve
+upstream notices omitted by some published packages. Each copied text has an
+immutable provenance record and a checked SHA-256. Source files named
+`copying.rs` are not notices. Upstream legal concerns remain explicit warnings.
+
 Generated notices are bundled as native resources, alongside the GPL, MIT and
 licensing guide. They are build artifacts, not hand-maintained source files.
 Review nested assets and bundled native libraries too: package metadata may not
@@ -44,7 +49,10 @@ installed npm packages, notices, lockfiles and build instructions. It is not
 automatically a complete Corresponding Source determination. In particular,
 published npm distributions may contain generated/minified output rather than
 the preferred form for modification. Audit PDF.js and other generated packages
-and supply matching upstream source/build material where required. Audit native
+and supply matching upstream source/build material where required. The candidate
+now includes checked upstream archives for all direct frontend dependencies via
+`release/preferred-source.json`; `node scripts/preferred-source.mjs --offline`
+verifies cached copies without a download. Audit native
 libraries embedded in installers, especially AppImages, separately.
 
 Before approval, rebuild the application from the candidate on all claimed
@@ -66,6 +74,13 @@ npm run tauri build
 The installed npm tree is host-specific: cross-platform rebuilds may need the
 other platform's locked tool packages. Account for those in the final source
 review. Merely running the command above on the packaging host is insufficient.
+
+After creating a candidate, run `node scripts/verify-source.mjs` to verify the
+archive checksum, extract it to a fresh temporary directory, verify source
+archives/notices, and run frontend tests/build plus native tests with Cargo
+offline. It refuses absolute npm executable symlinks on POSIX. The source-audit
+CI workflow runs this on all three desktop platforms and records evidence;
+it is not proof of bit-for-bit installer reproducibility or legal clearance.
 
 ## Fail-closed release gate
 

@@ -10,6 +10,7 @@ const run=(command,args,cwd=root)=>execFileSync(command,args,{cwd,encoding:'utf8
 if(run('git',['status','--porcelain']).trim())throw Error('Source candidate requires a clean committed checkout.');
 const revision=run('git',['rev-parse','HEAD']).trim();
 run(process.execPath,['scripts/licenses.mjs','--check']);
+run(process.execPath,['scripts/preferred-source.mjs']);
 const temp=await mkdtemp(resolve(tmpdir(),'pecia-source-'));
 const project=resolve(temp,'project');await mkdir(project);
 run('git',['archive','--format=tar','--output',resolve(temp,'project.tar'),revision]);
@@ -17,8 +18,9 @@ run('tar',['-xf',resolve(temp,'project.tar'),'-C',project]);
 const config=run('cargo',['vendor','--locked','--versioned-dirs','--manifest-path','src-tauri/Cargo.toml','--sync','experiments/kfx/Cargo.toml','vendor'],project);
 await mkdir(resolve(project,'.cargo'),{recursive:true});
 await writeFile(resolve(project,'.cargo/config.toml'),config);
-await cp(resolve(root,'node_modules'),resolve(project,'node_modules'),{recursive:true,dereference:false});
+await cp(resolve(root,'node_modules'),resolve(project,'node_modules'),{recursive:true,dereference:false,verbatimSymlinks:true});
 await cp(resolve(root,'build/licenses'),resolve(project,'build/licenses'),{recursive:true});
+await cp(resolve(root,'build/preferred-source'),resolve(project,'build/preferred-source'),{recursive:true});
 await writeFile(resolve(project,'SOURCE-REVISION.txt'),revision+'\nSource candidate: review docs/LICENSING.md before binary distribution.\n');
 await mkdir(resolve(root,'build/source'),{recursive:true});
 const filename=`pecia-sync-source-${revision}.tar.gz`;

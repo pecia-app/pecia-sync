@@ -1,0 +1,48 @@
+name: Source archive audit
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'scripts/*source*.mjs'
+      - 'scripts/*licens*.mjs'
+      - 'scripts/notice-supplements.mjs'
+      - 'release/**'
+      - 'LICENSES/**'
+      - '*lock*'
+      - 'package.json'
+      - 'src-tauri/Cargo.*'
+      - 'src-tauri/tauri*.json'
+      - 'experiments/kfx/Cargo.*'
+      - '.github/workflows/source-audit.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  source:
+    name: Rebuild source (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Install Linux desktop dependencies
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y libwebkit2gtk-4.1-dev build-essential curl wget file libxdo-dev libssl-dev libayatana-appindicator3-dev librsvg2-dev
+      - run: npm ci
+      - run: npm run licenses:generate
+      - run: node scripts/source-bundle.mjs
+      - run: node scripts/verify-source.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: source-verification-${{ runner.os }}
+          path: build/source/source-verification.json
+          if-no-files-found: error

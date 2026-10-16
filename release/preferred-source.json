@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "records": [
+    {
+      "name": "pdfjs-dist",
+      "version": "6.4.299",
+      "repo": "mozilla/pdf.js",
+      "revision": "d0991a0d53f3bb3a7307e3b83f279c1d117aafb3",
+      "evidence": "npm gitHead matches pdfjsBuild=d0991a0d5 in installed build/pdf.mjs",
+      "url": "https://codeload.github.com/mozilla/pdf.js/tar.gz/d0991a0d53f3bb3a7307e3b83f279c1d117aafb3",
+      "sha256": "acd4045ebdca2b7a852e9e3d81f81234a7446f257404eb2c879634282df56265",
+      "filename": "mozilla-pdf.js-d0991a0d53f3bb3a7307e3b83f279c1d117aafb3.tar.gz"
+    },
+    {
+      "name": "fflate",
+      "version": "0.8.3",
+      "repo": "101arrowz/fflate",
+      "revision": "dcb3714a6c25db3a2748641019c5277413d09714",
+      "evidence": "Upstream annotated v0.8.3 tag dereferenced to commit",
+      "url": "https://codeload.github.com/101arrowz/fflate/tar.gz/dcb3714a6c25db3a2748641019c5277413d09714",
+      "sha256": "24d3150cf1b94ced292df0888d7a169473ab6aeead44518718dd2bd96893e981",
+      "filename": "101arrowz-fflate-dcb3714a6c25db3a2748641019c5277413d09714.tar.gz"
+    },
+    {
+      "name": "@tauri-apps/api",
+      "version": "2.12.1",
+      "repo": "tauri-apps/tauri",
+      "revision": "30da1fd6e17de6107ecc850c95dfb16b5729f2dd",
+      "evidence": "Upstream tauri-v2.12.1 commit; packages/api/package.json declares 2.12.1",
+      "url": "https://codeload.github.com/tauri-apps/tauri/tar.gz/30da1fd6e17de6107ecc850c95dfb16b5729f2dd",
+      "sha256": "b20a4ea911118086ccc60cdb0ecad21b51a7a7eed56b5abfb3d3a45932a6e71f",
+      "filename": "tauri-apps-tauri-30da1fd6e17de6107ecc850c95dfb16b5729f2dd.tar.gz"
+    },
+    {
+      "name": "@tauri-apps/plugin-opener",
+      "version": "2.7.0",
+      "repo": "tauri-apps/plugins-workspace",
+      "revision": "e51128438011755f9e7277bad29b8c0978cf281c",
+      "evidence": "Published npm package gitHead",
+      "url": "https://codeload.github.com/tauri-apps/plugins-workspace/tar.gz/e51128438011755f9e7277bad29b8c0978cf281c",
+      "sha256": "d534bed269d0bf00c130583cb2e7c5c36f15089f35b6a6842c3d022da29ad996",
+      "filename": "tauri-apps-plugins-workspace-e51128438011755f9e7277bad29b8c0978cf281c.tar.gz"
+    },
+    {
+      "name": "foliate-js",
+      "version": "1.0.1",
+      "repo": "johnfactotum/foliate-js",
+      "revision": "f52d42c6127d0ad981a2c67634113541b17ae01e",
+      "evidence": "Published npm package gitHead; source JavaScript is also shipped in npm package",
+      "url": "https://codeload.github.com/johnfactotum/foliate-js/tar.gz/f52d42c6127d0ad981a2c67634113541b17ae01e",
+      "sha256": "c3eee2b5830e9fa73fe41d7c0d00039379ab15d65a4bf5f93dcfaa2114f45f91",
+      "filename": "johnfactotum-foliate-js-f52d42c6127d0ad981a2c67634113541b17ae01e.tar.gz"
+    }
+  ]
+}

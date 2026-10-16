@@ -24,21 +24,68 @@ The generated `build/licenses/inventory.json` contains the precise versions,
 sources and warning list; `THIRD-PARTY-NOTICES.txt` contains collected texts.
 Both are ignored build outputs. Re-run after any dependency changes.
 
+## Notice and source follow-up
+
+The collector now recognizes SPDX/dotted license filenames but rejects code
+modules such as `copying.rs`. The latter exposed an additional objc2-foundation
+finding that had been incorrectly counted as a notice. All original 41 missing
+file findings, plus that false positive, now have collected upstream notice
+material. This does **not** mean all legal questions are resolved.
+
+`release/notice-supplements.json` has 101 exact package/version mappings,
+including sibling native npm packages for other platforms. The checked-in
+`LICENSES/third-party/` texts are keyed by SHA-256 and checked on every
+generation/check. Rust provenance comes from published `.cargo_vcs_info.json`
+where available; exceptions identify their parent package/release basis.
+Published npm gitHeads or immutable release commits identify frontend notices.
+No template copyright holder was invented. Supplement changes invalidate release
+review hashes.
+
+The refreshed local inventory still contains 575 packages, with **zero missing
+notice-file findings**. It retains 69 optional-platform informational warnings
+and 20 explicit legal-review flags for one upstream family: objc2/block2/dispatch2.
+Their [upstream licensing summary](https://github.com/madsmtm/objc2/blob/8852b424193ca41602281b3d7540d7c8ed51e49a/LICENSE.md)
+discusses uncertainty concerning Apple SDK-derived bindings and references
+standard license terms rather than including their full text. The summary is
+preserved, not treated as legal clearance. A qualified review or upstream
+clarification is still needed before marking this family approved.
+
+Preferred-source archives for every direct frontend dependency are now pinned
+by package version, upstream commit and SHA-256 in `release/preferred-source.json`:
+PDF.js, fflate, Tauri API, the opener plugin and Foliate-js. PDF.js's upstream
+commit matches the `pdfjsBuild` identifier in the installed distribution.
+These archives include original source/build material rather than only npm's
+compiled files. Source candidates include the archives and preserve relative
+npm executable symlinks instead of links to the packaging machine.
+
+A temporary clean audit snapshot was archived, extracted, and verified on macOS
+arm64. Its 34 frontend tests, 7 licensing tests, TypeScript/Vite build and 12
+native tests passed; 2 hardware tests remained ignored. Cargo used vendored
+dependencies in offline mode. This validates the local source mechanics, not
+bit-for-bit reproduction of a release binary or complete legal compliance.
+The temporary snapshot is not a release commit. The new source-audit workflow
+will collect equivalent per-platform evidence on a PR; it has not run yet.
+
+Inspection of the previously built macOS app found dynamic references only to
+`/usr/lib` and `/System/Library/Frameworks`, with no separately bundled dylibs,
+WASM or font files. This is limited payload evidence, not an assessment of all
+statically linked code or a legal System Library determination. Windows and
+Linux payloads, especially AppImage contents, still need separate inspection.
+
 ## Required follow-up before release
 
-1. Resolve the 41 notice-file findings (including objc2-family crates, selectors,
-   some Windows bindings and native npm tool packages). Record upstream revision
-   evidence and package any required supplemental notices.
-2. Audit preferred source for generated frontend distributions, particularly
-   PDF.js, and add exact matching source/build material to the candidate where
-   needed. A distribution tarball is not necessarily preferred source.
+1. Resolve the objc2-family upstream legal question and full-terms attribution
+   review. Collecting upstream summaries is not legal clearance.
+2. Review the now-included frontend source archives for any nested third-party
+   source/notices needed by the actual distributed build.
 3. Inspect each platform's installer payload for bundled native libraries and
    assets; identify notices/source duties and justify any System Library
    exclusions. Do not infer the AppImage payload from Cargo metadata alone.
 4. Generate the source archive from a clean committed checkout, test rebuilds
    on all claimed platforms, and verify that the published source corresponds
-   to the published binaries. Source archive generation has not yet been
-   validated end to end in this working tree.
+   to the published binaries. Source archive generation has been
+   validated locally from a temporary snapshot; all-platform evidence and the
+   final release revision still need verification.
 5. Record review evidence, reviewer and current input hashes in
    `release/licensing-review.json` only after those checks pass.
 
