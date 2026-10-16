@@ -38,15 +38,27 @@ export async function parseClippings(source: string): Promise<ImportResult> {
 function markdown(text: string): string {
   return text.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/([\\`*_{}\[\]()#!|~+\-])/g,"\\$1");
 }
-export function clippingsMarkdown(entries: readonly Clipping[]): string {
+export function clippingsMarkdown(entries: readonly Clipping[], language: "es" | "en" = "en"): string {
+  const t = language === "es"
+    ? {title:"Subrayados y notas", source:"Importado de My Clippings.txt. Puede incluir entradas antiguas o eliminadas del Kindle.", author:"Autor", highlights:"Subrayados", notes:"Notas", location:"Posición", page:"Página"}
+    : {title:"Highlights & notes", source:"Imported from My Clippings.txt. May include older entries or entries deleted from the Kindle.", author:"Author", highlights:"Highlights", notes:"Notes", location:"Location", page:"Page"};
   const groups = new Map<string,Clipping[]>();
   for (const entry of entries) { const group=groups.get(entry.book) ?? []; group.push(entry); groups.set(entry.book,group); }
-  const output = ["# Pecia Sync — Kindle clippings", "", "Imported from My Clippings.txt. This is an export history, not a live view of Kindle annotations.", ""];
+  const output = [`# ${t.title}`, "", t.source, ""];
   for (const [book,items] of groups) {
-    output.push(`## ${markdown(book)}`, "");
-    for (const item of items) {
-      output.push(`### ${item.kind === "note" ? "Note" : "Highlight"}`, "", ...markdown(item.text).split("\n").map(line=>"> "+line), "");
-      output.push(markdown([item.location && `Location ${item.location}`, item.page && `Page ${item.page}`, item.added].filter(Boolean).join(" · ")), "");
+    output.push(`## ${markdown(items[0]!.title || book)}`, "");
+    if (items[0]!.author) output.push(`${t.author}: ${markdown(items[0]!.author)}`, "");
+    for (const kind of ["highlight", "note"] as const) {
+      const selected = items.filter(item => item.kind === kind);
+      if (!selected.length) continue;
+      output.push(`### ${kind === "highlight" ? t.highlights : t.notes}`, "");
+      for (const item of selected) {
+        const lines = markdown(item.text).split("\n");
+        output.push(...(kind === "highlight" ? lines.map(line => "> " + line) : lines), "");
+        const metadata = [item.location && `${t.location} ${item.location}`, item.page && `${t.page} ${item.page}`, item.added].filter(Boolean).join(" · ");
+        if (metadata) output.push(markdown(metadata), "");
+        output.push("---", "");
+      }
     }
   }
   return output.join("\n");
