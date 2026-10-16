@@ -3,6 +3,7 @@ import {mkdtemp,readFile,writeFile,readlink,readdir} from 'node:fs/promises';
 import {resolve,dirname,basename,isAbsolute} from 'node:path';
 import {tmpdir} from 'node:os';
 import {createHash} from 'node:crypto';
+import {parseArchiveListing,frontendTestArgs} from './source-test-selection.mjs';
 let input=process.argv[2];
 if(!input){
   const archives=(await readdir('build/source')).filter(name=>/^pecia-sync-source-[a-f0-9]{40}\.tar\.gz$/.test(name));
@@ -14,8 +15,9 @@ if(!/^pecia-sync-source-[a-f0-9]{40}\.tar\.gz$/.test(basename(archive)))throw Er
 const checksum=(await readFile(resolve(dirname(archive),'SOURCE-SHA256SUMS.txt'),'utf8')).trim();
 const digest=createHash('sha256').update(await readFile(archive)).digest('hex');
 if(checksum!==`${digest}  ${basename(archive)}`)throw Error('Source archive checksum mismatch');
-const names=execFileSync('tar',['-tf',archive],{encoding:'utf8',maxBuffer:64*1024*1024}).split('\n').filter(Boolean);
+const names=parseArchiveListing(execFileSync('tar',['-tf',archive],{encoding:'utf8',maxBuffer:64*1024*1024}));
 if(names.some(name=>!name.startsWith('project/')||name.split('/').includes('..')))throw Error('Unsafe source archive paths');
+const testArgs=frontendTestArgs(names);
 const destination=await mkdtemp(resolve(tmpdir(),'pecia-source-verify-'));
 execFileSync('tar',['-xf',archive,'-C',destination]);
 const project=resolve(destination,'project');
@@ -30,7 +32,7 @@ run(process.execPath,['scripts/licenses.mjs']);
 run(process.execPath,['scripts/licenses.mjs','--check']);
 // Invoke Node entry points directly; this also works without shell-specific npm wrappers.
 run(process.execPath,['--test','scripts/licensing.test.mjs']);
-run(process.execPath,['node_modules/tsx/dist/cli.mjs','--test',...names.filter(name=>/^project\/src\/lib\/[^/]+\.test\.ts$/.test(name)).map(name=>name.slice(8))]);
+run(process.execPath,testArgs);
 run(process.execPath,['node_modules/typescript/bin/tsc']);
 run(process.execPath,['node_modules/vite/bin/vite.js','build']);
 run('cargo',['test','--locked','--offline','--manifest-path','src-tauri/Cargo.toml']);

@@ -7,6 +7,19 @@ import {execFileSync} from 'node:child_process';
 import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 import {createHash} from 'node:crypto';
+import {parseArchiveListing,frontendTestArgs} from './source-test-selection.mjs';
+test('source test selection is identical for LF and Windows CRLF tar listings',()=>{
+  const names=['project/','project/scripts/test-highlights.mjs','project/src/lib/reader.test.ts','project/src/lib/clippings.test.ts','project/node_modules/example/test.ts'];
+  for(const delimiter of ['\n','\r\n']){
+    const parsed=parseArchiveListing(names.join(delimiter)+delimiter);
+    assert.deepEqual(parsed,names);
+    assert.deepEqual(frontendTestArgs(parsed),['node_modules/tsx/dist/cli.mjs','--test','src/lib/clippings.test.ts','src/lib/reader.test.ts']);
+  }
+});
+test('source verifier refuses empty test selection instead of enabling auto-discovery',()=>{
+  assert.throws(()=>frontendTestArgs([]),/No frontend unit tests/);
+  assert.throws(()=>frontendTestArgs(['project/scripts/test-highlights.mjs']),/No frontend unit tests/);
+});
 test('Git preserves upstream notice bytes with Windows autocrlf enabled',async()=>{
   const root=await mkdtemp(join(tmpdir(),'pecia-notice-checkout-'));
   try {
