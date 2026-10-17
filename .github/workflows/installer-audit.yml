@@ -7,6 +7,9 @@ on:
       - '.github/workflows/installer-audit.yml'
       - 'scripts/installer-audit.mjs'
       - 'scripts/macos-build-evidence*.mjs'
+      - 'scripts/linux-*.mjs'
+      - 'scripts/licenses.mjs'
+      - 'src-tauri/tauri.conf.json'
 
 permissions:
   contents: read
@@ -34,6 +37,7 @@ jobs:
       - run: npm test
       - run: npm run licenses:test
       - run: node --test scripts/macos-build-evidence.test.mjs
+      - run: node --test scripts/linux-notices.test.mjs scripts/linux-native-evidence.test.mjs
       - name: Capture macOS toolchain before build
         if: runner.os == 'macOS'
         run: node scripts/macos-build-evidence.mjs before
@@ -44,7 +48,11 @@ jobs:
       - run: npm run licenses:check
       - name: Record hashes and retain bundle structure
         run: node scripts/installer-audit.mjs
+      - name: Map AppDir native files to Linux source-package versions
+        if: runner.os == 'Linux'
+        run: node scripts/linux-native-evidence.mjs
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: installer-audit-${{ runner.os }}-${{ github.sha }}
           path: build/installer-audit/

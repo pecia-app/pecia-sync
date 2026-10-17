@@ -25,6 +25,7 @@
     }
   },
   "bundle": {
+    "useLocalToolsDir": true,
     "license": "GPL-3.0-or-later",
     "licenseFile": "../LICENSES/GPL-3.0-or-later.txt",
     "resources": {

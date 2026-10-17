@@ -3,6 +3,42 @@
 Status: partial engineering inspection; not release clearance.
 Source baseline: `9b5b3cba7077af309abd447bcdf2aa65a8487c2f`.
 
+## Engineering remediation in progress
+
+Linux notice generation now copies the build host's full common-license texts
+into `build/licenses/linux-common-licenses`, already included by the bundle's
+resource mapping. A README explains the relocated equivalents of absolute
+`/usr/share/common-licenses/NAME` references; upstream notices are not rewritten.
+Hashes are checked by `licenses:check`. Fixture tests and an isolated Linux
+container check (17 actual distro texts) passed. A new installer must still be
+extracted to verify that these resources reach the final AppImage.
+
+The non-publishing Linux audit now examines regular ELF files in AppDir and
+queries the build host for candidate package ownership and exact source-package
+versions. Only equal file hashes count as an automatic match. Patched libraries,
+unknown files, application binaries and non-package tools stay unresolved.
+The report records source requests, not downloaded corresponding source.
+The outer AppImage runtime, scripts, symlinks and non-ELF assets are outside this
+mapping's scope and still require review. Missing common-license references fail
+the audit; unknown native mappings remain explicitly reported, not approved.
+
+Bundler tools now use the project-local Tauri cache. Windows audits retain its
+NSIS/WiX input files, hashes and archive for comparison with extracted installer
+payloads. This does not itself establish licensing or matching source.
+The previously extracted `nsis_tauri_utils.dll` has SHA-1
+`75197fee3c6a814fe035788d1c34ead39349b860`, equal to the upstream bundler's
+0.5.3 download pin in the retained Tauri 2.12.1 source archive. This is provenance
+evidence for that one plugin, not clearance of all Windows components.
+
+The retained PDF.js source explicitly identifies Liberation Sans 1.07.4.
+Its OpenJPEG, QCMS and JBIG2 READMEs identify separate Mozilla build repositories,
+but do not pin decoder revisions. Do not substitute their current branch tips
+for matching source or remove assets merely because runtime fetching is disabled.
+
+These changes require fresh Linux/Windows audit builds; final artifact/source
+verification and the separate objc2 assessment remain open. No approval fields
+or release tags were changed.
+
 ## Fresh retained artifacts — follow-up
 
 [Installer audit run 39010439200](https://github.com/pecia-app/pecia-sync/actions/runs/39010439200)

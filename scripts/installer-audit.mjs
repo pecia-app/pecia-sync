@@ -30,6 +30,29 @@ const archive=join(output,'installer-bundles.tar.gz');
 // Tar preserves macOS app symlinks/modes through GitHub's ZIP artifact wrapper.
 execFileSync('tar',['-czf',archive,'-C',bundle,'.']);
 await cp('build/licenses',join(output,'licenses'),{recursive:true});
+if(process.platform==='win32'){
+  // useLocalToolsDir makes the actual WiX/NSIS inputs discoverable without
+  // guessing a user's cache path. Retain them as audit inputs, not release assets.
+  const tools=resolve('src-tauri/target/.tauri');
+  const toolFiles=[];
+  async function inspectTools(dir,prefix=''){
+    for(const name of (await readdir(dir)).sort()){
+      const path=join(dir,name),info=await lstat(path);
+      if(info.isSymbolicLink())throw Error(`Unexpected tool-cache symlink: ${path}`);
+      if(info.isDirectory())await inspectTools(path,prefix+name+'/');
+      else if(info.isFile())toolFiles.push({path:prefix+name,size:info.size,sha256:await sha256(path)});
+    }
+  }
+  await inspectTools(tools);
+  if(!toolFiles.some(file=>/nsis_tauri_utils\.dll$/i.test(file.path)))throw Error('Missing NSIS tool provenance');
+  const toolsArchive=join(output,'windows-bundler-tools.tar.gz');
+  execFileSync('tar',['-czf',toolsArchive,'-C',tools,'.']);
+  await writeFile(join(output,'windows-bundler-tools.json'),JSON.stringify({
+    scope:'Actual cached bundler inputs; not source completeness, payload mapping, or licensing approval.',
+    revision:command('git',['rev-parse','HEAD']),
+    archiveSha256:await sha256(toolsArchive),files:toolFiles,
+  },null,2)+'\n');
+}
 if(process.platform==='linux'){
   // Preserve the build host package/source versions, not merely library filenames.
   // This is an over-inclusive evidence inventory, not a bundled-library mapping.
