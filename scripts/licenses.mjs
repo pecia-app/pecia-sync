@@ -5,12 +5,14 @@ import {dirname,resolve,relative,join} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {validateReview} from './licensing-review.mjs';
 import {isNoticeFile,loadSupplements} from './notice-supplements.mjs';
+import {collectCommonLicenses,verifyCommonLicenses} from './linux-notices.mjs';
 
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const read=path=>readFile(resolve(root,path),'utf8');
 const hash=value=>createHash('sha256').update(value).digest('hex');
 const inputs=['package.json','package-lock.json','src-tauri/Cargo.toml','src-tauri/Cargo.lock','experiments/kfx/Cargo.toml','experiments/kfx/Cargo.lock','src-tauri/tauri.conf.json','src-tauri/tauri.macos.conf.json','scripts/licenses.mjs','scripts/licensing-review.mjs','scripts/source-bundle.mjs','.github/workflows/release.yml'];
 const inputSha256=Object.fromEntries(await Promise.all(inputs.map(async path=>[path,hash(await read(path))])));
+inputSha256['scripts/linux-notices.mjs']=hash(await read('scripts/linux-notices.mjs'));
 inputSha256['.gitattributes']=hash(await read('.gitattributes'));
 inputSha256['scripts/source-test-selection.mjs']=hash(await read('scripts/source-test-selection.mjs'));
 for(const path of ['scripts/notice-supplements.mjs','release/notice-supplements.json','scripts/preferred-source.mjs','release/preferred-source.json','scripts/verify-source.mjs','.github/workflows/source-audit.yml'])inputSha256[path]=hash(await read(path));
@@ -30,6 +32,7 @@ if(mode==='--release') {
   for(const [path,digest] of Object.entries(inputSha256))if(inventory.inputSha256[path]!==digest)throw Error(`Regenerate notices: ${path}`);
   if(!inventory.packages.length)throw Error('Empty dependency inventory');
   if(hash(await read('build/licenses/THIRD-PARTY-NOTICES.txt'))!==inventory.noticesSha256)throw Error('Notices missing or modified');
+  if(process.platform==='linux')await verifyCommonLicenses(resolve(root,'build/licenses/linux-common-licenses'));
   const config=JSON.parse(await read('src-tauri/tauri.conf.json'));
   if(config.bundle.license!=='GPL-3.0-or-later')throw Error('Incorrect distribution license');
   for(const path of ['LICENSE','LICENSES/MIT.txt','LICENSES/GPL-3.0-or-later.txt'])if(!(await read(path)).trim())throw Error(`Empty ${path}`);
@@ -89,6 +92,7 @@ if(mode==='--release') {
     packages.push(item);
   }
   await mkdir(resolve(root,'build/licenses'),{recursive:true});
+  if(process.platform==='linux')await collectCommonLicenses('/usr/share/common-licenses',resolve(root,'build/licenses/linux-common-licenses'));
   const text=notices.join('\n')+'\n';
   await writeFile(resolve(root,'build/licenses/THIRD-PARTY-NOTICES.txt'),text);
   await writeFile(resolve(root,'build/licenses/inventory.json'),JSON.stringify({inputSha256,noticesSha256:hash(text),packages,warnings},null,2)+'\n');

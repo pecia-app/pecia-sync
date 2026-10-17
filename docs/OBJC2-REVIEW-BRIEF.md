@@ -10,9 +10,11 @@ The open question concerns Apple-header-derived bindings: source redistribution
 and compiled macOS distribution must be assessed separately from OS libraries.
 We elect MIT wherever alternatives are offered. We need scoped conclusions,
 supporting authority and any required remediation—not blanket release approval.
-**Preliminary review only:** questions 1, 2b and 4 are blocked pending the fixed
-Xcode/SDK/agreement evidence below. Questions 2a and 3 can be addressed now;
-questions 5 and 6 invite conditional design and threshold assessments.
+**Candidate review:** toolchain facts and the installed agreement have now been
+captured together (see the latest evidence below). Questions 1, 2b and 4 can be
+assessed against that evidence, with explicit assumptions or qualifications
+where acceptance/contract context remains unconfirmed. This is not final release
+approval. Questions 5 and 6 remain conditional design/threshold assessments.
 
 ## Revision reconciliation
 
@@ -157,6 +159,41 @@ The published build.rs uses `cc::Build` with `-xobjective-c` and
 
 ## Build environment: facts to supply, not questions for counsel
 
+### Installed agreement located — latest evidence
+
+[Audit run 39015592079](https://github.com/pecia-app/pecia-sync/actions/runs/39015592079),
+macOS job 117346947213, retained artifact **12095110763** for checkout
+`73cc6b941d7b34453971f9f91a93d12a4dab20a0`. Its toolchain is Xcode 26.6
+(17F113), macOS SDK 26.5 (25F70), Apple clang 21.0.0, on macOS 26.6.2
+(25G83), runner image `20261013.0424.1`. Before/after records match.
+
+The selected Xcode installation contains the document titled **Xcode and Apple
+SDKs Agreement** under `Contents/Resources/en.lproj/License.rtf` and a PDF
+candidate at `Contents/Resources/en.lproj/License.pdf`. The accompanying
+`Contents/Resources/LicenseInfo.plist` identifies `licenseID = EA1990` and
+`licenseType = GM`. Downloaded candidate bytes were checked against their
+captured SHA-256 values:
+
+| File | SHA-256 |
+| --- | --- |
+| License.rtf | `ba9e2515fe5e709adfc1acab91677eeacb0b6f44740072a2782fba0fb844bfec` |
+| License.pdf | `920b6644ab93dd8603871e540befca8d2a20afd1f46c5c81cc9ee88e1fc97162` |
+| LicenseInfo.plist | `b67297f9a67f1c840297d2e5ecfb567cf9941d8284c188dd43ba6f060855b842` |
+
+The RTF title was inspected; PDF/RTF semantic equivalence has not been certified.
+The earlier missing-document result was a lookup limitation (English.lproj
+versus en.lproj), not evidence that the agreement was absent. These are files
+from the actual selected toolchain, not substitutes downloaded from Apple's
+current legal page. Artifact retention is 14 days; retain the reviewer copies
+and hashes separately. Agreement files are not added to the public source repo.
+
+This closes the missing installed-document/toolchain evidence gap for this audit
+candidate. It does not identify who accepted terms, establish the contractual
+relationship for the hosted build, or establish the SDK version used by upstream
+to generate these bindings. The maintainer and reviewer must distinguish those
+questions from our candidate's build environment and qualify conclusions where
+the facts remain unknown. No agreement-acceptance command was run by our capture.
+
 ### Captured follow-up evidence
 
 [Audit run 39014228787](https://github.com/pecia-app/pecia-sync/actions/runs/39014228787)
@@ -177,9 +214,9 @@ measurement of the earlier snapshot below.
 - Agreement discovery returned no text at the two paths checked in that run.
   This does not establish that the Xcode installation lacks an agreement.
 
-Toolchain version capture is therefore complete for that candidate, but matching
-agreement text/hash and the acceptance/contract context remain outstanding.
-Questions 1, 2b and 4 remain deferred. The follow-up collector expands discovery
+For that earlier candidate, toolchain capture was complete but agreement discovery
+was incomplete; the latest evidence above supersedes the missing-document finding.
+Acceptance/contract context remains outstanding. The follow-up collector expands discovery
 within the selected Xcode Resources directory and retains hashed candidates;
 filenames and successful builds alone do not establish legal applicability.
 
@@ -231,9 +268,11 @@ on each claimed supported macOS version; no such test is certified by this brief
 
 ## Questions for the reviewer
 
-Sequencing: **1, 2b and 4 are deferred** until engineering supplies the missing
-candidate-specific toolchain/agreement evidence. Answer **2a and 3 now**, and
-**5 and 6 conditionally** as described below; this is not release approval.
+Sequencing: the latest evidence now supplies the captured candidate's toolchain
+and installed agreement. Address **1, 2b and 4** with explicit assumptions or
+deferrals for still-unconfirmed contract/acceptance facts; **2a and 3** remain
+available for review, and **5 and 6** are conditional assessments. No answer
+should be presented as approval of a different final release candidate.
 
 1. For these exact revisions, what permissions/conditions apply separately to
    shipping compiled macOS binaries and redistributing vendored binding source?
@@ -242,8 +281,9 @@ candidate-specific toolchain/agreement evidence. Answer **2a and 3 now**, and
    - **2a — answer now:** Based on the inspected binary's `otool -L` evidence,
      confirm whether AppKit, Foundation, WebKit and IOKit qualify for the GPLv3
      System Library exclusion. State the scope and any additional facts needed.
-   - **2b — deferred:** Assess copyright/contract restrictions on binding source
-     against the fixed Xcode/SDK/agreement evidence engineering must provide.
+   - **2b — candidate-specific:** Assess copyright/contract restrictions on binding
+     source against the latest fixed Xcode/SDK/agreement evidence. Identify any
+     additional acceptance or upstream-generation facts required for a conclusion.
 
 3. Under our MIT election, are complete terms and attribution sufficient and
    correctly preserved? Identify any independently applicable NOTICE obligations.
