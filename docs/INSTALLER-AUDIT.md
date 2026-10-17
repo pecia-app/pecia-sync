@@ -3,7 +3,65 @@
 Status: partial engineering inspection; not release clearance.
 Source baseline: `9b5b3cba7077af309abd447bcdf2aa65a8487c2f`.
 
+## Fresh retained artifacts — follow-up
+
+[Installer audit run 39010439200](https://github.com/pecia-app/pecia-sync/actions/runs/39010439200)
+built all three platforms successfully at PR merge snapshot
+`d30bac28afb6b254259a070e0ae21b6f84647750`. All downloaded bundle archive
+SHA-256 digests matched their inventory reports. Artifact IDs are Linux
+12093126090, macOS 12093101204 and Windows 12092767620. Retention is 14 days.
+This supersedes the lack of candidate artifacts described in the historical
+section below; these are audit candidates, not published releases.
+
+7-Zip 26.04 and bsdtar extracted the DMG/HFS, MSI cabinet, NSIS, Debian,
+RPM/cpio and AppImage/SquashFS payloads without running their executables.
+
+- DMG, Debian, RPM, AppImage and NSIS each contain dependency notices identical
+  to that platform's generated audit notice file, plus all 21 unique supplemental
+  notice files with the expected SHA-256 values.
+- The MSI cabinet contains matching bytes for those notices and all 21
+  supplements. Installer destination-table mapping remains unverified; cabinet
+  presence alone is not a complete MSI installation review.
+- The DMG's executable and Info.plist match the separately retained macOS app.
+  `otool -L` lists only Apple system paths. This is not static-code inspection
+  or an automatic legal System Library exclusion.
+- Debian declares `libwebkit2gtk-4.1-0` and `libgtk-3-0` as external package
+  dependencies. AppImage instead carries WebKitGTK, GTK modules and numerous
+  additional shared libraries; the two formats have materially different
+  distribution payloads.
+- NSIS includes StartMenu.dll, System.dll, nsDialogs.dll, NSISdl.dll and
+  nsis_tauri_utils.dll under its installer plugin directory. Their precise
+  versions/source/notices and installer runtime provenance still need mapping.
+
+### Concrete unresolved AppImage findings
+
+81 copied package copyright files refer to `/usr/share/common-licenses`, but
+that directory is absent from the extracted AppImage. GLib's copyright file,
+for example, references LGPL-2, LGPL-2.1, MPL-1.1, Apache-2.0 and CC0-1.0 there.
+This is an incomplete-reference finding, not a conclusion that every referenced
+license governs linked code or that every full text is absent elsewhere.
+
+The source candidate includes Cargo/npm dependencies, not a matching collection
+of the Ubuntu-built libraries bundled by linuxdeploy. Package filenames alone
+do not establish exact source versions. The audit collector now retains the
+Linux build host's binary/source package version inventory and common-license
+texts as separate evidence on future runs. This does **not** add those texts
+to installers, collect corresponding source, or establish which host packages
+were bundled. Review mappings and remediate the actual distributed artifacts
+before approval, including AppImage's runtime and AppRun components.
+
+### Remaining decisions/work
+
+Retain exact build-tool/plugin provenance for Windows; resolve Linux bundled
+library source/notice obligations; finish nested PDF.js source review; obtain
+the objc2 assessment described in OBJC2-REVIEW-BRIEF.md. The evidence improvements
+do not authorize setting the release ledger to approved. If a narrower first
+release is desired, omitting AppImage is a maintainer scope decision, not an
+implicit change made by this audit.
+
 ## Available artifacts
+
+Historical pre-follow-up observations:
 
 Main CI run 38905641379 passed packaging on all three platforms, but its artifacts
 API returns no retained artifacts. Windows/Linux installer payloads therefore

@@ -6,6 +6,7 @@ on:
     paths:
       - '.github/workflows/installer-audit.yml'
       - 'scripts/installer-audit.mjs'
+      - 'scripts/macos-build-evidence*.mjs'
 
 permissions:
   contents: read
@@ -32,7 +33,14 @@ jobs:
       - run: npm ci
       - run: npm test
       - run: npm run licenses:test
+      - run: node --test scripts/macos-build-evidence.test.mjs
+      - name: Capture macOS toolchain before build
+        if: runner.os == 'macOS'
+        run: node scripts/macos-build-evidence.mjs before
       - run: npm run tauri build
+      - name: Confirm macOS toolchain after build
+        if: runner.os == 'macOS'
+        run: node scripts/macos-build-evidence.mjs after
       - run: npm run licenses:check
       - name: Record hashes and retain bundle structure
         run: node scripts/installer-audit.mjs

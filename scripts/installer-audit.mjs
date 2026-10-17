@@ -30,6 +30,13 @@ const archive=join(output,'installer-bundles.tar.gz');
 // Tar preserves macOS app symlinks/modes through GitHub's ZIP artifact wrapper.
 execFileSync('tar',['-czf',archive,'-C',bundle,'.']);
 await cp('build/licenses',join(output,'licenses'),{recursive:true});
+if(process.platform==='linux'){
+  // Preserve the build host package/source versions, not merely library filenames.
+  // This is an over-inclusive evidence inventory, not a bundled-library mapping.
+  const format='${binary:Package}\t${Version}\t${Architecture}\t${source:Package}\t${source:Version}\n';
+  await writeFile(join(output,'linux-installed-packages.tsv'),execFileSync('dpkg-query',['-W',`-f=${format}`],{encoding:'utf8',maxBuffer:16*1024*1024}));
+  await cp('/usr/share/common-licenses',join(output,'linux-common-licenses'),{recursive:true});
+}
 const report={purpose:'Non-publishing audit; not licensed for release by this report',revision:command('git',['rev-parse','HEAD']),runId:process.env.GITHUB_RUN_ID??null,platform:process.platform,architecture:process.arch,node:process.version,rust:command('rustc',['--version']),cargo:command('cargo',['--version']),archive:{file:'installer-bundles.tar.gz',sha256:await sha256(archive)},files};
 await writeFile(join(output,'inventory.json'),JSON.stringify(report,null,2)+'\n');
 console.log(`Recorded ${files.length} bundle entries for ${report.revision}. Installer payload extraction/review remains required.`);
