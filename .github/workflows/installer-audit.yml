@@ -5,6 +5,7 @@ on:
   pull_request:
     paths:
       - '.github/workflows/installer-audit.yml'
+      - '.github/workflows/release.yml'
       - 'scripts/installer-audit.mjs'
       - 'scripts/macos-build-evidence*.mjs'
       - 'scripts/linux-*.mjs'
@@ -38,6 +39,7 @@ jobs:
       - run: npm run licenses:test
       - run: node --test scripts/macos-build-evidence.test.mjs
       - run: node --test scripts/linux-notices.test.mjs scripts/linux-native-evidence.test.mjs scripts/linux-native-replay.test.mjs scripts/linux-native-source.test.mjs
+      - run: node --test scripts/linux-native-bundle.test.mjs
       - name: Capture macOS toolchain before build
         if: runner.os == 'macOS'
         run: node scripts/macos-build-evidence.mjs before
@@ -63,6 +65,16 @@ jobs:
       - name: Collect exact native source-package archives
         if: runner.os == 'Linux'
         run: node scripts/linux-native-source.mjs
+      - name: Package and retain native source supplement
+        if: runner.os == 'Linux'
+        run: node scripts/linux-native-bundle.mjs
+      - uses: actions/upload-artifact@v4
+        if: runner.os == 'Linux'
+        with:
+          name: native-source-${{ github.sha }}
+          path: build/native-source/
+          if-no-files-found: error
+          retention-days: 14
       - uses: actions/upload-artifact@v4
         if: always()
         with:

@@ -12,6 +12,7 @@ const read=path=>readFile(resolve(root,path),'utf8');
 const hash=value=>createHash('sha256').update(value).digest('hex');
 const inputs=['package.json','package-lock.json','src-tauri/Cargo.toml','src-tauri/Cargo.lock','experiments/kfx/Cargo.toml','experiments/kfx/Cargo.lock','src-tauri/tauri.conf.json','src-tauri/tauri.macos.conf.json','scripts/licenses.mjs','scripts/licensing-review.mjs','scripts/source-bundle.mjs','.github/workflows/release.yml'];
 const inputSha256=Object.fromEntries(await Promise.all(inputs.map(async path=>[path,hash(await read(path))])));
+inputSha256['scripts/linux-native-bundle.mjs']=hash(await read('scripts/linux-native-bundle.mjs'));
 inputSha256['scripts/linux-notices.mjs']=hash(await read('scripts/linux-notices.mjs'));
 for(const path of ['scripts/linux-native-evidence.mjs','scripts/linux-native-replay.mjs','scripts/linux-native-source.mjs','scripts/linux-replay-tools.mjs','.github/workflows/installer-audit.yml'])inputSha256[path]=hash(await read(path));
 inputSha256['.gitattributes']=hash(await read('.gitattributes'));
