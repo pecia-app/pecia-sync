@@ -28,6 +28,8 @@ if(process.platform!=='win32')for(const name of ['vite','tsx','tsc'])if(isAbsolu
 const run=(cmd,args)=>execFileSync(cmd,args,{cwd:project,stdio:'inherit',env:{...process.env,CARGO_NET_OFFLINE:'true'}});
 console.log(`Verifying extracted source at ${project}`);
 run(process.execPath,['scripts/preferred-source.mjs','--offline']);
+run(process.execPath,['scripts/runtime-source.mjs','--offline']);
+run(process.execPath,['--test','scripts/runtime-source.test.mjs']);
 run(process.execPath,['scripts/licenses.mjs']);
 run(process.execPath,['scripts/licenses.mjs','--check']);
 // Invoke Node entry points directly; this also works without shell-specific npm wrappers.
