@@ -63,8 +63,11 @@ arm64. Its 34 frontend tests, 7 licensing tests, TypeScript/Vite build and 12
 native tests passed; 2 hardware tests remained ignored. Cargo used vendored
 dependencies in offline mode. This validates the local source mechanics, not
 bit-for-bit reproduction of a release binary or complete legal compliance.
-The temporary snapshot is not a release commit. The new source-audit workflow
-will collect equivalent per-platform evidence on a PR; it has not run yet.
+The temporary snapshot is not a release commit. Subsequent PR #15 source-audit
+CI passed on macOS, Linux and Windows; see
+[platform evidence](RELEASE-SOURCE-EVIDENCE.md) for exact revisions, archive
+hashes and scope. This supersedes the earlier pending cross-platform check,
+but does not certify installer payloads or a future release archive.
 
 Inspection of the previously built macOS app found dynamic references only to
 `/usr/lib` and `/System/Library/Frameworks`, with no separately bundled dylibs,
@@ -84,8 +87,8 @@ Linux payloads, especially AppImage contents, still need separate inspection.
 4. Generate the source archive from a clean committed checkout, test rebuilds
    on all claimed platforms, and verify that the published source corresponds
    to the published binaries. Source archive generation has been
-   validated locally from a temporary snapshot; all-platform evidence and the
-   final release revision still need verification.
+   validated locally and on all three CI platforms. Final release archive and
+   binary correspondence still needs verification.
 5. Record review evidence, reviewer and current input hashes in
    `release/licensing-review.json` only after those checks pass.
 
