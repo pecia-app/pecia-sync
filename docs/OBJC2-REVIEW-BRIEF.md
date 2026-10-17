@@ -157,6 +157,34 @@ The published build.rs uses `cc::Build` with `-xobjective-c` and
 
 ## Build environment: facts to supply, not questions for counsel
 
+### Captured follow-up evidence
+
+[Audit run 39014228787](https://github.com/pecia-app/pecia-sync/actions/runs/39014228787)
+retained macOS artifact 12094382489 for checkout
+`3a095d74d58cd93d7877dd70963476d655050860`. Its before/after toolchain records
+are identical, and the downloaded installer archive matches its reported
+SHA-256. These facts belong to this follow-up candidate, not a retroactive
+measurement of the earlier snapshot below.
+
+- GitHub image: `macos26`, version `20261013.0424.1`; macOS 26.6.2 (25G83), arm64.
+- Selected developer directory: `/Applications/Xcode_26.6.app/Contents/Developer`.
+- Xcode 26.6, build 17F113; Apple clang 21.0.0 (clang-2100.1.1.101).
+- macOS SDK 26.5, build 25F70, at the selected Xcode's
+  `Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.5.sdk`.
+- No DEVELOPER_DIR, SDKROOT or MACOSX_DEPLOYMENT_TARGET environment override
+  was recorded. Cargo/build configuration still needs to be read alongside
+  these environment facts.
+- Agreement discovery returned no text at the two paths checked in that run.
+  This does not establish that the Xcode installation lacks an agreement.
+
+Toolchain version capture is therefore complete for that candidate, but matching
+agreement text/hash and the acceptance/contract context remain outstanding.
+Questions 1, 2b and 4 remain deferred. The follow-up collector expands discovery
+within the selected Xcode Resources directory and retains hashed candidates;
+filenames and successful builds alone do not establish legal applicability.
+
+### Historical snapshot and evidence still required
+
 The inspected candidate is audit snapshot
 `d30bac28afb6b254259a070e0ae21b6f84647750`, not a final release.
 [macOS job 117331655585](https://github.com/pecia-app/pecia-sync/actions/runs/39010439200/job/117331655585)

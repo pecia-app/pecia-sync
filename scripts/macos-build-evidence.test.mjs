@@ -1,7 +1,7 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
-import {collectMacEvidence} from './macos-build-evidence.mjs';
+import {collectMacEvidence,discoverAgreementPaths} from './macos-build-evidence.mjs';
 
 test('captures selected toolchain and exact agreement without accepting it',async()=>{
   const calls=[],bytes=Buffer.from('Synthetic agreement');
@@ -21,4 +21,23 @@ test('honors developer override and keeps missing agreement explicit',async()=>{
   assert.ok(paths.every(path=>path.startsWith('/Applications/Pinned.app/')));
   assert.equal(data.agreement,null);
   assert.match(data.agreementEvidence,/incomplete/);
+});
+test('finds the English language-code location without accepting an agreement',async()=>{
+  const data=await collectMacEvidence({run:()=>'/Applications/Xcode.app/Contents/Developer',read:async path=>{
+    if(path.endsWith('/en.lproj/License.rtf'))return Buffer.from('Synthetic English agreement');
+    throw Object.assign(Error('missing'),{code:'ENOENT'});
+  }});
+  assert.ok(data.agreement.path.endsWith('/en.lproj/License.rtf'));
+  assert.match(data.acceptance,/Not determined/);
+});
+test('discovery is bounded to resources and does not follow symlinks',async()=>{
+  const entry=(name,type)=>({name,isSymbolicLink:()=>type==='link',isFile:()=>type==='file',isDirectory:()=>type==='dir'});
+  const seen=[];
+  const found=await discoverAgreementPaths('/Xcode/Resources',async path=>{
+    seen.push(path);
+    if(path==='/Xcode/Resources')return [entry('en.lproj','dir'),entry('escape','link'),entry('icon.png','file'),entry('LicenseInfo.plist','file')];
+    return [entry('License.pdf','file')];
+  });
+  assert.deepEqual(found,['/Xcode/Resources/LicenseInfo.plist','/Xcode/Resources/en.lproj/License.pdf']);
+  assert.ok(!seen.some(path=>path.includes('escape')));
 });
