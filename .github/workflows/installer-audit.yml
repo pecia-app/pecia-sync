@@ -37,7 +37,7 @@ jobs:
       - run: npm test
       - run: npm run licenses:test
       - run: node --test scripts/macos-build-evidence.test.mjs
-      - run: node --test scripts/linux-notices.test.mjs scripts/linux-native-evidence.test.mjs
+      - run: node --test scripts/linux-notices.test.mjs scripts/linux-native-evidence.test.mjs scripts/linux-native-replay.test.mjs scripts/linux-native-source.test.mjs
       - name: Capture macOS toolchain before build
         if: runner.os == 'macOS'
         run: node scripts/macos-build-evidence.mjs before
@@ -50,7 +50,19 @@ jobs:
         run: node scripts/installer-audit.mjs
       - name: Map AppDir native files to Linux source-package versions
         if: runner.os == 'Linux'
-        run: node scripts/linux-native-evidence.mjs
+        env:
+          PECIA_REPLAY_TOOLS: build/installer-audit/linuxdeploy-tools/squashfs-root/usr/bin
+        run: |
+          node scripts/linux-replay-tools.mjs
+          node scripts/linux-native-evidence.mjs
+      - name: Enable Ubuntu source indexes
+        if: runner.os == 'Linux'
+        run: |
+          sudo sed -i -E 's/^Types:[[:space:]]+deb[[:space:]]*$/Types: deb deb-src/' /etc/apt/sources.list.d/ubuntu.sources
+          sudo apt-get update
+      - name: Collect exact native source-package archives
+        if: runner.os == 'Linux'
+        run: node scripts/linux-native-source.mjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:

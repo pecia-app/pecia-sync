@@ -1,10 +1,11 @@
 // Non-publishing evidence. A filename or package-owner guess is not provenance.
-import {readFile, readdir, lstat, writeFile, mkdir} from 'node:fs/promises';
+import {readFile, readdir, lstat, realpath, writeFile, mkdir} from 'node:fs/promises';
 import {join, basename, dirname, relative, resolve} from 'node:path';
 import {createHash} from 'node:crypto';
 import {execFileSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
 import {commonLicenseReferences, verifyCommonLicenses} from './linux-notices.mjs';
+import {replayNativeFile} from './linux-native-replay.mjs';
 
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
 const run = (cmd, args) => execFileSync(cmd, args, {encoding: 'utf8', maxBuffer: 32 * 1024 * 1024});
@@ -25,7 +26,7 @@ async function* walk(root) {
     else if (info.isFile()) yield path;
   }
 }
-export async function collectNativeEvidence(appdir, output, command = run) {
+export async function collectNativeEvidence(appdir, output, command = run, replayTools = null) {
   const records = [], references = new Set(), sourcePackages = new Map(), noticeDirectories = [];
   for await (const path of walk(appdir)) {
     const bytes = await readFile(path), name = relative(appdir, path);
@@ -35,12 +36,24 @@ export async function collectNativeEvidence(appdir, output, command = run) {
     }
     if (!bytes.subarray(0, 4).equals(Buffer.from([0x7f, 0x45, 0x4c, 0x46]))) continue;
     const record = {path: name, sha256: hash(bytes), candidates: []};
-    // linuxdeploy may relocate or patch files. Exact-byte equality is the only
-    // automatic match; differing files remain unresolved, even with same name.
+    // linuxdeploy strips and rewrites RPATH. Accept either original exact bytes
+    // or a full-byte match after a recorded replay on a private host-file copy.
     let owners = [];
     try { owners = parseOwners(command('dpkg-query', ['-S', `*/${basename(path)}`])); }
     catch (error) { if (error.status !== 1) throw error; }
+    const resolvedOwners = [];
     for (const candidate of owners) {
+      try {
+        if ((await lstat(candidate.path)).isSymbolicLink()) {
+          const target = await realpath(candidate.path);
+          // A development-package .so symlink does not own the runtime bytes.
+          // Resolve its target and ask for that file's actual package owner.
+          const targetOwners = parseOwners(command('dpkg-query', ['-S', target]));
+          resolvedOwners.push(...targetOwners.filter(owner => owner.path === target).map(owner => ({...owner, viaSymlink: candidate.path})));
+        } else resolvedOwners.push(candidate);
+      } catch (error) { if (error.code !== 'ENOENT' && error.status !== 1) throw error; }
+    }
+    for (const candidate of resolvedOwners) {
       let host;
       try { host = await readFile(candidate.path); }
       catch (error) { if (['ENOENT', 'EISDIR'].includes(error.code)) continue; throw error; }
@@ -48,12 +61,19 @@ export async function collectNativeEvidence(appdir, output, command = run) {
       const fields = command('dpkg-query', ['-W', '-f=${binary:Package}\t${Version}\t${Architecture}\t${source:Package}\t${source:Version}', candidate.owner]).split('\t');
       if (fields.length !== 5 || fields.some(field => !field.trim())) throw Error(`Incomplete package metadata: ${candidate.owner}`);
       const [binaryPackage, binaryVersion, architecture, sourcePackage, sourceVersion] = fields;
-      const status = matchStatus(record.sha256, hostSha256);
+      let status = matchStatus(record.sha256, hostSha256), replay;
+      if (status !== 'exact-bytes' && replayTools) {
+        try {
+          replay = await replayNativeFile(candidate.path, path, replayTools);
+          if (replay.matched) status = 'exact-replayed-bytes';
+        } catch (error) { replay = {matched: false, error: String(error.message).slice(0, 1000)}; }
+      }
       const mapping = {...candidate, hostSha256, status, binaryPackage, binaryVersion, architecture, sourcePackage, sourceVersion};
+      if (replay) mapping.replay = replay;
       record.candidates.push(mapping);
-      if (status === 'exact-bytes') sourcePackages.set(`${sourcePackage}=${sourceVersion}`, {sourcePackage, sourceVersion});
+      if (['exact-bytes', 'exact-replayed-bytes'].includes(status)) sourcePackages.set(`${sourcePackage}=${sourceVersion}`, {sourcePackage, sourceVersion});
     }
-    record.status = record.candidates.some(candidate => candidate.status === 'exact-bytes') ? 'exact-package-match' : 'unresolved';
+    record.status = record.candidates.some(candidate => ['exact-bytes', 'exact-replayed-bytes'].includes(candidate.status)) ? 'verified-package-match' : 'unresolved';
     records.push(record);
   }
   if (!records.length) throw Error('No ELF payloads found in AppDir');
@@ -79,5 +99,8 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
   const base = resolve('src-tauri/target/release/bundle/appimage');
   const dirs = (await readdir(base, {withFileTypes: true})).filter(entry => entry.isDirectory() && entry.name.endsWith('.AppDir'));
   if (dirs.length !== 1) throw Error(`Expected exactly one AppDir; found ${dirs.length}`);
-  await collectNativeEvidence(join(base, dirs[0].name), resolve('build/installer-audit'));
+  const toolsRoot = process.env.PECIA_REPLAY_TOOLS;
+  if (!toolsRoot) throw Error('PECIA_REPLAY_TOOLS must identify the retained linuxdeploy tool directory');
+  const tools = {strip: resolve(toolsRoot, 'strip'), patchelf: resolve(toolsRoot, 'patchelf')};
+  await collectNativeEvidence(join(base, dirs[0].name), resolve('build/installer-audit'), run, tools);
 }
