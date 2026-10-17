@@ -1,0 +1,44 @@
+name: Installer audit (non-publishing)
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - '.github/workflows/installer-audit.yml'
+      - 'scripts/installer-audit.mjs'
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    name: Retain audit installers (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Install Linux desktop dependencies
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y libwebkit2gtk-4.1-dev build-essential curl wget file libxdo-dev libssl-dev libayatana-appindicator3-dev librsvg2-dev
+      - run: npm ci
+      - run: npm test
+      - run: npm run licenses:test
+      - run: npm run tauri build
+      - run: npm run licenses:check
+      - name: Record hashes and retain bundle structure
+        run: node scripts/installer-audit.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: installer-audit-${{ runner.os }}-${{ github.sha }}
+          path: build/installer-audit/
+          if-no-files-found: error
+          retention-days: 14
