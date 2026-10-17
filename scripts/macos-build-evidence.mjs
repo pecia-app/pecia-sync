@@ -2,7 +2,7 @@
 import {execFileSync} from 'node:child_process';
 import {readFile,mkdir,writeFile,cp} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
-import {resolve,join} from 'node:path';
+import {resolve,join,posix} from 'node:path';
 import {fileURLToPath} from 'node:url';
 
 export async function collectMacEvidence({run,read,env={}}){
@@ -24,7 +24,8 @@ export async function collectMacEvidence({run,read,env={}}){
   };
   const contents=developer.replace(/\/Contents\/Developer\/?$/,'/Contents');
   if(contents!==developer){
-    for(const path of [join(contents,'Resources/License.rtf'),join(contents,'Resources/English.lproj/License.rtf')]){
+    // These are macOS paths even when the collector is tested on Windows.
+    for(const path of [posix.join(contents,'Resources/License.rtf'),posix.join(contents,'Resources/English.lproj/License.rtf')]){
       try{
         const bytes=await read(path);
         result.agreement={path,sha256:createHash('sha256').update(bytes).digest('hex'),bytes:bytes.length};
