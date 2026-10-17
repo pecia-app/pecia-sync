@@ -6,6 +6,7 @@ import {fileURLToPath} from 'node:url';
 import {validateReview} from './licensing-review.mjs';
 import {isNoticeFile,loadSupplements} from './notice-supplements.mjs';
 import {collectCommonLicenses,verifyCommonLicenses} from './linux-notices.mjs';
+import {runtimeNotices} from './runtime-source.mjs';
 
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const read=path=>readFile(resolve(root,path),'utf8');
@@ -19,6 +20,9 @@ inputSha256['.gitattributes']=hash(await read('.gitattributes'));
 inputSha256['scripts/source-test-selection.mjs']=hash(await read('scripts/source-test-selection.mjs'));
 for(const path of ['scripts/notice-supplements.mjs','release/notice-supplements.json','scripts/preferred-source.mjs','release/preferred-source.json','scripts/verify-source.mjs','.github/workflows/source-audit.yml'])inputSha256[path]=hash(await read(path));
 const supplements=await loadSupplements(root);
+const runtimeRecords=await runtimeNotices(root);
+for(const path of ['release/runtime-source.json','scripts/runtime-source.mjs'])inputSha256[path]=hash(await read(path));
+for(const record of runtimeRecords)inputSha256[`LICENSES/third-party/${record.notice.file}`]=record.notice.sha256;
 for(const supplement of supplements.values())for(const notice of supplement.notices)inputSha256[`LICENSES/third-party/${notice.file}`]=notice.sha256;
 const mode=process.argv[2];
 if(mode==='--release') {
@@ -94,6 +98,10 @@ if(mode==='--release') {
     packages.push(item);
   }
   await mkdir(resolve(root,'build/licenses'),{recursive:true});
+  for(const record of runtimeRecords) {
+    notices.push(`\n=== AppImage runtime dependency: ${record.name} ${record.version} ===`, `License: ${record.license}`, `Provenance: ${record.evidence}`, `Source: ${record.notice.url}`, record.contents);
+    packages.push({ecosystem:'native-runtime',name:record.name,version:record.version,license:record.license,source:record.sourceRevision,noticeFiles:[{path:`LICENSES/third-party/${record.notice.file}`,sha256:record.notice.sha256}]});
+  }
   if(process.platform==='linux')await collectCommonLicenses('/usr/share/common-licenses',resolve(root,'build/licenses/linux-common-licenses'));
   const text=notices.join('\n')+'\n';
   await writeFile(resolve(root,'build/licenses/THIRD-PARTY-NOTICES.txt'),text);

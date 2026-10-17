@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "scope": "Partial AppImage runtime source coverage; not release clearance.",
+  "records": [{
+    "name": "mimalloc2",
+    "version": "2.1.7-r0",
+    "license": "MIT",
+    "runtimeRevision": "8f39b89e2ac31e1640b3d3f7e9a5108e6ce805fa",
+    "sourceRevision": "8c532c32c3c96e5ba1f2283e032f69ead8add00f",
+    "recipeRevision": "5a1a5dc3216a69e3cd66a57ee07cb5ef01b8be39",
+    "evidence": "AppImage/type2-runtime run 36463736478 x86_64 log installs mimalloc2-dev 2.1.7-r0 and links -lmimalloc. Alpine recipe selects libmimalloc-secure.a. Source and patch SHA-512 match that recipe.",
+    "notice": {
+      "file": "19c99805e7a44a34b297a75d1edea9985e300066dfc024d5c99d4236d4573b5d.txt",
+      "sha256": "19c99805e7a44a34b297a75d1edea9985e300066dfc024d5c99d4236d4573b5d",
+      "url": "https://raw.githubusercontent.com/microsoft/mimalloc/8c532c32c3c96e5ba1f2283e032f69ead8add00f/LICENSE"
+    },
+    "files": [
+      {
+        "file": "mimalloc-2.1.7.tar.gz",
+        "url": "https://github.com/microsoft/mimalloc/archive/v2.1.7/mimalloc-2.1.7.tar.gz",
+        "sha256": "0eed39319f139afde8515010ff59baf24de9e47ea316a315398e8027d198202d",
+        "sha512": "4e30976758015c76a146acc1bfc8501e2e5c61b81db77d253de0d58a8edef987669243f232210667b32ef8da3a33286642acb56ba526fd24c4ba925b44403730"
+      },
+      {
+        "file": "APKBUILD",
+        "url": "https://raw.githubusercontent.com/alpinelinux/aports/5a1a5dc3216a69e3cd66a57ee07cb5ef01b8be39/community/mimalloc2/APKBUILD",
+        "sha256": "bb2618381e98ef508b41697d9177b7d1fef6f61bf38543aa055b9e0002c3c54b"
+      },
+      {
+        "file": "cmake-add-insecure-suffix.patch",
+        "url": "https://raw.githubusercontent.com/alpinelinux/aports/5a1a5dc3216a69e3cd66a57ee07cb5ef01b8be39/community/mimalloc2/cmake-add-insecure-suffix.patch",
+        "sha256": "bbf09f82b9a187399f33f6cc4136bd088f475d769f385aa1f08d0850473b04ae",
+        "sha512": "99a7777e310f4a585e482ad9dc44fce62e88b65f4f8f51545c9e6b1fd8a17583614cc853e65dade9dd083936de90c3a6f23aa52eb84697020f2a44868e6d4c93"
+      }
+    ]
+  }]
+}

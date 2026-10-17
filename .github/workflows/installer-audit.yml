@@ -10,6 +10,9 @@ on:
       - 'scripts/macos-build-evidence*.mjs'
       - 'scripts/linux-*.mjs'
       - 'scripts/licenses.mjs'
+      - 'scripts/runtime-source*.mjs'
+      - 'release/runtime-source.json'
+      - 'LICENSES/**'
       - 'src-tauri/tauri.conf.json'
 
 permissions:
@@ -37,6 +40,7 @@ jobs:
       - run: npm ci
       - run: npm test
       - run: npm run licenses:test
+      - run: node --test scripts/runtime-source.test.mjs
       - run: node --test scripts/macos-build-evidence.test.mjs
       - run: node --test scripts/linux-notices.test.mjs scripts/linux-native-evidence.test.mjs scripts/linux-native-replay.test.mjs scripts/linux-native-source.test.mjs
       - run: node --test scripts/linux-native-bundle.test.mjs
