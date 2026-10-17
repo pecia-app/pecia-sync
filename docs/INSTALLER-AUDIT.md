@@ -3,6 +3,57 @@
 Status: partial engineering inspection; not release clearance.
 Source baseline: `9b5b3cba7077af309abd447bcdf2aa65a8487c2f`.
 
+## Native transformation follow-up
+
+The Linux artifact from run `39017795244`, checkout
+`f4bcc57c8b10dad6030d845292213c1cba9807a7`, has 177 regular ELF files.
+The initial zero-match report found candidates for 175 of them; their bytes had
+changed during packaging. This was not 177 missing package identities.
+
+A local isolated Ubuntu x86-64 replay downloaded the exact candidate binary
+package versions and first compared their original bytes with the recorded host
+SHA-256. Replaying linuxdeploy's strip/RPATH operations reproduced 167 complete
+payload hashes. Seven additional payloads are byte-identical copies of already
+verified runtime libraries; their development-package aliases require resolving
+the symlink target's owner, now handled by the collector. The remaining WebKit
+library reproduced exactly after the GTK plugin's additional `/usr` to `././`
+byte substitution. Thus 175 distro-library payloads are accounted for in this
+retained artifact. Pecia's executable and `AppRun.wrapped` require separate
+provenance; this is not an assertion of complete source coverage.
+
+The replay uses linuxdeploy `07333c6` from the actual build cache, pinned to
+SHA-256 `36a2d7e274d12e1050d0e9ecfe11d339ed54720b2bec464c286d53f8b07f5c62`.
+Its strip and patchelf versions/hashes are retained. The GTK script is pinned to
+SHA-256 `ef6b9a980417243bc62e0241b51dc49876032afd1bab9b4762389f961b406d9b`.
+Only full final-byte equality succeeds; filenames, build IDs, ignored sections,
+and approximate matching cannot promote a candidate. Original files are never
+modified. See the pinned
+[linuxdeploy operations](https://github.com/linuxdeploy/linuxdeploy/blob/07333c6/src/core/appdir.cpp)
+and [GTK plugin](https://github.com/tauri-apps/tauri/blob/30da1fd6e17de6107ecc850c95dfb16b5729f2dd/crates/tauri-bundler/src/bundle/linux/appimage/linuxdeploy-plugin-gtk.sh).
+
+The Linux audit now requests exact source versions from authenticated Ubuntu
+APT indexes, without building or installing the source packages. It verifies
+the descriptor's package/version and every listed SHA-256/size, retains the
+descriptor, original archives and distro patch archives, and reports failures.
+A real gdk-pixbuf `2.42.10+dfsg-3ubuntu3.3` download passed these checks; the full
+batch still needs a fresh CI run. Source capture is audit evidence, not yet an
+attachment wired into the release workflow. Missing source, unresolved files,
+outer runtime, scripts and non-ELF assets remain separate review items.
+
+The same run's Windows installer was extracted without execution. All five
+NSIS plugin payloads match the retained tool-cache input files exactly:
+
+| Plugin | Payload/cache SHA-256 |
+| --- | --- |
+| StartMenu.dll | `fe330320459637d8dd2b5d84d07925c38ec264152ffd3b1760a4d44d76536caa` |
+| System.dll | `8b4c47c4cf5e76ec57dd5a050d5acd832a0d532ee875d7b44f6cdaf68f90d37c` |
+| nsDialogs.dll | `b1350f487692057c8ffde75dcc55287a52a3272240d4d4912f24464b27551fc0` |
+| NSISdl.dll | `ddf40229dd9d6b268902d8dea88c8a04aacf1af218dd29f6dcd35babc54ac08d` |
+| nsis_tauri_utils.dll | `5ba143b5db4a87d32d6e7802e033330aae56cbceabe0d1e3ba41948385ad4709` |
+
+This closes plugin input-to-payload matching for that candidate, not the Windows
+runtime/source/notice review or any legal assessment. No release approval changed.
+
 ## Engineering remediation in progress
 
 Linux notice generation now copies the build host's full common-license texts
