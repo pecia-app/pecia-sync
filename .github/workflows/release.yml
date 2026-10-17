@@ -53,6 +53,25 @@ jobs:
       - run: npm ci
       - run: npm test
       - run: npm run tauri build
+      - name: Collect matching Linux native source
+        if: runner.os == 'Linux'
+        env:
+          PECIA_REPLAY_TOOLS: build/installer-audit/linuxdeploy-tools/squashfs-root/usr/bin
+        run: |
+          node --test scripts/linux-native-bundle.test.mjs
+          node scripts/linux-replay-tools.mjs
+          node scripts/linux-native-evidence.mjs
+          sudo sed -i -E 's/^Types:[[:space:]]+deb[[:space:]]*$/Types: deb deb-src/' /etc/apt/sources.list.d/ubuntu.sources
+          sudo apt-get update
+          node scripts/linux-native-source.mjs
+          node scripts/linux-native-bundle.mjs
+      - name: Retain native source supplement
+        if: runner.os == 'Linux'
+        uses: actions/upload-artifact@v4
+        with:
+          name: pecia-sync-native-source
+          path: build/native-source/
+          if-no-files-found: error
       - name: Verify macOS app signature
         if: runner.os == 'macOS'
         run: |
@@ -84,6 +103,7 @@ jobs:
         run: |
           find release -type f \( \
             -name 'pecia-sync-source-*.tar.gz' -o \
+            -name 'pecia-sync-native-source-*.tar.gz' -o \
             -name '*.dmg' -o \
             -name '*.msi' -o \
             -name '*-setup.exe' -o \
@@ -101,11 +121,15 @@ jobs:
             The combined Pecia Sync desktop application is GPL-3.0-or-later.
             Existing component notices and licenses remain intact.
             Matching source is supplied in the attached pecia-sync-source archive.
+            The pecia-sync-native-source supplement contains matching Ubuntu
+            source packages for the verified libraries bundled in the AppImage.
             See docs/LICENSING.md in that archive for build instructions and notices.
             No warranty is provided; see the bundled GPL license for full terms.
           files: |
             release/pecia-sync-source-*.tar.gz
             release/SOURCE-SHA256SUMS.txt
+            release/pecia-sync-native-source-*.tar.gz
+            release/NATIVE-SOURCE-SHA256SUMS.txt
             release/**/*.dmg
             release/**/*.msi
             release/**/*-setup.exe

@@ -84,6 +84,14 @@ it is not proof of bit-for-bit installer reproducibility or legal clearance.
 
 ## Fail-closed release gate
 
+The Linux packaging job also collects exact Ubuntu source packages for verified
+AppDir library mappings and creates `pecia-sync-native-source-<revision>.tar.gz`.
+Its reports, package descriptors, patches and original archives are revalidated
+before packaging; `INSTALLER.json` binds it to the actual AppImage checksum.
+It is attached alongside the application source with its own checksum manifest.
+This supplement is not coverage for AppRun, the outer runtime or unresolved
+nested assets. Those findings still require resolution before approval.
+
 `release/licensing-review.json` binds review to dependency/configuration hashes.
 It remains pending until evidence for **notices**, **preferred source**,
 **platform rebuilds** and **bundled native libraries** has been recorded and
@@ -92,8 +100,12 @@ invalidates approval. The release workflow validates the gate before packaging
 and again before publication; source creation and upload must both succeed.
 Do not flip approval flags simply to get a release out.
 
-This is an engineering compliance process, not legal sign-off. Ambiguous
-licensing or exceptions should be reviewed by qualified counsel.
+This is an engineering compliance process, not legal certification. Paid counsel
+is not required by this internal checklist. The maintainer may record a reasoned,
+scoped assessment using primary license terms, upstream clarification and the
+engineering evidence. Document assumptions, uncertainty and conditions; merely
+accepting a risk or changing an approval flag does not establish permission or
+satisfy a missing source/notice obligation. Seek specialist advice if needed.
 
 References: [GPLv3](https://www.gnu.org/licenses/gpl-3.0.html),
 [GNU GPL FAQ](https://www.gnu.org/licenses/gpl-faq.html),

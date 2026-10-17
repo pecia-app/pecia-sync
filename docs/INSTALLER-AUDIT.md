@@ -3,6 +3,43 @@
 Status: partial engineering inspection; not release clearance.
 Source baseline: `9b5b3cba7077af309abd447bcdf2aa65a8487c2f`.
 
+## Verified PR #19 results
+
+[Run 39029669412](https://github.com/pecia-app/pecia-sync/actions/runs/39029669412)
+passed all three installer audit jobs at PR merge checkout
+`efb60ce6fd48fb73de285383e6a059000dee09ed`. Linux artifact `12099602952`
+records 177 regular ELF files: 175 verified distro-library payloads, plus
+`AppRun.wrapped` and `usr/bin/pecia-sync` requiring separate provenance.
+All 92 requested source-package versions were collected with zero failures.
+The downloaded descriptors and archive sizes/SHA-256 values were independently
+revalidated locally. Common-license reference verification also passed.
+
+This supersedes the pending full-batch statements in the historical follow-up
+below. The actual cached linuxdeploy hash is
+`bd9521cd5ff3ca351fecb78cd9b236a4e37b3621014ac05cac0c2d767ffa0474`:
+Tauri zeroes bytes 8–10 of the raw download (SHA-256
+`36a2d7e274d12e1050d0e9ecfe11d339ed54720b2bec464c286d53f8b07f5c62`).
+Both hashes and that transformation are recorded by the collector. The raw hash
+quoted below must not be mistaken for the transformed cache hash.
+
+PR #19 merged as `7027a96f5549fb885f156f4245efd9ec4da5b74e`.
+Its [source audit](https://github.com/pecia-app/pecia-sync/actions/runs/39030971979)
+passed on all three platforms. The separate
+[merged-main installer audit](https://github.com/pecia-app/pecia-sync/actions/runs/39030969845)
+must be considered independently; success on a PR snapshot is not a measurement
+of later payload bytes.
+
+The merged-main CI, source audit and installer audit all completed successfully.
+The current working branch adds native-source delivery to the release workflow:
+capture happens in the actual Linux packaging job, the packager revalidates
+revision/coverage/descriptors/archive hashes, and a source supplement includes
+the AppImage checksum and package extraction/build guidance. Audit CI exercises
+the same packager. Local tests passed, including revalidation of all 92 retained
+source packages; fresh workflow testing of this integration is still required.
+Do not substitute an older audit's source collection for a new installer.
+Launcher/runtime, non-ELF assets, Windows runtime/source/notices and nested
+PDF.js material remain open. No release approval is implied by these results.
+
 ## Native transformation follow-up
 
 The Linux artifact from run `39017795244`, checkout
