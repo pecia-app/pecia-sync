@@ -24,6 +24,21 @@ the audit snapshot as an assertion that a later release was verified.
 
 ## Evidence and outstanding actions
 
+### Current remaining-work checklist
+
+- [x] PR #22: source/notices for the runtime and six linked libraries collected,
+  checksum-verified, and source-audited across macOS, Windows and Linux.
+- [ ] AppRun: pinned source/full opening notice and an extracted-source Linux
+  compile/launch fixture are implemented on the follow-up branch; validate in CI.
+  Retained launcher bytes match upstream; historical bit-for-bit rebuild is not claimed.
+- [ ] AppImage: full runtime rebuild/relink test, digest transformation evidence,
+  non-ELF asset review and final artifact correspondence.
+- [ ] Windows: installer component source/notices and MSI destination mapping.
+- [ ] PDF.js: nested font and generated-decoder preferred-source coverage.
+- [ ] objc2: scoped, reasoned maintainer assessment (paid counsel optional).
+- [ ] Final release: choose candidate/version, retain matching hashes and obtain
+  explicit maintainer sign-off. The approval ledger remains pending.
+
 | Review area | Existing evidence | Required before sign-off |
 | --- | --- | --- |
 | Notices | [Licensing audit](LICENSING-AUDIT.md), [installer inspection](INSTALLER-AUDIT.md) | Common-license texts are now bundled and checked; five Windows plugin payloads match retained inputs. Finish runtime/plugin notice review and inspect final rebuilt artifacts. |
