@@ -48,4 +48,19 @@ test('rejects bad downloads and validates SHA-512 as well as SHA-256',()=>fixtur
 test('repository runtime notices have exact upstream bytes',async()=>{
   const records=await runtimeNotices();
   assert.ok(records.some(record=>record.name==='mimalloc2'&&record.version==='2.1.7-r0'));
+  assert.deepEqual(records.map(record=>record.name).sort(),['appimage-type2-runtime','libfuse','mimalloc2','musl','squashfuse','zlib','zstd']);
+  const musl=records.find(record=>record.name==='musl');
+  assert.equal(musl.files.length,17);
+  assert.ok(musl.files.some(file=>file.file==='CVE-2026-40200.patch'&&file.sha512));
+  assert.ok(records.find(record=>record.name==='libfuse').contents.includes('GNU LESSER GENERAL PUBLIC LICENSE'));
 });
+test('accepts official source hosts but rejects lookalikes',()=>fixture(async ({manifest})=>{
+  for(const host of ['musl.libc.org','zlib.net','codeload.github.com']){
+    const changed=structuredClone(manifest);changed.records[0].files[0].url=`https://${host}/source.tar.gz`;
+    assert.doesNotThrow(()=>validateRuntimeManifest(changed));
+  }
+  for(const host of ['zlib.net.evil.example','example.com']){
+    const changed=structuredClone(manifest);changed.records[0].files[0].url=`https://${host}/source.tar.gz`;
+    assert.throws(()=>validateRuntimeManifest(changed),/URL/);
+  }
+}));

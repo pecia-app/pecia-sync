@@ -91,6 +91,36 @@ actual packager provenance and transformation have been reconciled.
 
 ## Next implementation steps
 
+### Remaining runtime source inputs collected
+
+The source manifest now covers the runtime itself and all six library inputs
+identified in its build: musl, libfuse, squashfuse, zstd, zlib and mimalloc.
+It includes full upstream source archives and full notice texts. The libfuse
+notice bundle retains LICENSE, LGPL2.txt, GPL2.txt and AUTHORS separately labelled;
+the archive preserves file-level copyright and license statements. BSD-3-Clause
+is elected for zstd; its alternative license remains intact in the source.
+
+The musl 1.2.5-r11 source record includes its APKBUILD and all 16 checksummed
+inputs (upstream archive plus patches/helper files). zlib 1.3.2-r0 and zstd
+1.5.6-r2 include their exact recipes and source archives. Recipe input SHA-512
+and downloaded SHA-256 values are both checked by offline verification.
+The runtime archive includes its libfuse mount patch and original build scripts.
+
+These files are delivered in the application source archive under
+`build/runtime-source/<component>/`, not only retained in audit artifacts.
+To modify/relink the runtime, extract its source and the dependency sources,
+apply the recorded distro/runtime patches, and follow runtime BUILD.md plus
+scripts/common/install-dependencies.sh and src/runtime/Makefile. Use the retained
+Alpine APKBUILD files for distro-specific build options (including secure mimalloc).
+The upstream build scripts use network downloads; substitute the verified local
+archives for those downloads when rebuilding from this source collection.
+The dependency environment still needs the stated toolchain/build tools.
+
+Source collection and hash verification are implemented; an offline full-runtime
+rebuild/relink test and final installer matching are not yet established. This
+does not close the AppRun launcher, runtime digest replay, non-ELF assets or
+other-platform findings. No release approval is implied.
+
 ### mimalloc coverage implemented
 
 `release/runtime-source.json` records mimalloc 2.1.7-r0 and its exact source,
