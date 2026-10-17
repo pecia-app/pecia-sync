@@ -274,6 +274,33 @@
           "sha256": "c449eb42c2190820872631f5e22f8e15b1e985a36dc4a9e2de3585bb7536c785"
         }
       ]
+    },
+    {
+      "name": "appimage-apprun",
+      "version": "5735cc5",
+      "license": "MIT",
+      "runtimeRevision": "5735cc5bed206497cddfbd2a75e1982c2606c35d",
+      "sourceRevision": "5735cc5bed206497cddfbd2a75e1982c2606c35d",
+      "recipeRevision": "5735cc5bed206497cddfbd2a75e1982c2606c35d",
+      "evidence": "Tauri apprun-old and AppImageKit continuous launcher bytes match retained AppRun.wrapped SHA-256 f30140a43a0a59e46db21bdefdf749b9e9f2c6946e92afabbacf98b8ae73fb4f. AppImageKit release identifies this source revision; historical build log unavailable. Source/build test is not a bit-for-bit binary rebuild.",
+      "notice": {
+        "file": "8140ac4cb0d9abbe27044503b1554666f8a11b60ea03b4d350cf05c677338d47.txt",
+        "sha256": "8140ac4cb0d9abbe27044503b1554666f8a11b60ea03b4d350cf05c677338d47",
+        "url": "https://raw.githubusercontent.com/AppImage/AppImageKit/5735cc5bed206497cddfbd2a75e1982c2606c35d/src/AppRun.c",
+        "sourceRange": "Complete opening copyright/permission comment"
+      },
+      "files": [
+        {
+          "file": "AppRun.c",
+          "url": "https://raw.githubusercontent.com/AppImage/AppImageKit/5735cc5bed206497cddfbd2a75e1982c2606c35d/src/AppRun.c",
+          "sha256": "79c8a946886f7966f8b3a54bb7e8f81c46828625552db7b33a8d6d28a03e4268"
+        },
+        {
+          "file": "upstream-CMakeLists.txt",
+          "url": "https://raw.githubusercontent.com/AppImage/AppImageKit/5735cc5bed206497cddfbd2a75e1982c2606c35d/src/CMakeLists.txt",
+          "sha256": "e7f131bdcf7afbe1e243f0de0fc9160fa181346dd5e780c2fb05543fb41ea997"
+        }
+      ]
     }
   ]
 }
