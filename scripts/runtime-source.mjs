@@ -5,7 +5,7 @@ import {createHash} from 'node:crypto';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const hash = (bytes, algorithm = 'sha256') => createHash(algorithm).update(bytes).digest('hex');
-const safe = value => typeof value === 'string' && /^[A-Za-z0-9][A-Za-z0-9_.+-]*$/.test(value) && !value.includes('..');
+const safe = value => typeof value === 'string' && /^[A-Za-z0-9_][A-Za-z0-9_.+-]*$/.test(value) && !value.includes('..');
 export function validateRuntimeManifest(manifest) {
   if (manifest.schemaVersion !== 1 || !manifest.records?.length) throw Error('Invalid runtime source manifest');
   const names = new Set();
@@ -21,7 +21,7 @@ export function validateRuntimeManifest(manifest) {
           (file.sha512 !== undefined && !/^[a-f0-9]{128}$/.test(file.sha512))) throw Error('Invalid runtime file');
       files.add(file.file);
       const url = new URL(file.url);
-      if (url.protocol !== 'https:' || !['github.com', 'raw.githubusercontent.com'].includes(url.hostname) || url.username || url.password) throw Error('Invalid runtime source URL');
+      if (url.protocol !== 'https:' || !['github.com', 'raw.githubusercontent.com', 'codeload.github.com', 'musl.libc.org', 'zlib.net'].includes(url.hostname) || url.username || url.password) throw Error('Invalid runtime source URL');
     }
   }
   return manifest;
