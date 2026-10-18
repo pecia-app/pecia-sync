@@ -7,6 +7,32 @@ not a new installer built from that merge.
 
 ## Launcher
 
+PR #23 subsequently delivered pinned launcher source/notices and passed the
+Linux compile/launch fixture. It merged as
+`2bded7eed37119194df1c67020b6189643bf7ff1`; historical binary reproduction
+is still not claimed.
+
+## Non-ELF inventory follow-up (18 October)
+
+The retained PR #18 AppDir contains 2 scripts, 243 non-ELF regular assets and
+30 symlinks. This is an older payload, not a final candidate measurement.
+The scripts are the generated `AppRun` wrapper and GTK environment hook.
+Assets include GNOME desktop settings schemas and their compiled cache;
+the previous ELF-only source requests did not include gsettings-desktop-schemas.
+This identifies a coverage gap, not yet the exact package/version attribution.
+
+The native collector now embeds a hashed non-ELF inventory and raw link targets
+in its provenance report, which is already delivered with the native source
+supplement. Exact package-byte matches for regular assets contribute source
+requests, alongside ELF matches. Changed/generated files and links remain
+explicitly unresolved; no filename-based license exemptions are inferred.
+Payload symlinks are never followed, including cycles and external targets.
+Tests cover exact asset source mapping, changed bytes and link safety.
+Fresh Linux CI must establish the actual additional source packages. Runtime
+relinking, digest replay and resolution of remaining assets are still pending.
+
+## Retained launcher provenance
+
 The `AppRun.wrapped` payload retained from checkout
 `f4bcc57c8b10dad6030d845292213c1cba9807a7` has SHA-256
 `f30140a43a0a59e46db21bdefdf749b9e9f2c6946e92afabbacf98b8ae73fb4f`.

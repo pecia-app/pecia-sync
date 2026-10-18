@@ -28,8 +28,8 @@ the audit snapshot as an assertion that a later release was verified.
 
 - [x] PR #22: source/notices for the runtime and six linked libraries collected,
   checksum-verified, and source-audited across macOS, Windows and Linux.
-- [ ] AppRun: pinned source/full opening notice and an extracted-source Linux
-  compile/launch fixture are implemented on the follow-up branch; validate in CI.
+- [x] PR #23: pinned AppRun source/full opening notice and extracted-source Linux
+  compile/launch fixture passed CI; merged as `2bded7eed37119194df1c67020b6189643bf7ff1`.
   Retained launcher bytes match upstream; historical bit-for-bit rebuild is not claimed.
 - [ ] AppImage: full runtime rebuild/relink test, digest transformation evidence,
   non-ELF asset review and final artifact correspondence.
