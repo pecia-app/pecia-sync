@@ -31,6 +31,21 @@ Tests cover exact asset source mapping, changed bytes and link safety.
 Fresh Linux CI must establish the actual additional source packages. Runtime
 relinking, digest replay and resolution of remaining assets are still pending.
 
+PR #24 merged as `77205fd88dec10cb473ce57dec91ede07bc79619`, with all six
+triggered checks passing. Installer audit `39129391628`, Linux job
+`117681248743`, captured source for `gsettings-desktop-schemas=46.1-0ubuntu1`.
+Its audit checkout was `c7895f0816b78d7d68265a87cc2c3b84d410d7b8` (PR merge
+snapshot), not the later squash merge. File mapping took about 34 minutes;
+the follow-up caches host queries/hashes within one capture and rejects
+unequal non-ELF bytes before package metadata lookup. Exact-byte matching
+remains required; cache entries never survive between captures.
+
+The retained packager reports `appimagetool, continuous build (git version
+8c8c91f), build 295 built on 2025-12-04 17:56:36 UTC`. This was obtained by
+running only its `--version` command in a disposable Linux container. The
+earlier `854e19e` source inspection is not proof of this packager's behavior;
+the exact source/digest procedure still needs reconciliation.
+
 ## Retained launcher provenance
 
 The `AppRun.wrapped` payload retained from checkout

@@ -31,6 +31,15 @@ export async function collectNativeEvidence(appdir, output, command = run, repla
   const records = [], references = new Set(), sourcePackages = new Map(), noticeDirectories = [];
   const assets = await collectAssetEvidence(appdir);
   const assetRecords = new Map(assets.records.map(record => [record.path, record]));
+  // Cache only for this immutable build-host snapshot, never across captures.
+  const queries = new Map(), hostHashes = new Map(), metadata = new Map();
+  const ownersFor = pattern => {
+    if (!queries.has(pattern)) {
+      try { queries.set(pattern, parseOwners(command('dpkg-query', ['-S', pattern]))); }
+      catch (error) { if (error.status !== 1) throw error; queries.set(pattern, []); }
+    }
+    return queries.get(pattern);
+  };
   for await (const path of walk(appdir)) {
     const bytes = await readFile(path), name = relative(appdir, path);
     if (('/' + name).endsWith('/licenses/dependencies/linux-common-licenses/manifest.json')) noticeDirectories.push(dirname(path));
@@ -42,9 +51,7 @@ export async function collectNativeEvidence(appdir, output, command = run, repla
     record.candidates = [];
     // linuxdeploy strips and rewrites RPATH. Accept either original exact bytes
     // or a full-byte match after a recorded replay on a private host-file copy.
-    let owners = [];
-    try { owners = parseOwners(command('dpkg-query', ['-S', `*/${basename(path)}`])); }
-    catch (error) { if (error.status !== 1) throw error; }
+    const owners = ownersFor(`*/${basename(path)}`);
     const resolvedOwners = [];
     for (const candidate of owners) {
       try {
@@ -52,17 +59,23 @@ export async function collectNativeEvidence(appdir, output, command = run, repla
           const target = await realpath(candidate.path);
           // A development-package .so symlink does not own the runtime bytes.
           // Resolve its target and ask for that file's actual package owner.
-          const targetOwners = parseOwners(command('dpkg-query', ['-S', target]));
+          const targetOwners = ownersFor(target);
           resolvedOwners.push(...targetOwners.filter(owner => owner.path === target).map(owner => ({...owner, viaSymlink: candidate.path})));
         } else resolvedOwners.push(candidate);
       } catch (error) { if (error.code !== 'ENOENT' && error.status !== 1) throw error; }
     }
     for (const candidate of resolvedOwners) {
-      let host;
-      try { host = await readFile(candidate.path); }
+      let hostSha256;
+      try {
+        if (!hostHashes.has(candidate.path)) hostHashes.set(candidate.path, hash(await readFile(candidate.path)));
+        hostSha256 = hostHashes.get(candidate.path);
+      }
       catch (error) { if (['ENOENT', 'EISDIR'].includes(error.code)) continue; throw error; }
-      const hostSha256 = hash(host);
-      const fields = command('dpkg-query', ['-W', '-f=${binary:Package}\t${Version}\t${Architecture}\t${source:Package}\t${source:Version}', candidate.owner]).split('\t');
+      // Assets have no transformation replay. Reject unequal bytes before
+      // querying metadata for thousands of unrelated same-basename packages.
+      if (!elf && record.sha256 !== hostSha256) continue;
+      if (!metadata.has(candidate.owner)) metadata.set(candidate.owner, command('dpkg-query', ['-W', '-f=${binary:Package}\t${Version}\t${Architecture}\t${source:Package}\t${source:Version}', candidate.owner]).split('\t'));
+      const fields = metadata.get(candidate.owner);
       if (fields.length !== 5 || fields.some(field => !field.trim())) throw Error(`Incomplete package metadata: ${candidate.owner}`);
       const [binaryPackage, binaryVersion, architecture, sourcePackage, sourceVersion] = fields;
       let status = matchStatus(record.sha256, hostSha256), replay;
