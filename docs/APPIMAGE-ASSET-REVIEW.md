@@ -39,12 +39,51 @@ license assessment of every contributor or blanket approval of generated files.
 
 ## Remaining work
 
-- Map Pecia license copies, generated notices, icons and desktop file to the
-  exact audit checkout/build inputs.
+### Copied resources and cache replay (18 October)
+
+PR #28 merged as `6d2bb88ed9f0ab1ca97adc2faa708574b26217f6` after all
+three checks passed. Follow-up inspection remains scoped to the earlier audit
+checkout above, not that new merge's installer.
+
+All 41 inspected copied resources matched exactly: 37 license/notice files
+and four icons. Tracked resources were compared with `git show` at the exact
+audit checkout; generated notice files were compared with the same audit's
+retained `licenses` directory. The root `Pecia Sync.png` matches
+`src-tauri/icons/128x128@2x.png`, not the 128-pixel icon. This checks copying,
+not the completeness or legal interpretation of notice contents.
+
+Offline cache regeneration in a disposable Ubuntu 24.04 container gave:
+
+| Cache | Result |
+| --- | --- |
+| `gschemas.compiled` | Exact bytes |
+| `loaders.cache` | Exact bytes |
+| `giomodule.cache` | Exact bytes |
+| `immodules.cache` | Same content plus one final blank line in regenerated output; not an exact match |
+
+The generator packages were pinned to the audit's versions: GLib
+`2.80.0-6ubuntu3.9`, GTK `3.24.41-4ubuntu1.3`, GDK pixbuf
+`2.42.10+dfsg-3ubuntu3.3`. The inspected AppDir was mounted read-only and
+networking disabled. Query tools used copies of its modules inside the
+disposable container and the original no-argument invocation plus the
+generator's documented path substitution. No files in the inspected AppDir
+were changed, and no whitespace normalization was used to claim a match.
+
+`scripts/appimage-cache-replay.Dockerfile` and
+`scripts/appimage-cache-replay.sh` retain this diagnostic. Build the image
+from the Dockerfile on stdin, then run it with `--network none`, mounting
+the inspected AppDir read-only at `/appdir` and the script read-only at
+`/probe/replay.sh`; invoke `bash /probe/replay.sh`. Run only in a disposable
+container: it replaces container module directories. The current diagnostic
+exits nonzero for the known GTK difference. It is not wired as a passing CI
+gate. Repository availability of these old package versions is not guaranteed.
+
+### Still open
+
+- Map the desktop file to its exact generation inputs.
 - Reconcile the generated outer `AppRun` shell wrapper with its generator.
-- Verify generated GTK/GIO/pixbuf/schema caches and their generation inputs;
-  the source generator describes the commands, but exact cache replay is not
-  yet recorded.
+- Explain the GTK input-method cache's final blank-line difference. The other
+  three caches have exact replay evidence above.
 - Confirm required attribution for generated startup code.
 - Repeat final candidate checks and supported Linux desktop/FUSE tests.
 
