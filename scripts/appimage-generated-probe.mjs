@@ -1,0 +1,25 @@
+import {execFileSync} from 'node:child_process';
+import {readFile} from 'node:fs/promises';
+import {createHash} from 'node:crypto';
+import assert from 'node:assert/strict';
+const revision='506d07d88adb4695a5143005b1588e4eb7df03db';
+// Historical audit probe; requires its git object and the delivered source archives.
+const appdir=process.argv[2];
+if(!appdir)throw Error('Pass the extracted historical AppDir path');
+const tar=(file,path)=>execFileSync('tar',['-xOf',file,path],{encoding:'utf8'});
+const cpp=tar('build/runtime-source/linuxdeploy-wrapper/linuxdeploy.tar.gz','linuxdeploy-07333c6e942c7d71782b66be924c5d867f9dfdfc/src/core/appdir_root_setup.cpp');
+const decode=part=>[...part.matchAll(/"(?:\\.|[^"\\])*"|std::endl/g)].map(m=>m[0]==='std::endl'?'\n':JSON.parse(m[0])).join('');
+const prefix=decode(cpp.match(/std::ostringstream oss;([\s\S]*?)std::for_each/)[1]);
+const suffix=decode(cpp.match(/oss << std::endl([\s\S]*?)\/\/ first we/)[0].split('// first we')[0]);
+const wrapper=prefix+'source "$this_dir"/apprun-hooks/"linuxdeploy-plugin-gtk.sh"\n'+suffix;
+assert.equal(wrapper,await readFile(appdir+'/AppRun','utf8'));
+const source='build/preferred-source/tauri-apps-tauri-30da1fd6e17de6107ecc850c95dfb16b5729f2dd.tar.gz';
+const template=tar(source,'tauri-30da1fd6e17de6107ecc850c95dfb16b5729f2dd/crates/tauri-bundler/src/bundle/linux/freedesktop/main.desktop');
+const show=path=>execFileSync('git',['show',revision+':'+path],{encoding:'utf8'});
+const config=JSON.parse(show('src-tauri/tauri.conf.json')), cargo=show('src-tauri/Cargo.toml');
+const name=cargo.match(/^name = "([^"]+)"/m)[1], comment=cargo.match(/^description = "([^"]+)"/m)[1];
+const values={categories:'',comment,exec:name,icon:name,name:config.productName};
+let desktop=template.replace(/{{#if mime_type}}\n[\s\S]*?{{\/if}}\n/,'').replace(/{{#if comment}}\n|{{\/if}}\n/g,'').replace(/{{(\w+)}}/g,(_,key)=>values[key]);
+assert.equal(desktop,await readFile(appdir+'/usr/share/applications/Pecia Sync.desktop','utf8'));
+const hash=s=>createHash('sha256').update(s).digest('hex');
+console.log({wrapper:hash(wrapper),desktop:hash(desktop),exactMatches:2});
