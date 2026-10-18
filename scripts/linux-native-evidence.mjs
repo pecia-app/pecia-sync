@@ -6,6 +6,7 @@ import {execFileSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
 import {commonLicenseReferences, verifyCommonLicenses} from './linux-notices.mjs';
 import {replayNativeFile} from './linux-native-replay.mjs';
+import {collectAssetEvidence} from './linux-asset-evidence.mjs';
 
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
 const run = (cmd, args) => execFileSync(cmd, args, {encoding: 'utf8', maxBuffer: 32 * 1024 * 1024});
@@ -28,14 +29,17 @@ async function* walk(root) {
 }
 export async function collectNativeEvidence(appdir, output, command = run, replayTools = null) {
   const records = [], references = new Set(), sourcePackages = new Map(), noticeDirectories = [];
+  const assets = await collectAssetEvidence(appdir);
+  const assetRecords = new Map(assets.records.map(record => [record.path, record]));
   for await (const path of walk(appdir)) {
     const bytes = await readFile(path), name = relative(appdir, path);
     if (('/' + name).endsWith('/licenses/dependencies/linux-common-licenses/manifest.json')) noticeDirectories.push(dirname(path));
     if (basename(path) === 'copyright') {
       for (const reference of commonLicenseReferences(bytes.toString('utf8'))) references.add(reference);
     }
-    if (!bytes.subarray(0, 4).equals(Buffer.from([0x7f, 0x45, 0x4c, 0x46]))) continue;
-    const record = {path: name, sha256: hash(bytes), candidates: []};
+    const elf = bytes.subarray(0, 4).equals(Buffer.from([0x7f, 0x45, 0x4c, 0x46]));
+    const record = elf ? {path: name, sha256: hash(bytes)} : assetRecords.get(name.split('\\').join('/'));
+    record.candidates = [];
     // linuxdeploy strips and rewrites RPATH. Accept either original exact bytes
     // or a full-byte match after a recorded replay on a private host-file copy.
     let owners = [];
@@ -62,7 +66,7 @@ export async function collectNativeEvidence(appdir, output, command = run, repla
       if (fields.length !== 5 || fields.some(field => !field.trim())) throw Error(`Incomplete package metadata: ${candidate.owner}`);
       const [binaryPackage, binaryVersion, architecture, sourcePackage, sourceVersion] = fields;
       let status = matchStatus(record.sha256, hostSha256), replay;
-      if (status !== 'exact-bytes' && replayTools) {
+      if (elf && status !== 'exact-bytes' && replayTools) {
         try {
           replay = await replayNativeFile(candidate.path, path, replayTools);
           if (replay.matched) status = 'exact-replayed-bytes';
@@ -74,16 +78,18 @@ export async function collectNativeEvidence(appdir, output, command = run, repla
       if (['exact-bytes', 'exact-replayed-bytes'].includes(status)) sourcePackages.set(`${sourcePackage}=${sourceVersion}`, {sourcePackage, sourceVersion});
     }
     record.status = record.candidates.some(candidate => ['exact-bytes', 'exact-replayed-bytes'].includes(candidate.status)) ? 'verified-package-match' : 'unresolved';
-    records.push(record);
+    if (elf) records.push(record);
   }
   if (!records.length) throw Error('No ELF payloads found in AppDir');
   if (noticeDirectories.length !== 1) throw Error(`Expected one packaged common-license directory, found ${noticeDirectories.length}`);
   const texts = await verifyCommonLicenses(noticeDirectories[0]);
   const missingLicenseReferences = [...references].sort().filter(name => !texts.has(name));
   const report = {
-    scope: 'AppDir regular ELF files only; not the outer AppImage runtime, scripts, non-ELF assets, or complete corresponding source. Symlinks are not followed.',
+    scope: 'AppDir ELF records plus a non-ELF asset/link inventory. Regular files are mapped by exact package bytes; ELF transformations may be replayed. Not the outer runtime or complete corresponding source. Symlinks are not followed in the payload.',
     revision: command('git', ['rev-parse', 'HEAD']).trim(),
     missingLicenseReferences,
+    assets,
+    unresolvedAssets: assets.records.filter(record => record.status !== 'verified-package-match').map(record => record.path),
     sourceRequests: [...sourcePackages.values()].sort((a, b) => a.sourcePackage.localeCompare(b.sourcePackage)),
     unresolved: records.filter(record => record.status === 'unresolved').map(record => record.path),
     records,
