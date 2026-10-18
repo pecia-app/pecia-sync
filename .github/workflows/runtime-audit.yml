@@ -6,6 +6,7 @@ on:
     paths:
       - '.github/workflows/runtime-audit.yml'
       - 'scripts/runtime-rebuild*'
+      - 'scripts/runtime-smoke.sh'
       - 'scripts/runtime-source*'
       - 'release/runtime-source.json'
       - 'LICENSES/third-party/**'
@@ -33,7 +34,7 @@ jobs:
           set -euo pipefail
           mkdir -p build/runtime-audit
           git rev-parse HEAD > build/runtime-audit/revision.txt
-          sha256sum release/runtime-source.json scripts/runtime-rebuild.sh scripts/runtime-rebuild.Dockerfile > build/runtime-audit/inputs.sha256
+          sha256sum release/runtime-source.json scripts/runtime-rebuild.sh scripts/runtime-rebuild.Dockerfile scripts/runtime-smoke.sh > build/runtime-audit/inputs.sha256
           docker build --platform linux/amd64 -t pecia-runtime-rebuild:review - < scripts/runtime-rebuild.Dockerfile 2>&1 | tee build/runtime-audit/toolchain-build.log
           docker image inspect pecia-runtime-rebuild:review > build/runtime-audit/toolchain-image.json
       - name: Clean offline source rebuild and modified-version relink

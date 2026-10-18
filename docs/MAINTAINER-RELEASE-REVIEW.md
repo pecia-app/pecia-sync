@@ -31,8 +31,13 @@ the audit snapshot as an assertion that a later release was verified.
 - [x] PR #23: pinned AppRun source/full opening notice and extracted-source Linux
   compile/launch fixture passed CI; merged as `2bded7eed37119194df1c67020b6189643bf7ff1`.
   Retained launcher bytes match upstream; historical bit-for-bit rebuild is not claimed.
-- [ ] AppImage: full runtime rebuild/relink test, digest transformation evidence,
-  non-ELF asset review and final artifact correspondence.
+- [x] PR #26: clean offline runtime rebuild/relink passed in CI (run
+  `39151279693`, audit checkout `c5b3633a34b3cf2126e7e5beaa8ab839268dcfde`).
+  Merged as `4ca1b394972850072e502d160597feed9ee83f3c`.
+- [x] Historical AppImage digest transformation and full runtime-prefix match
+  reproduced for the specifically pinned older audit artifact.
+- [ ] AppImage: synthetic extraction/launch tests, remaining non-ELF asset
+  review, supported Linux desktop/FUSE tests and final artifact correspondence.
 - [ ] Windows: installer component source/notices and MSI destination mapping.
 - [ ] PDF.js: nested font and generated-decoder preferred-source coverage.
 - [ ] objc2: scoped, reasoned maintainer assessment (paid counsel optional).

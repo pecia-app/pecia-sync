@@ -22,7 +22,7 @@ after musl compilation because its script was edited while executing. The
 successful continuation reused those completed musl objects in a checkpointed
 disposable container, then built the remaining components and both runtimes.
 The retained recipe below instead requires a fresh build directory; a clean
-CI replay remains to be performed. No release binary was replaced.
+CI replay subsequently passed (details below). No release binary was replaced.
 
 The `AppImage runtime source rebuild` workflow now performs that clean replay
 on a fresh Ubuntu runner and disposable Alpine container. Source collection and
@@ -31,6 +31,19 @@ toolchain preparation may use the network; the actual compilation runs with
 It checks for unexpected dynamic-library dependencies and retains revision,
 input hashes, toolchain image/package details, logs and runtime hashes for 14
 days. Executables are not uploaded. CI success is not release authorization.
+
+Clean CI run `39151279693` passed in 2m11s on audit checkout
+`c5b3633a34b3cf2126e7e5beaa8ab839268dcfde`. Both runtime hashes matched
+the local observations above, and the static dependency check passed. PR #26
+merged as `4ca1b394972850072e502d160597feed9ee83f3c` with all four checks green.
+
+The follow-up adds a synthetic `AppRun` fixture compressed with both gzip and
+zstd. Each rebuilt runtime must extract identical fixture bytes and execute
+the fixture with a space-containing argument intact. This runs without FUSE,
+networking, or launching Pecia, and does not replace Linux desktop/FUSE testing.
+All four local combinations (two runtimes, two compression methods) passed.
+The fixture includes a repetitive content file to exercise compressed data,
+not just a small launcher. Fresh CI coverage is wired into the rebuild workflow.
 
 ## Repeat the check
 
@@ -63,7 +76,7 @@ Both source compilation phases used `--network none` and a read-only repository.
   is retained. The original distro recipes remain included for historical flags.
 - The runtime is not stripped or AppImage-packaged. Its default source version
   marker is `UNSUPPORTED_LOCAL_DEVELOPER_BUILD`, not the release commit.
-- Version smoke tests do not test FUSE mounting, desktop launch, extraction,
+- Synthetic extraction tests do not test FUSE mounting, Pecia desktop launch,
   library replacement inside a final AppImage, or Linux platform support.
 - Final candidate correspondence and remaining platform/license findings are
   still open. Do not populate the approval ledger from this result alone.

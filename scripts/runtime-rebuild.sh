@@ -77,3 +77,4 @@ make -B runtime GIT_COMMIT=pecia-relink-test
 ./runtime --appimage-version 2>&1 | grep -F pecia-relink-test
 cp runtime /out/runtime-relinked
 sha256sum /out/runtime-rebuilt /out/runtime-relinked > /out/runtime.sha256
+bash /work/scripts/runtime-smoke.sh
