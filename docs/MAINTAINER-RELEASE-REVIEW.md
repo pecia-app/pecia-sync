@@ -36,8 +36,10 @@ the audit snapshot as an assertion that a later release was verified.
   Merged as `4ca1b394972850072e502d160597feed9ee83f3c`.
 - [x] Historical AppImage digest transformation and full runtime-prefix match
   reproduced for the specifically pinned older audit artifact.
-- [ ] AppImage: synthetic extraction/launch tests, remaining non-ELF asset
-  review, supported Linux desktop/FUSE tests and final artifact correspondence.
+- [x] PR #27: synthetic gzip/zstd extraction and execution passed for both
+  rebuilt runtimes, including argument preservation (runtime CI `39154541990`).
+- [ ] AppImage: remaining [non-ELF asset review](APPIMAGE-ASSET-REVIEW.md),
+  supported Linux desktop/FUSE tests and final artifact correspondence.
 - [ ] Windows: installer component source/notices and MSI destination mapping.
 - [ ] PDF.js: nested font and generated-decoder preferred-source coverage.
 - [ ] objc2: scoped, reasoned maintainer assessment (paid counsel optional).
