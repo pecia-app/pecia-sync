@@ -1,0 +1,58 @@
+name: AppImage runtime source rebuild
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - '.github/workflows/runtime-audit.yml'
+      - 'scripts/runtime-rebuild*'
+      - 'scripts/runtime-source*'
+      - 'release/runtime-source.json'
+      - 'LICENSES/third-party/**'
+
+permissions:
+  contents: read
+
+jobs:
+  runtime:
+    name: Offline runtime rebuild and relink
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Collect and verify pinned source inputs
+        run: |
+          node scripts/runtime-source.mjs
+          node --test scripts/runtime-source.test.mjs
+      - name: Prepare disposable toolchain
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/runtime-audit
+          git rev-parse HEAD > build/runtime-audit/revision.txt
+          sha256sum release/runtime-source.json scripts/runtime-rebuild.sh scripts/runtime-rebuild.Dockerfile > build/runtime-audit/inputs.sha256
+          docker build --platform linux/amd64 -t pecia-runtime-rebuild:review - < scripts/runtime-rebuild.Dockerfile 2>&1 | tee build/runtime-audit/toolchain-build.log
+          docker image inspect pecia-runtime-rebuild:review > build/runtime-audit/toolchain-image.json
+      - name: Clean offline source rebuild and modified-version relink
+        shell: bash
+        run: |
+          set -euo pipefail
+          docker run --rm --platform linux/amd64 --network none \
+            -v "$PWD:/work:ro" -v "$PWD/build/runtime-audit:/out" \
+            pecia-runtime-rebuild:review bash /work/scripts/runtime-rebuild.sh \
+            2>&1 | tee build/runtime-audit/rebuild.log
+      - name: Retain non-publishing build evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: runtime-rebuild-evidence
+          retention-days: 14
+          if-no-files-found: warn
+          path: |
+            build/runtime-audit/*.txt
+            build/runtime-audit/*.sha256
+            build/runtime-audit/*.log
+            build/runtime-audit/*.json

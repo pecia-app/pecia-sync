@@ -121,6 +121,35 @@ Retrieve those exact revisions next; do not substitute current Alpine packages.
 
 ## Digest investigation
 
+### Historical replay verified on 18 October
+
+PR #25 merged as `c3e09a38b4fd78e507e8cf2d32534543c501e3c8` after all
+six triggered checks passed. Its Linux mapping step took 98 seconds versus
+about 34 minutes previously, and settings-schema source collection still passed.
+
+The actual retained packager identifies revision
+`8c8c91f762b412a19f4e8d2c4b35afb98f2d7c81`. Its executable SHA-256 is
+`58d3047a420e1dfa365ef0ad495b728b56627803cb6b75ed816b7a4fa9713720`;
+that revision's `src/digest.c` SHA-256 is
+`272049fa8a8324bf844e37b5ce940152b5ebb8e57ec50d4d7a4e1496c6f36636`.
+
+The retained AppImage from audit `39029669412` has SHA-256
+`f67004a393c6c76df3a90f2f97f1a4df052f84c18ce7881e21c04dbff46dc9db`.
+Replaying the chunk algorithm reproduces its stored digest
+`486c6245dbe85c83a996ca62d50d13f1`. Writing those 16 bytes into a memory copy
+of the pinned upstream runtime makes all 944632 prefix bytes match exactly.
+Neither the AppImage nor runtime was executed or modified for this comparison.
+
+`scripts/appimage-digest-probe.mjs` retains this read-only historical check:
+pass the retained AppImage and upstream runtime as its two arguments. It
+rejects other input hashes. This is deliberately not a generic verifier:
+upstream C does not initialize the skipped buffer regions, and the successful
+replay models buffer reuse for this binary/artifact. It must not be generalized
+to arbitrary compiler builds or final candidates without fresh evidence.
+Full runtime source rebuild/relink and final-candidate checks remain open.
+
+### Earlier investigation (superseded for the historical artifact above)
+
 Appimagetool source at `854e19e951900cf141245b384d45735942521abe` calls
 `appimage_type2_digest_md5` and writes its result into `.digest_md5`.
 Its bundled `src/digest.c` handles `.digest_md5`, `.sha256_sig` and `.sig_key`
