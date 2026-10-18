@@ -69,6 +69,34 @@ test('same filename or modified bytes are not treated as a verified mapping', ()
   assert.equal(matchStatus('a', 'a'), 'exact-bytes');
 });
 
+test('reuses ownership and matching metadata per capture, skips unequal asset metadata', {skip: process.platform === 'win32'}, async () => {
+  const root = await mkdtemp(join(tmpdir(), 'pecia-query-cache-'));
+  try {
+    const appdir = join(root, 'app'), source = join(root, 'common'), host = join(root, 'terms'), wrong = join(root, 'wrong');
+    await mkdir(appdir); await mkdir(source);
+    await writeFile(join(source, 'MIT'), 'fixture terms');
+    await collectCommonLicenses(source, join(appdir, 'licenses/dependencies/linux-common-licenses'));
+    await writeFile(join(appdir, 'binary'), Buffer.from([127, 69, 76, 70, 1]));
+    await writeFile(host, 'matching'); await writeFile(wrong, 'unrelated');
+    for (const dir of ['a', 'b']) { await mkdir(join(appdir, dir)); await writeFile(join(appdir, dir, 'copyright'), 'matching'); }
+    const queries = [], packages = [];
+    const command = (name, args) => {
+      if (name === 'git') return 'fixture-revision';
+      if (args[0] === '-S') { queries.push(args[1]); return args[1] === '*/copyright' ? `correct: ${host}\nwrong: ${wrong}\n` : ''; }
+      packages.push(args.at(-1));
+      assert.equal(args.at(-1), 'correct');
+      return 'correct\t1\tall\tcorrect-source\t1';
+    };
+    const result = await collectNativeEvidence(appdir, join(root, 'report'), command);
+    assert.equal(queries.filter(q => q === '*/copyright').length, 1);
+    assert.deepEqual(packages, ['correct']);
+    assert.deepEqual(result.sourceRequests, [{sourcePackage: 'correct-source', sourceVersion: '1'}]);
+    await writeFile(host, 'changed');
+    const fresh = await collectNativeEvidence(appdir, join(root, 'report'), command);
+    assert.deepEqual(fresh.sourceRequests, []); // No stale cross-capture hashes.
+  } finally { await rm(root, {recursive: true, force: true}); }
+});
+
 test('attributes symlink bytes to the runtime owner, not the development package', {skip: process.platform === 'win32'}, async () => {
   const root = await mkdtemp(join(tmpdir(), 'pecia-owner-test-'));
   try {
