@@ -301,6 +301,27 @@
           "sha256": "e7f131bdcf7afbe1e243f0de0fc9160fa181346dd5e780c2fb05543fb41ea997"
         }
       ]
+    },
+    {
+      "name": "linuxdeploy-wrapper",
+      "version": "07333c6",
+      "license": "MIT",
+      "runtimeRevision": "07333c6e942c7d71782b66be924c5d867f9dfdfc",
+      "sourceRevision": "07333c6e942c7d71782b66be924c5d867f9dfdfc",
+      "recipeRevision": "07333c6e942c7d71782b66be924c5d867f9dfdfc",
+      "evidence": "Generated AppRun shell wrapper: pinned linuxdeploy appdir_root_setup.cpp template. Full main-repository source retained for template provenance, not a complete linuxdeploy tool rebuild (submodules are not included). The emitted shell script is itself preferred source.",
+      "notice": {
+        "file": "1edb41ae7601854ae15d113c3700beebd0ea3ed05b85e3786a94a72bb9916091.txt",
+        "sha256": "1edb41ae7601854ae15d113c3700beebd0ea3ed05b85e3786a94a72bb9916091",
+        "url": "https://raw.githubusercontent.com/linuxdeploy/linuxdeploy/07333c6e942c7d71782b66be924c5d867f9dfdfc/LICENSE.txt"
+      },
+      "files": [
+        {
+          "file": "linuxdeploy.tar.gz",
+          "url": "https://codeload.github.com/linuxdeploy/linuxdeploy/tar.gz/07333c6e942c7d71782b66be924c5d867f9dfdfc",
+          "sha256": "68b6dcb20a98f5848bd5aaa9694fb15a635f3c6779404056101b859b5293d532"
+        }
+      ]
     }
   ]
 }

@@ -48,7 +48,7 @@ test('rejects bad downloads and validates SHA-512 as well as SHA-256',()=>fixtur
 test('repository runtime notices have exact upstream bytes',async()=>{
   const records=await runtimeNotices();
   assert.ok(records.some(record=>record.name==='mimalloc2'&&record.version==='2.1.7-r0'));
-  assert.deepEqual(records.map(record=>record.name).sort(),['appimage-apprun','appimage-type2-runtime','libfuse','mimalloc2','musl','squashfuse','zlib','zstd']);
+  assert.deepEqual(records.map(record=>record.name).sort(),['appimage-apprun','appimage-type2-runtime','libfuse','linuxdeploy-wrapper','mimalloc2','musl','squashfuse','zlib','zstd']);
   const musl=records.find(record=>record.name==='musl');
   assert.equal(musl.files.length,17);
   assert.ok(musl.files.some(file=>file.file==='CVE-2026-40200.patch'&&file.sha512));

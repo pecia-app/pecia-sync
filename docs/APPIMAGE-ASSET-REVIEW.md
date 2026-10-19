@@ -59,7 +59,7 @@ Offline cache regeneration in a disposable Ubuntu 24.04 container gave:
 | `gschemas.compiled` | Exact bytes |
 | `loaders.cache` | Exact bytes |
 | `giomodule.cache` | Exact bytes |
-| `immodules.cache` | Same content plus one final blank line in regenerated output; not an exact match |
+| `immodules.cache` | Exact bytes via the generator's fallback-copy path (see below) |
 
 The generator packages were pinned to the audit's versions: GLib
 `2.80.0-6ubuntu3.9`, GTK `3.24.41-4ubuntu1.3`, GDK pixbuf
@@ -69,21 +69,51 @@ disposable container and the original no-argument invocation plus the
 generator's documented path substitution. No files in the inspected AppDir
 were changed, and no whitespace normalization was used to claim a match.
 
+The initial direct regeneration of `immodules.cache` produced one extra blank
+line. The pinned GTK plugin's `search_tool` searches `libgtk-3-0`, but the
+audited Ubuntu package installs the executable under `libgtk-3-0t64`, outside
+PATH. Its fallback therefore retains the installed cache and applies the
+documented module-path substitution. Replaying that copy/substitution yields
+the exact packaged bytes. The diagnostic now checks the missing legacy tool
+path and missing PATH command before using the fallback, rather than trimming
+the difference away. All four cache comparisons pass locally.
+
 `scripts/appimage-cache-replay.Dockerfile` and
 `scripts/appimage-cache-replay.sh` retain this diagnostic. Build the image
 from the Dockerfile on stdin, then run it with `--network none`, mounting
 the inspected AppDir read-only at `/appdir` and the script read-only at
 `/probe/replay.sh`; invoke `bash /probe/replay.sh`. Run only in a disposable
-container: it replaces container module directories. The current diagnostic
-exits nonzero for the known GTK difference. It is not wired as a passing CI
-gate. Repository availability of these old package versions is not guaranteed.
+container: it replaces container module directories. The diagnostic fails on
+any byte mismatch; it is not yet wired into CI. Repository availability of
+these old package versions is not guaranteed.
+
+### Wrapper and desktop generation
+
+PR #29 merged as `a7831a995dc003af640eaeef8af17888e2649771` with all three
+checks green. Subsequent local probes verified both remaining generated files:
+
+- The outer shell wrapper matches `appdir_root_setup.cpp` at linuxdeploy
+  `07333c6e942c7d71782b66be924c5d867f9dfdfc`, with its single GTK hook.
+  SHA-256: `eb0b254ac0dae6543e6dd7cd02e1baf40a060de95b927313122d6b46323c00aa`.
+- The desktop entry matches the delivered Tauri template, using product name,
+  binary name and description from the exact audit checkout, with no category
+  or MIME type. SHA-256:
+  `f7ad117341d4b1241233f705b37778dcf9b85a84d9177801b519792e2c152cd3`.
+
+`node scripts/appimage-generated-probe.mjs <historical-AppDir>` repeats these
+comparisons. It requires the audit git object and collected source archives.
+The linuxdeploy MIT notice and pinned main-repository archive are now part of
+the runtime source/notice collection. The archive establishes template
+provenance, not a complete rebuild of linuxdeploy's submodule-based toolchain;
+the generated shell file is itself readable source.
+
+All 48 initially unmatched regular files in this particular report now have
+byte-level input/generation matches (41 copied resources, two startup scripts,
+one desktop entry and four caches). This does not approve future artifacts or
+resolve the independent platform/licensing review.
 
 ### Still open
 
-- Map the desktop file to its exact generation inputs.
-- Reconcile the generated outer `AppRun` shell wrapper with its generator.
-- Explain the GTK input-method cache's final blank-line difference. The other
-  three caches have exact replay evidence above.
 - Confirm required attribution for generated startup code.
 - Repeat final candidate checks and supported Linux desktop/FUSE tests.
 
