@@ -5,6 +5,7 @@ on:
   pull_request:
     paths:
       - 'scripts/*source*.mjs'
+      - 'scripts/windows-plugin*.mjs'
       - 'scripts/*licens*.mjs'
       - 'scripts/notice-supplements.mjs'
       - 'release/**'

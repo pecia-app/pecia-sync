@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "scope": "Partial AppImage runtime source coverage; not release clearance.",
+  "scope": "Partial AppImage and Windows installer source coverage; unresolved mappings and transitive dependencies remain. Not release clearance.",
   "records": [
     {
       "name": "mimalloc2",
@@ -320,6 +320,73 @@
           "file": "linuxdeploy.tar.gz",
           "url": "https://codeload.github.com/linuxdeploy/linuxdeploy/tar.gz/07333c6e942c7d71782b66be924c5d867f9dfdfc",
           "sha256": "68b6dcb20a98f5848bd5aaa9694fb15a635f3c6779404056101b859b5293d532"
+        }
+      ]
+    },
+    {
+      "name": "wix-ui",
+      "version": "3.14.1",
+      "license": "MS-RL",
+      "runtimeRevision": "b40e9a32c24033e11b77baf2c91a704382f898ed",
+      "sourceRevision": "b40e9a32c24033e11b77baf2c91a704382f898ed",
+      "recipeRevision": "b40e9a32c24033e11b77baf2c91a704382f898ed",
+      "evidence": "Six embedded MSI UI resources match this source exactly. Custom-action DLL source identified but not rebuilt; see docs/WINDOWS-INSTALLER-REVIEW.md.",
+      "notice": {
+        "file": "dfdf2048787635215a6baf3b9d461dee89a2904d246787258a44f072a98d4786.txt",
+        "sha256": "dfdf2048787635215a6baf3b9d461dee89a2904d246787258a44f072a98d4786",
+        "url": "https://raw.githubusercontent.com/wixtoolset/wix3/b40e9a32c24033e11b77baf2c91a704382f898ed/LICENSE.TXT",
+        "normalization": "CRLF to LF only"
+      },
+      "files": [
+        {
+          "file": "wix-ui.tar.gz",
+          "url": "https://codeload.github.com/wixtoolset/wix3/tar.gz/b40e9a32c24033e11b77baf2c91a704382f898ed",
+          "sha256": "d8f11d479cfacbeaf3bda133c2b00a200457fbc239d1e3b0edd6463fbb9853d9"
+        }
+      ]
+    },
+    {
+      "name": "nsis-tauri-utils",
+      "version": "0.5.3",
+      "license": "MIT (elected; upstream also offers Apache-2.0)",
+      "runtimeRevision": "13d9edd27b69310e108d6fbd49f90992f8a05390",
+      "sourceRevision": "13d9edd27b69310e108d6fbd49f90992f8a05390",
+      "recipeRevision": "13d9edd27b69310e108d6fbd49f90992f8a05390",
+      "evidence": "Release tag matches Tauri plugin 0.5.3 pin and historical payload. No upstream Cargo.lock: archive does not establish or deliver the historical transitive dependency graph. Not a complete plugin rebuild.",
+      "notice": {
+        "file": "1c1020fa10a6bf318717e82c911bcc54ebdfb9bb280460ae332bcb2f82f57fbe.txt",
+        "sha256": "1c1020fa10a6bf318717e82c911bcc54ebdfb9bb280460ae332bcb2f82f57fbe",
+        "url": "https://raw.githubusercontent.com/tauri-apps/nsis-tauri-utils/13d9edd27b69310e108d6fbd49f90992f8a05390/LICENSE_MIT",
+        "normalization": "CRLF to LF only"
+      },
+      "files": [
+        {
+          "file": "nsis-tauri-utils.tar.gz",
+          "url": "https://codeload.github.com/tauri-apps/nsis-tauri-utils/tar.gz/13d9edd27b69310e108d6fbd49f90992f8a05390",
+          "sha256": "9b277f7cdec4277b48d319c32e10b5dc4303e9efce8c3b44f1db77f86a8131c7"
+        }
+      ]
+    },
+    {
+      "name": "nsis",
+      "version": "3.11",
+      "license": "Zlib; bzip2; CPL-1.0 with NSIS LZMA linking exception (see bundled notices)",
+      "runtimeRevision": "7359413009afd4f0fff472d841fc2f2cc0e0a5f8",
+      "sourceRevision": "7359413009afd4f0fff472d841fc2f2cc0e0a5f8",
+      "recipeRevision": "7359413009afd4f0fff472d841fc2f2cc0e0a5f8",
+      "evidence": "Official NSIS 3.11 source distribution; v311 tag resolves to this commit. Tauri binary release identifies the official NSIS 3.11 zip. Historical installer reports solid LZMA. Stub rebuild and final-candidate verification remain open.",
+      "notice": {
+        "file": "d65d0f687b955a1d7ee1800ed5660478329f5d21489f17ac249807766da57552.txt",
+        "sha256": "d65d0f687b955a1d7ee1800ed5660478329f5d21489f17ac249807766da57552",
+        "url": "https://downloads.sourceforge.net/project/nsis/NSIS%203/3.11/nsis-3.11-src.tar.bz2",
+        "archivePath": "nsis-3.11-src/COPYING, nsis-3.11-src/Contrib/NSISdl/License.txt",
+        "normalization": "CRLF to LF, labeled concatenation"
+      },
+      "files": [
+        {
+          "file": "nsis-3.11-src.tar.bz2",
+          "url": "https://downloads.sourceforge.net/project/nsis/NSIS%203/3.11/nsis-3.11-src.tar.bz2",
+          "sha256": "19e72062676ebdc67c11dc032ba80b979cdbffd3886c60b04bb442cdd401ff4b"
         }
       ]
     }

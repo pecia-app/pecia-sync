@@ -23,6 +23,8 @@ await cp(resolve(root,'node_modules'),resolve(project,'node_modules'),{recursive
 await cp(resolve(root,'build/licenses'),resolve(project,'build/licenses'),{recursive:true});
 await cp(resolve(root,'build/preferred-source'),resolve(project,'build/preferred-source'),{recursive:true});
 await cp(resolve(root,'build/runtime-source'),resolve(project,'build/runtime-source'),{recursive:true});
+await cp(resolve(root,'build/windows-plugin'),resolve(project,'build/windows-plugin'),{recursive:true,
+  filter:path=>!['target','plugin','installer.nsi','build-evidence.json'].includes(path.split(/[\\/]/).at(-1))});
 await writeFile(resolve(project,'SOURCE-REVISION.txt'),revision+'\nSource candidate: review docs/LICENSING.md before binary distribution.\n');
 await mkdir(resolve(root,'build/source'),{recursive:true});
 const filename=`pecia-sync-source-${revision}.tar.gz`;

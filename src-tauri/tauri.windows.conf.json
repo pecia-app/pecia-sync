@@ -1,0 +1,10 @@
+{
+  "build": {
+    "beforeBuildCommand": "npm run licenses:generate && node scripts/windows-plugin.mjs --build && npm run licenses:check && npm run build"
+  },
+  "bundle": {
+    "windows": {
+      "nsis": { "template": "../build/windows-plugin/installer.nsi" }
+    }
+  }
+}

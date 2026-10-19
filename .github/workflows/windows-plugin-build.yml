@@ -1,0 +1,41 @@
+name: Controlled Windows plugin build
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'scripts/windows-plugin.mjs'
+      - 'release/windows-plugin/**'
+      - 'release/runtime-source.json'
+      - '.github/workflows/windows-plugin-build.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  plugin:
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: dtolnay/rust-toolchain@1.97.0
+        with:
+          targets: i686-pc-windows-msvc
+      - run: node scripts/runtime-source.mjs
+      - run: node scripts/windows-plugin.mjs --prepare
+      - name: Build from locked vendored sources
+        env:
+          CARGO_NET_OFFLINE: 'true'
+        run: node scripts/windows-plugin.mjs --build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: controlled-windows-plugin-${{ github.sha }}
+          path: |
+            build/windows-plugin/build-evidence.json
+            build/windows-plugin/plugin/
+            release/windows-plugin/Cargo.lock
+          if-no-files-found: error
+          retention-days: 14

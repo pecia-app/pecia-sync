@@ -29,6 +29,7 @@ const run=(cmd,args)=>execFileSync(cmd,args,{cwd:project,stdio:'inherit',env:{..
 console.log(`Verifying extracted source at ${project}`);
 run(process.execPath,['scripts/preferred-source.mjs','--offline']);
 run(process.execPath,['scripts/runtime-source.mjs','--offline']);
+run(process.execPath,['scripts/windows-plugin.mjs']);
 run(process.execPath,['--test','scripts/runtime-source.test.mjs']);
 run(process.execPath,['--test','scripts/apprun-source.test.mjs']);
 run(process.execPath,['scripts/licenses.mjs']);
