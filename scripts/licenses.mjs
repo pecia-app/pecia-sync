@@ -6,7 +6,7 @@ import {fileURLToPath} from 'node:url';
 import {validateReview} from './licensing-review.mjs';
 import {isNoticeFile,loadSupplements} from './notice-supplements.mjs';
 import {collectCommonLicenses,verifyCommonLicenses} from './linux-notices.mjs';
-import {runtimeNotices} from './runtime-source.mjs';
+import {runtimeNotices,collectRuntimeSource} from './runtime-source.mjs';
 
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const read=path=>readFile(resolve(root,path),'utf8');
@@ -25,6 +25,7 @@ for(const path of ['release/runtime-source.json','scripts/runtime-source.mjs'])i
 for(const record of runtimeRecords)inputSha256[`LICENSES/third-party/${record.notice.file}`]=record.notice.sha256;
 for(const supplement of supplements.values())for(const notice of supplement.notices)inputSha256[`LICENSES/third-party/${notice.file}`]=notice.sha256;
 const mode=process.argv[2];
+for(const path of ['scripts/windows-plugin.mjs','scripts/windows-plugin-template.mjs','scripts/windows-plugin-verify.mjs','release/windows-plugin/Cargo.lock','src-tauri/tauri.windows.conf.json'])inputSha256[path]=hash(await read(path));
 if(mode==='--release') {
   const review=JSON.parse(await read('release/licensing-review.json'));
   validateReview(review,inputSha256);
@@ -44,8 +45,13 @@ if(mode==='--release') {
   for(const path of ['LICENSE','LICENSES/MIT.txt','LICENSES/GPL-3.0-or-later.txt'])if(!(await read(path)).trim())throw Error(`Empty ${path}`);
   console.log(`License resources verified; ${inventory.packages.length} inventory records, ${inventory.warnings.length} items require review.`);
 } else {
+  const offline=process.env.CARGO_NET_OFFLINE==='true';
+  await collectRuntimeSource(root,offline);
+  execFileSync(process.execPath,['scripts/windows-plugin.mjs',...(offline?[]:['--prepare'])],{cwd:root,stdio:'inherit'});
   const metadata=JSON.parse(execFileSync('cargo',['metadata','--locked','--format-version','1','--manifest-path','src-tauri/Cargo.toml'],{cwd:root,maxBuffer:32*1024*1024,encoding:'utf8'}));
   const records=metadata.packages.map(p=>({ecosystem:'cargo',name:p.name,version:p.version,license:p.license,authors:p.authors,source:p.source??'Pecia Sync source',directory:dirname(p.manifest_path),licenseFile:p.license_file}));
+  const plugin=JSON.parse(execFileSync('cargo',['metadata','--locked','--offline','--format-version','1'],{cwd:resolve(root,'build/windows-plugin'),maxBuffer:32*1024*1024,encoding:'utf8'}));
+  for(const p of plugin.packages)records.push({ecosystem:'windows-plugin-cargo',name:p.name,version:p.version,license:p.license,authors:p.authors,source:p.source??'Pinned nsis-tauri-utils source',directory:dirname(p.manifest_path),licenseFile:p.license_file??(!p.source?resolve(root,'build/windows-plugin/LICENSE_MIT'):undefined)});
   const lock=JSON.parse(await read('package-lock.json'));
   const warnings=[];
   for(const [path,locked] of Object.entries(lock.packages)) {

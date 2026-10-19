@@ -52,7 +52,15 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y libwebkit2gtk-4.1-dev build-essential curl wget file libxdo-dev libssl-dev libayatana-appindicator3-dev librsvg2-dev
       - run: npm ci
       - run: npm test
+      - name: Select controlled Windows plugin toolchain
+        if: runner.os == 'Windows'
+        run: |
+          rustup toolchain install 1.97.0 --profile minimal --target i686-pc-windows-msvc
+          rustup default 1.97.0
       - run: npm run tauri build
+      - name: Verify controlled plugin in installer
+        if: runner.os == 'Windows'
+        run: node scripts/windows-plugin-verify.mjs
       - name: Collect matching Linux native source
         if: runner.os == 'Linux'
         env:

@@ -40,7 +40,10 @@ the audit snapshot as an assertion that a later release was verified.
   rebuilt runtimes, including argument preservation (runtime CI `39154541990`).
 - [ ] AppImage: remaining [non-ELF asset review](APPIMAGE-ASSET-REVIEW.md),
   supported Linux desktop/FUSE tests and final artifact correspondence.
-- [ ] Windows: installer component source/notices and MSI destination mapping.
+- [ ] Windows: installer component source/notices and final-candidate checks.
+  Historical MSI destination/feature mapping is recorded in
+  [Windows installer review](WINDOWS-INSTALLER-REVIEW.md); embedded WiX custom
+  actions and NSIS runtime/plugin provenance remain open.
 - [ ] PDF.js: nested font and generated-decoder preferred-source coverage.
 - [ ] objc2: scoped, reasoned maintainer assessment (paid counsel optional).
 - [ ] Final release: choose candidate/version, retain matching hashes and obtain

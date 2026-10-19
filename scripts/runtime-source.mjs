@@ -21,7 +21,7 @@ export function validateRuntimeManifest(manifest) {
           (file.sha512 !== undefined && !/^[a-f0-9]{128}$/.test(file.sha512))) throw Error('Invalid runtime file');
       files.add(file.file);
       const url = new URL(file.url);
-      if (url.protocol !== 'https:' || !['github.com', 'raw.githubusercontent.com', 'codeload.github.com', 'musl.libc.org', 'zlib.net'].includes(url.hostname) || url.username || url.password) throw Error('Invalid runtime source URL');
+      if (url.protocol !== 'https:' || !['github.com', 'raw.githubusercontent.com', 'codeload.github.com', 'musl.libc.org', 'zlib.net', 'downloads.sourceforge.net'].includes(url.hostname) || url.username || url.password) throw Error('Invalid runtime source URL');
     }
   }
   return manifest;
