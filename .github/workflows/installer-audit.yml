@@ -2,21 +2,6 @@ name: Installer audit (non-publishing)
 
 on:
   workflow_dispatch:
-  pull_request:
-    paths:
-      - '.github/workflows/installer-audit.yml'
-      - '.github/workflows/release.yml'
-      - 'scripts/installer-audit.mjs'
-      - 'scripts/windows-plugin*.mjs'
-      - 'release/windows-plugin/**'
-      - 'src-tauri/tauri.windows.conf.json'
-      - 'scripts/macos-build-evidence*.mjs'
-      - 'scripts/linux-*.mjs'
-      - 'scripts/licenses.mjs'
-      - 'scripts/runtime-source*.mjs'
-      - 'release/runtime-source.json'
-      - 'LICENSES/**'
-      - 'src-tauri/tauri.conf.json'
 
 permissions:
   contents: read
