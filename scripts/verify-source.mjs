@@ -32,6 +32,8 @@ run(process.execPath,['scripts/runtime-source.mjs','--offline']);
 run(process.execPath,['scripts/pdfjs-nested-source.mjs','--offline']);
 run(process.execPath,['--test','scripts/pdfjs-nested-source.test.mjs']);
 run(process.execPath,['scripts/pdfjs-foxit-probe.mjs']);
+run(process.execPath,['--test','scripts/openjpeg-source.test.mjs']);
+if(process.env.PECIA_VERIFY_OPENJPEG==='1')run(process.execPath,['scripts/openjpeg-source.mjs',resolve(dirname(archive),'openjpeg-verification.json')]);
 run(process.execPath,['scripts/qcms-source.mjs',...(process.env.PECIA_VERIFY_QCMS==='1'?['--rebuild']:[])]);
 run(process.execPath,['scripts/windows-plugin.mjs']);
 run(process.execPath,['--test','scripts/runtime-source.test.mjs']);
