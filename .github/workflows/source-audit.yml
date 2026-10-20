@@ -6,6 +6,8 @@ on:
     paths:
       - 'scripts/*source*.mjs'
       - 'scripts/windows-plugin*.mjs'
+      - 'scripts/qcms-*'
+      - 'scripts/pdfjs-*'
       - 'scripts/*licens*.mjs'
       - 'scripts/notice-supplements.mjs'
       - 'release/**'
@@ -41,7 +43,12 @@ jobs:
       - run: npm ci
       - run: npm run licenses:generate
       - run: node scripts/source-bundle.mjs
+      - name: Prepare QCMS verification toolchain
+        if: runner.os == 'Linux'
+        run: docker build --platform linux/amd64 -f scripts/qcms-rebuild.Dockerfile -t pecia-qcms-rebuild:verification .
       - run: node scripts/verify-source.mjs
+        env:
+          PECIA_VERIFY_QCMS: ${{ runner.os == 'Linux' && '1' || '0' }}
       - uses: actions/upload-artifact@v4
         with:
           name: source-verification-${{ runner.os }}

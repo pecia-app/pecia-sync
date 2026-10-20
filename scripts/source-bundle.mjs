@@ -12,6 +12,8 @@ const revision=run('git',['rev-parse','HEAD']).trim();
 run(process.execPath,['scripts/licenses.mjs','--check']);
 run(process.execPath,['scripts/preferred-source.mjs']);
 run(process.execPath,['scripts/runtime-source.mjs']);
+run(process.execPath,['scripts/pdfjs-nested-source.mjs']);
+run(process.execPath,['scripts/qcms-source.mjs','--prepare']);
 const temp=await mkdtemp(resolve(tmpdir(),'pecia-source-'));
 const project=resolve(temp,'project');await mkdir(project);
 run('git',['archive','--format=tar','--output',resolve(temp,'project.tar'),revision]);
@@ -23,6 +25,8 @@ await cp(resolve(root,'node_modules'),resolve(project,'node_modules'),{recursive
 await cp(resolve(root,'build/licenses'),resolve(project,'build/licenses'),{recursive:true});
 await cp(resolve(root,'build/preferred-source'),resolve(project,'build/preferred-source'),{recursive:true});
 await cp(resolve(root,'build/runtime-source'),resolve(project,'build/runtime-source'),{recursive:true});
+await cp(resolve(root,'build/pdfjs-nested-source'),resolve(project,'build/pdfjs-nested-source'),{recursive:true});
+await cp(resolve(root,'build/qcms-source'),resolve(project,'build/qcms-source'),{recursive:true,filter:path=>!['target','output','verification.json'].includes(path.split(/[\\/]/).at(-1))});
 await cp(resolve(root,'build/windows-plugin'),resolve(project,'build/windows-plugin'),{recursive:true,
   filter:path=>!['target','plugin','installer.nsi','build-evidence.json'].includes(path.split(/[\\/]/).at(-1))});
 await writeFile(resolve(project,'SOURCE-REVISION.txt'),revision+'\nSource candidate: review docs/LICENSING.md before binary distribution.\n');

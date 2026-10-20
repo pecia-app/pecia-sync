@@ -29,6 +29,10 @@ const run=(cmd,args)=>execFileSync(cmd,args,{cwd:project,stdio:'inherit',env:{..
 console.log(`Verifying extracted source at ${project}`);
 run(process.execPath,['scripts/preferred-source.mjs','--offline']);
 run(process.execPath,['scripts/runtime-source.mjs','--offline']);
+run(process.execPath,['scripts/pdfjs-nested-source.mjs','--offline']);
+run(process.execPath,['--test','scripts/pdfjs-nested-source.test.mjs']);
+run(process.execPath,['scripts/pdfjs-foxit-probe.mjs']);
+run(process.execPath,['scripts/qcms-source.mjs',...(process.env.PECIA_VERIFY_QCMS==='1'?['--rebuild']:[])]);
 run(process.execPath,['scripts/windows-plugin.mjs']);
 run(process.execPath,['--test','scripts/runtime-source.test.mjs']);
 run(process.execPath,['--test','scripts/apprun-source.test.mjs']);

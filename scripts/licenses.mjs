@@ -25,6 +25,7 @@ for(const path of ['release/runtime-source.json','scripts/runtime-source.mjs'])i
 for(const record of runtimeRecords)inputSha256[`LICENSES/third-party/${record.notice.file}`]=record.notice.sha256;
 for(const supplement of supplements.values())for(const notice of supplement.notices)inputSha256[`LICENSES/third-party/${notice.file}`]=notice.sha256;
 const mode=process.argv[2];
+for(const path of ['release/pdfjs-nested-source.json','scripts/pdfjs-nested-source.mjs','release/qcms-experiment/Cargo.lock','scripts/qcms-source.mjs','scripts/qcms-rebuild.Dockerfile'])inputSha256[path]=hash(await read(path));
 for(const path of ['scripts/windows-plugin.mjs','scripts/windows-plugin-template.mjs','scripts/windows-plugin-verify.mjs','release/windows-plugin/Cargo.lock','src-tauri/tauri.windows.conf.json'])inputSha256[path]=hash(await read(path));
 if(mode==='--release') {
   const review=JSON.parse(await read('release/licensing-review.json'));
