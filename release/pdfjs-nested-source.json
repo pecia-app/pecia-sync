@@ -42,14 +42,14 @@
       "file": "jbig2-wrapper.tar.gz",
       "url": "https://codeload.github.com/mozilla/pdf.js.jbig2/tar.gz/15f6f9357c5e5e30285eb83aa08e5fe1a16ab77a",
       "sha256": "20c52262116a471608e083bb21ac31591a1f953690d88928c0424bd715bcc0a7",
-      "evidence": "Candidate wrapper from update history; historical toolchain remains unresolved."
+      "evidence": "Both shipped decoder outputs reproduced exactly with this wrapper, pinned PDFium and Emscripten 6.0.9; see docs/JBIG2-REBUILD-EXPERIMENT.md. Historical toolchain and notice coverage remain separate questions."
     },
     {
       "name": "pdfium-source",
       "file": "pdfium-source.tar.gz",
       "url": "https://codeload.github.com/chromium/pdfium/tar.gz/bb1f9f71e7b15afdd5937adf8cfe5807522b882f",
       "sha256": "58098e1d4c63647c7bd8292b5f204bd0b633f8f4c9d4db6bc372445397371342",
-      "evidence": "Underlying revision identified by JBIG2 wrapper; external DEPS are not included by this repository archive."
+      "evidence": "Underlying revision identified by JBIG2 wrapper. The wrapper's decoder subset reproduced both shipped outputs offline without external DEPS; this is not a complete PDFium build or toolchain-source delivery."
     },
     {
       "name": "liberation-source",

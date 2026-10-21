@@ -150,7 +150,8 @@ vendors seven registry packages with `cargo vendor --locked`, and verifies Cargo
 metadata offline. Windows builds use `--frozen`, the explicit i686 MSVC target,
 and produce a DLL/lockfile hash report. A non-publishing Windows workflow uses
 Rust 1.97.0 to test this build. Local preparation and offline metadata validation
-passed; the actual Windows DLL build has not yet been run.
+passed. The Windows DLL build subsequently passed in the installer audits
+recorded below.
 
 The Windows configuration now selects a custom NSIS template generated from
 the pinned Tauri source. Only its additional-plugin directory is changed;
@@ -164,15 +165,21 @@ Notice generation includes the controlled plugin workspace and dependency
 metadata. Source archives include its source, lockfile and vendored dependencies,
 excluding generated DLLs, targets and the host-specific installer template.
 Extracted-source verification checks plugin metadata offline. Local preparation,
-notice checks and template tests passed; Windows CI and final-installer payload
-verification remain pending. No claim is made that the replacement reproduces
+notice checks and template tests passed. Windows installer audit
+[39215544950](https://github.com/pecia-app/pecia-sync/actions/runs/39215544950)
+passed the controlled build and installer plugin comparison at
+`518daaf5be933d517deb2be0beee7b34706131b2`; audit
+[39396696008](https://github.com/pecia-app/pecia-sync/actions/runs/39396696008)
+confirmed the comparison at `51e7279d984ccc863279a9c76825417b2dcfaafc`.
+Final release-candidate checks remain pending. No claim is made that the replacement reproduces
 the historical upstream DLL.
 
 ### Remaining work after these mappings
 
 - Verify complete WiX build inputs and final source/notice delivery;
   its embedded DLL matches the retained tool, and six UI resources match source.
-- Finish NSIS stub/build provenance and verify the controlled plugin in Windows CI.
+- Finish NSIS stub/build provenance and repeat the controlled plugin comparison
+  for the final release candidate.
 - Verify WebView2 action conditions and document installation behavior.
 - Repeat destination, feature and byte checks on the final release candidate.
 

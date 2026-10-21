@@ -79,8 +79,12 @@ only the pinned toolchain image, not compiled OpenJPEG objects or build folders.
 The local report was retained at
 `/private/tmp/pecia-openjpeg-clean-verification.json`.
 
-Remaining: run extracted-archive CI, review toolchain-source and notice
-coverage, and continue the independent JBIG2/font investigations.
+Extracted-archive source audit
+[39396696196](https://github.com/pecia-app/pecia-sync/actions/runs/39396696196)
+passed on 20 October at `51e7279d984ccc863279a9c76825417b2dcfaafc`,
+including the Linux OpenJPEG reproduction check. Remaining: review
+toolchain-source and notice coverage and continue the independent JBIG2/font
+investigations. This audit does not verify a later final candidate.
 
 ## Automated verification
 

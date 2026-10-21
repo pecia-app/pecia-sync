@@ -137,3 +137,17 @@ dependencies, and is not a reconstructed historical Cargo.lock.
 4. Check JS fallback assets and final candidate source/notice delivery.
 
 The release approval ledger remains pending.
+
+### JBIG2 reproduction follow-up — 21 October 2026
+
+The pinned wrapper and PDFium archives now reproduce both `jbig2.wasm` and
+`jbig2_nowasm_fallback.js` exactly using Emscripten 6.0.9. The upstream script
+builds only the listed decoder translation units, with wrapper-supplied build
+headers; this subset compiled offline without PDFium's external DEPS.
+The earlier warning about those absent DEPS remains relevant to a full PDFium
+build, but they were not required by this successful decoder recipe.
+
+See [inputs, output hashes and verification recipe](JBIG2-REBUILD-EXPERIMENT.md).
+The fresh-source check is integrated into the manual Linux source audit;
+its CI run is pending. Compiler source/notices, Chromium header attribution,
+font source questions and final delivery remain separate review items.
