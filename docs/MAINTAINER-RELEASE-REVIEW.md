@@ -52,6 +52,14 @@ See [JBIG2 reproduction](JBIG2-REBUILD-EXPERIMENT.md). Its extracted-source CI
 check is now implemented but has not run. Toolchain source/notices and wrapper
 header attribution remain open; the local result is not final-candidate evidence.
 
+Follow-up on 22 October: PR #35 merged as
+`4ff489ff5b54570e0f285b119afe99c7df74ec27`; its source audit
+[39798086732](https://github.com/pecia-app/pecia-sync/actions/runs/39798086732)
+was still queued when checked. The JBIG2 header notice supplement now delivers
+Chromium's full BSD license and the retained 2012/2015 copyright notices.
+Exact `build_config.h` upstream attribution and toolchain coverage remain open;
+see [header notice evidence](JBIG2-REBUILD-EXPERIMENT.md#header-notice-delivery--22-october-2026).
+
 ### Current remaining-work checklist
 
 - [x] PR #22: source/notices for the runtime and six linked libraries collected,

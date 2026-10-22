@@ -78,3 +78,29 @@ The image is a prebuilt toolchain, not complete toolchain-source delivery.
 Wrapper build headers carry Chromium BSD-style notices in addition to the
 wrapper's Apache license. Review their applicable notice delivery separately;
 do not infer all file-level terms from the wrapper's top-level license.
+
+## Header notice delivery — 22 October 2026
+
+The wrapper's `build/build_config.h` opens with Chromium's 2012 copyright
+and BSD-license reference; `build/buildflag.h` carries the corresponding 2015
+notice. The top-level Apache license alone does not convey these file-level
+notices. A `pdfjs-dist@6.4.299` supplement now adds the verbatim three-line
+`build_config.h` notice and the full Chromium BSD license to the generated
+application notices. The full license includes the 2015 attribution. Both
+retained texts are checksum-verified by the existing supplement loader and
+included in release-review input hashes. Full headers remain in the retained
+wrapper source archive.
+
+The license was fetched from Chromium revision
+`f71e47fc0edf5b2bae628835c5d9def62169b65d`; it also matches the license at
+`3a50e012e4c9b8a410a4e2b12bf577e69ee8f755` (tag `130.0.6723.58`).
+`buildflag.h` matches the latter revision byte-for-byte. `build_config.h`
+differs from both inspected revisions; neither is claimed as its exact
+upstream source. Its retained wrapper bytes have SHA-256
+`14ce6d5c00c6fc7f6a167d627a38f7be672a37e1a1f552869532de88390bdc41`.
+
+This improves notice delivery, but exact `build_config.h` upstream mapping,
+toolchain source coverage, and final installer inspection remain open. PR #35
+merged as `4ff489ff5b54570e0f285b119afe99c7df74ec27`. Source audit
+[39798086732](https://github.com/pecia-app/pecia-sync/actions/runs/39798086732)
+was queued when checked; no successful CI reproduction is claimed here.
