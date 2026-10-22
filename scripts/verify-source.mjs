@@ -48,7 +48,8 @@ run(process.execPath,['--test','scripts/licensing.test.mjs']);
 run(process.execPath,testArgs);
 run(process.execPath,['node_modules/typescript/bin/tsc']);
 run(process.execPath,['node_modules/vite/bin/vite.js','build']);
-run('cargo',['test','--locked','--offline','--manifest-path','src-tauri/Cargo.toml']);
+// Reuse the release profile for packaging instead of retaining a second debug tree.
+run('cargo',['test',...(process.env.PECIA_PACKAGE_SOURCE==='1'?['--release']:[]),'--locked','--offline','--manifest-path','src-tauri/Cargo.toml']);
 const report={schemaVersion:1,revision,sha256:digest,platform:process.platform,architecture:process.arch,node:process.version,rust:execFileSync('rustc',['--version'],{encoding:'utf8'}).trim(),checks:['preferred-source checksums','license resources','licensing tests','frontend tests','TypeScript','Vite build','offline native tests'],extractedTo:project};
 if(process.env.PECIA_PACKAGE_SOURCE==='1'){
   const checkout=resolve('.');
