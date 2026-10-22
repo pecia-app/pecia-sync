@@ -33,15 +33,20 @@ jobs:
       - name: Prepare OpenJPEG verification toolchain
         if: runner.os == 'Linux'
         run: docker pull --platform linux/amd64 emscripten/emsdk@sha256:e077d54e2b8970575ebc4f185ac1de0b95c05f2b266134d4ba27449af7aebf65
+      - name: Prepare JBIG2 verification toolchain
+        if: runner.os == 'Linux'
+        run: docker pull --platform linux/amd64 emscripten/emsdk@sha256:96617f27fe16421588241def73908fd348a7f9d260440ed0d00b36dcf7a063cc
       - run: node scripts/verify-source.mjs
         # Images are prepared online; decoder builds themselves disable networking.
         env:
           PECIA_VERIFY_QCMS: ${{ runner.os == 'Linux' && '1' || '0' }}
           PECIA_VERIFY_OPENJPEG: ${{ runner.os == 'Linux' && '1' || '0' }}
+          PECIA_VERIFY_JBIG2: ${{ runner.os == 'Linux' && '1' || '0' }}
       - uses: actions/upload-artifact@v4
         with:
           name: source-verification-${{ runner.os }}
           path: |
             build/source/source-verification.json
             build/source/openjpeg-verification.json
+            build/source/jbig2-verification.json
           if-no-files-found: error

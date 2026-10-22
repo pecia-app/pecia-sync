@@ -1,0 +1,80 @@
+# JBIG2 reproduction experiment — 21 October 2026
+
+Engineering evidence; release approval remains pending. No application assets
+are replaced by this experiment.
+
+Result: Emscripten 6.0.9 produced **byte-for-byte matches** for both shipped
+outputs in the fresh-source verification run. This demonstrates a working
+reproduction recipe, not the historical upstream toolchain.
+
+## Inputs and scope
+
+- Wrapper `15f6f9357c5e5e30285eb83aa08e5fe1a16ab77a`, archive SHA-256
+  `20c52262116a471608e083bb21ac31591a1f953690d88928c0424bd715bcc0a7`.
+- PDFium `bb1f9f71e7b15afdd5937adf8cfe5807522b882f`, archive SHA-256
+  `58098e1d4c63647c7bd8292b5f204bd0b633f8f4c9d4db6bc372445397371342`.
+
+Both archives are already delivered through the nested-source collector.
+The wrapper's `compile.sh` lists the decoder translation units explicitly and
+uses its supplied `build/build_config.h` and `build/buildflag.h` instead of
+running PDFium's GN/gclient build. A successful network-disabled build using
+only these two archives establishes that this recipe does not require fetching
+PDFium's external DEPS. It does not establish that the entire PDFium repository
+can be built without them, or settle toolchain source and notice coverage.
+
+## Initial compiler candidate
+
+The pre-existing Emscripten 6.0.10 image produced successful, nonmatching builds:
+
+| Asset | Shipped bytes | Candidate bytes | Candidate SHA-256 |
+| --- | ---: | ---: | --- |
+| `jbig2.wasm` | 103671 | 103615 | `669e18f63dd2f2eb0da441d362b853da9df0b1b210a2cb209ccc7e371dac98cd` |
+| `jbig2_nowasm_fallback.js` | 152009 | 151940 | `1ba08dcfb07efb3ed39af4756d4a34d8592b36ae4012a5983820b2d1e1e6bbab` |
+
+The WASM code and data sections differ; this is not merely custom metadata.
+The [PDF.js update](https://github.com/mozilla/pdf.js/commit/c3a2798726365a6a36f7dd78bcaa51dc298395f6)
+was committed on 18 September. Emscripten's
+[release history](https://github.com/emscripten-core/emscripten/releases)
+places 6.0.9 on 1 September and 6.0.10 on 21 September. That makes 6.0.9 a
+better next candidate, not proof of the historical compiler.
+
+## Fresh-source verification
+
+`scripts/jbig2-source.mjs` verifies both archive checksums before extraction,
+then runs the unmodified wrapper script for WASM and JavaScript in a fresh,
+network-disabled container. Source mounts are read-only, with PDFium at
+`/tmp/pdfium`, the wrapper at `/code` and outputs at `/js`. Both the pinned
+output hash and full byte equality with installed PDF.js must pass before a
+success report is written.
+
+The candidate Emscripten 6.0.9 image is pinned by digest:
+
+```sh
+docker pull --platform linux/amd64 emscripten/emsdk@sha256:96617f27fe16421588241def73908fd348a7f9d260440ed0d00b36dcf7a063cc
+node scripts/jbig2-source.mjs /tmp/jbig2-verification.json
+```
+
+The local run passed on 21 October 2026. It extracted new source directories,
+recompiled both outputs and required no downloaded PDFium external DEPS:
+
+| Output | Bytes | SHA-256 |
+| --- | ---: | --- |
+| `jbig2.wasm` | 103671 | `466f45c2a61a698152fb5400c27e56ff2ceb73dcb71fde3fc366a502308eaab0` |
+| `jbig2_nowasm_fallback.js` | 152009 | `68686ced624a48c42f84cdaa482ec44b72b0de4dc84a0df903af1fb7b45b5d9a` |
+
+Both hashes and full byte comparisons passed. The local report was retained at
+`/private/tmp/pecia-jbig2-verification.json`; it is not a final release artifact.
+The build reused only the prebuilt compiler image, with no previous JBIG2
+objects or target directories. No post-build byte edits were applied.
+
+Extracted-source verification now supports `PECIA_VERIFY_JBIG2=1`. The manual
+Linux source-audit job prepares the pinned image, enables the rebuild and
+uploads `jbig2-verification.json`. macOS/Windows run comparison and source
+tampering regression tests without the container rebuild. The existing source
+collector already supplies both archives. CI execution of this new check
+remains pending.
+
+The image is a prebuilt toolchain, not complete toolchain-source delivery.
+Wrapper build headers carry Chromium BSD-style notices in addition to the
+wrapper's Apache license. Review their applicable notice delivery separately;
+do not infer all file-level terms from the wrapper's top-level license.

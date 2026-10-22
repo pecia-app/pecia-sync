@@ -24,6 +24,34 @@ the audit snapshot as an assertion that a later release was verified.
 
 ## Evidence and outstanding actions
 
+### Evidence refresh — 21 October 2026
+
+Main is `4f60d7eecd7065ce51c3d3034e3ed435af3a74fc` (PR #33).
+The older baseline above is historical. The latest full audits ran at PR
+checkout `51e7279d984ccc863279a9c76825417b2dcfaafc`, not the merge or a
+final release candidate:
+
+- [Source audit 39396696196](https://github.com/pecia-app/pecia-sync/actions/runs/39396696196)
+  passed on macOS, Windows and Linux, including offline QCMS and OpenJPEG
+  reproduction on Linux. Decoder reproduction is no longer an unrun CI check.
+- [Installer audit 39396696008](https://github.com/pecia-app/pecia-sync/actions/runs/39396696008)
+  passed on all three platforms. Windows verified the controlled plugin against
+  the packaged payload; Linux collected and packaged its native-source supplement.
+- PRs #28–30 mapped all 48 initially unmatched historical AppImage regular
+  files to copied inputs or generators. Startup-code attribution, desktop/FUSE
+  testing and final-candidate correspondence remain open.
+
+These audit results do not close Liberation font
+correspondence, Foxit preferred-source assessment, decoder toolchain
+source/notices, WiX/NSIS provenance, the objc2 assessment, or final source/notice
+delivery. No approval fields have changed.
+
+Local follow-up on 21 October reproduced both JBIG2 outputs exactly using
+the two retained archives and Emscripten 6.0.9, without external PDFium DEPS.
+See [JBIG2 reproduction](JBIG2-REBUILD-EXPERIMENT.md). Its extracted-source CI
+check is now implemented but has not run. Toolchain source/notices and wrapper
+header attribution remain open; the local result is not final-candidate evidence.
+
 ### Current remaining-work checklist
 
 - [x] PR #22: source/notices for the runtime and six linked libraries collected,
@@ -38,13 +66,16 @@ the audit snapshot as an assertion that a later release was verified.
   reproduced for the specifically pinned older audit artifact.
 - [x] PR #27: synthetic gzip/zstd extraction and execution passed for both
   rebuilt runtimes, including argument preservation (runtime CI `39154541990`).
-- [ ] AppImage: remaining [non-ELF asset review](APPIMAGE-ASSET-REVIEW.md),
+- [ ] AppImage: remaining attribution in [non-ELF asset review](APPIMAGE-ASSET-REVIEW.md),
   supported Linux desktop/FUSE tests and final artifact correspondence.
 - [ ] Windows: installer component source/notices and final-candidate checks.
   Historical MSI destination/feature mapping is recorded in
   [Windows installer review](WINDOWS-INSTALLER-REVIEW.md); embedded WiX custom
-  actions and NSIS runtime/plugin provenance remain open.
-- [ ] PDF.js: nested font and generated-decoder preferred-source coverage.
+  actions and NSIS runtime provenance remain open. Controlled plugin build and
+  payload verification passed; repeat them for the final candidate.
+- [ ] PDF.js: remaining font preferred-source coverage, toolchain source/notices
+  and wrapper header attribution. QCMS/OpenJPEG reproduction passed extracted-source
+  CI; JBIG2 reproduction passed locally and awaits extracted-source CI.
 - [ ] objc2: scoped, reasoned maintainer assessment (paid counsel optional).
 - [ ] Final release: choose candidate/version, retain matching hashes and obtain
   explicit maintainer sign-off. The approval ledger remains pending.
@@ -52,7 +83,7 @@ the audit snapshot as an assertion that a later release was verified.
 | Review area | Existing evidence | Required before sign-off |
 | --- | --- | --- |
 | Notices | [Licensing audit](LICENSING-AUDIT.md), [installer inspection](INSTALLER-AUDIT.md) | Common-license texts are now bundled and checked; five Windows plugin payloads match retained inputs. Finish runtime/plugin notice review and inspect final rebuilt artifacts. |
-| Preferred source | [Distribution/source policy](LICENSING.md), pinned source manifest | 92 exact Ubuntu source-package versions were captured in the PR #19 audit. Native-source release attachment is now implemented, pending fresh CI verification; finish AppImage launcher/runtime and nested PDF.js font/WASM source coverage. |
+| Preferred source | [Distribution/source policy](LICENSING.md), pinned source manifest | Native-source supplement packaging passed audit `39396696008`; historical AppImage generated-file mappings and QCMS/OpenJPEG reproduction are recorded. Finish remaining font/decoder dependency and toolchain coverage, then verify final delivery. |
 | Platform rebuilds | [Source CI evidence](RELEASE-SOURCE-EVIDENCE.md) | Verify the final revision and source archives against the actual installers to be published. |
 | Native payloads | [Installer inspection](INSTALLER-AUDIT.md) | Map exact bundled versions to source/notices, including installer runtimes; document any justified exclusions. |
 | Apple bindings | [objc2 brief](OBJC2-REVIEW-BRIEF.md), [reviewer handoff](OBJC2-REVIEW-HANDOFF.md) | Record a reasoned maintainer assessment or applicable upstream clarification, including source/binary scope, supporting terms, unknowns and conditions. Paid counsel is optional. The handoff is prepared, not sent. |
