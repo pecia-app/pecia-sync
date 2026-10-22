@@ -66,8 +66,8 @@ if(process.env.PECIA_PACKAGE_SOURCE==='1'){
   await mkdir(resolve(checkout,'src-tauri/target/release'),{recursive:true});
   await cp(resolve(project,bundle),resolve(checkout,bundle),{recursive:true,dereference:false,verbatimSymlinks:true});
   await cp(resolve(project,'build/licenses'),resolve(checkout,'build/licenses'),{recursive:true});
+  if(['linux','win32'].includes(process.platform))await cp(resolve(project,'src-tauri/target/.tauri'),resolve(checkout,'src-tauri/target/.tauri'),{recursive:true});
   if(process.platform==='win32'){
-    await cp(resolve(project,'src-tauri/target/.tauri'),resolve(checkout,'src-tauri/target/.tauri'),{recursive:true});
     await cp(resolve(project,'build/installer-audit'),resolve(checkout,'build/installer-audit'),{recursive:true});
   }
 }
