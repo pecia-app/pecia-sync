@@ -10,7 +10,7 @@ jobs:
   package:
     name: Retain audit installers (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 45
+    timeout-minutes: 60
     strategy:
       fail-fast: false
       matrix:
@@ -41,15 +41,20 @@ jobs:
       - name: Capture macOS toolchain before build
         if: runner.os == 'macOS'
         run: node scripts/macos-build-evidence.mjs before
-      - run: npm run tauri build
-      - name: Verify controlled plugin in installer
-        if: runner.os == 'Windows'
-        run: node scripts/windows-plugin-verify.mjs
+      - run: npm run licenses:generate
+      - name: Retain matching source candidate
+        run: node scripts/source-bundle.mjs
+      - name: Verify source and package from the extracted archive
+        env:
+          PECIA_PACKAGE_SOURCE: '1'
+        run: node scripts/verify-source.mjs
       - name: Confirm macOS toolchain after build
         if: runner.os == 'macOS'
         run: node scripts/macos-build-evidence.mjs after
       - run: npm run licenses:check
       - name: Record hashes and retain bundle structure
+        env:
+          PECIA_REQUIRE_SOURCE_BUILD: '1'
         run: node scripts/installer-audit.mjs
       - name: Map AppDir native files to Linux source-package versions
         if: runner.os == 'Linux'
@@ -74,6 +79,12 @@ jobs:
         with:
           name: native-source-${{ github.sha }}
           path: build/native-source/
+          if-no-files-found: error
+          retention-days: 14
+      - uses: actions/upload-artifact@v4
+        with:
+          name: candidate-source-${{ runner.os }}-${{ github.sha }}
+          path: build/source/
           if-no-files-found: error
           retention-days: 14
       - uses: actions/upload-artifact@v4
