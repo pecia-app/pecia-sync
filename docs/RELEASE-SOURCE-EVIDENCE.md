@@ -40,3 +40,26 @@ Apple SDK-derived binding question documented in LICENSING-AUDIT.md remains open
 passing tests does not resolve it. A qualified licensing review or relevant
 upstream clarification is needed, with the decision and its basis recorded.
 Do not set the review ledger to approved based solely on this evidence.
+
+## Candidate correspondence workflow — 22 October 2026
+
+The non-publishing installer audit now creates and retains a source archive on
+each platform, runs extracted-source verification, and invokes Tauri packaging
+inside that extracted tree with Cargo offline. The generated bundle is copied
+back for the existing platform inspections. Windows plugin payload verification
+also runs inside the extracted project. The collector rejects stale destination
+bundles, a source/check-out revision mismatch, altered archive bytes, a changed
+platform/architecture, or any mismatch in bundle file hashes and symlink targets.
+
+Each `candidate-source-<OS>-<commit>` artifact retains the source archive, source
+checksum manifest and verification report. Its corresponding installer inventory
+records that archive hash and checks every retained bundle entry against the
+extracted-source packaging report. These are host-specific source archives:
+vendored npm native build packages differ by platform. Preserve all three with
+the candidate. Native Linux source remains a separate required supplement.
+
+This workflow change needs a successful three-platform audit before it becomes
+candidate evidence. It does not establish bit-for-bit reproducibility or an
+air-gapped installer build: native bundler tools can still download online.
+Toolchain coverage, payload/source review, desktop tests and maintainer sign-off
+remain independent requirements. No release approval is granted by these checks.

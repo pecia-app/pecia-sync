@@ -1,8 +1,9 @@
 import {execFileSync} from 'node:child_process';
-import {mkdtemp,readFile,writeFile,readlink,readdir} from 'node:fs/promises';
+import {mkdtemp,readFile,writeFile,readlink,readdir,cp,mkdir,lstat} from 'node:fs/promises';
 import {resolve,dirname,basename,isAbsolute} from 'node:path';
 import {tmpdir} from 'node:os';
 import {createHash} from 'node:crypto';
+import {bundleInventory} from './source-installer-evidence.mjs';
 import {parseArchiveListing,frontendTestArgs} from './source-test-selection.mjs';
 let input=process.argv[2];
 if(!input){
@@ -47,6 +48,28 @@ run(process.execPath,['--test','scripts/licensing.test.mjs']);
 run(process.execPath,testArgs);
 run(process.execPath,['node_modules/typescript/bin/tsc']);
 run(process.execPath,['node_modules/vite/bin/vite.js','build']);
-run('cargo',['test','--locked','--offline','--manifest-path','src-tauri/Cargo.toml']);
-await writeFile(resolve(dirname(archive),'source-verification.json'),JSON.stringify({revision,sha256:digest,platform:process.platform,architecture:process.arch,node:process.version,rust:execFileSync('rustc',['--version'],{encoding:'utf8'}).trim(),checks:['preferred-source checksums','license resources','licensing tests','frontend tests','TypeScript','Vite build','offline native tests'],extractedTo:project},null,2)+'\n');
+// Reuse the release profile for packaging instead of retaining a second debug tree.
+run('cargo',['test',...(process.env.PECIA_PACKAGE_SOURCE==='1'?['--release']:[]),'--locked','--offline','--manifest-path','src-tauri/Cargo.toml']);
+const report={schemaVersion:1,revision,sha256:digest,platform:process.platform,architecture:process.arch,node:process.version,rust:execFileSync('rustc',['--version'],{encoding:'utf8'}).trim(),checks:['preferred-source checksums','license resources','licensing tests','frontend tests','TypeScript','Vite build','offline native tests'],extractedTo:project};
+if(process.env.PECIA_PACKAGE_SOURCE==='1'){
+  const checkout=resolve('.');
+  if(execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim()!==revision)throw Error('Packaging checkout differs from source revision');
+  const bundle='src-tauri/target/release/bundle';
+  // Refuse stale installers; never overlay a prior candidate's bundle.
+  try{await lstat(resolve(checkout,bundle));throw Error('Packaging destination already exists');}
+  catch(error){if(error.code!=='ENOENT')throw error;}
+  run(process.execPath,['node_modules/@tauri-apps/cli/tauri.js','build']);
+  if(process.platform==='win32')run(process.execPath,['scripts/windows-plugin-verify.mjs']);
+  report.packaging={fromExtractedSource:true,cargoOffline:true,
+    scope:'Built from this extracted archive; native bundler tools may download online. Not bit-for-bit reproducibility or release approval.',
+    files:await bundleInventory(resolve(project,bundle))};
+  await mkdir(resolve(checkout,'src-tauri/target/release'),{recursive:true});
+  await cp(resolve(project,bundle),resolve(checkout,bundle),{recursive:true,dereference:false,verbatimSymlinks:true});
+  await cp(resolve(project,'build/licenses'),resolve(checkout,'build/licenses'),{recursive:true});
+  if(['linux','win32'].includes(process.platform))await cp(resolve(project,'src-tauri/target/.tauri'),resolve(checkout,'src-tauri/target/.tauri'),{recursive:true});
+  if(process.platform==='win32'){
+    await cp(resolve(project,'build/installer-audit'),resolve(checkout,'build/installer-audit'),{recursive:true});
+  }
+}
+await writeFile(resolve(dirname(archive),'source-verification.json'),JSON.stringify(report,null,2)+'\n');
 console.log('Extracted source verification passed. This is not cross-platform or legal sign-off.');

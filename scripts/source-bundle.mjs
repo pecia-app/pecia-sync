@@ -1,6 +1,6 @@
 // Creates a candidate, not a certification of complete Corresponding Source.
 import {execFileSync} from 'node:child_process';
-import {mkdtemp,mkdir,writeFile,cp,readFile} from 'node:fs/promises';
+import {mkdtemp,mkdir,writeFile,cp,readFile,rm} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import {resolve,dirname} from 'node:path';
 import {fileURLToPath} from 'node:url';
@@ -36,4 +36,5 @@ const output=resolve(root,'build/source',filename);
 run('tar',['-czf',output,'-C',temp,'project']);
 const sha256=createHash('sha256').update(await readFile(output)).digest('hex');
 await writeFile(resolve(root,'build/source/SOURCE-SHA256SUMS.txt'),`${sha256}  ${filename}\n`);
-console.log(`Source candidate: build/source/${filename}\nTemporary staging retained at ${temp}`);
+await rm(temp,{recursive:true,force:true});
+console.log(`Source candidate: build/source/${filename}`);

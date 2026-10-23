@@ -10,7 +10,9 @@ These workflows are manual (`workflow_dispatch`):
 - Native verification: full macOS/Linux/Windows checks and installer builds.
 - Source archive audit: extracted-source checks on all three platforms,
   including exact QCMS, OpenJPEG and JBIG2 reproduction on Linux.
-- Installer audit: installer evidence, platform notices and native-source mapping.
+- Installer audit: retain a host-specific source archive, verify it, package
+  installers from its extracted tree, and retain installer evidence, platform
+  notices and native-source mapping.
 - AppImage runtime source rebuild.
 - Controlled Windows plugin build.
 

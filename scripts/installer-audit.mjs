@@ -1,6 +1,7 @@
 // Engineering evidence only. This script does not publish or approve a release.
+import {bundleInventory,verifySourceInstallerEvidence} from './source-installer-evidence.mjs';
 import {createReadStream} from 'node:fs';
-import {readdir,lstat,readlink,mkdir,writeFile,cp} from 'node:fs/promises';
+import {readdir,lstat,mkdir,writeFile,cp,readFile} from 'node:fs/promises';
 import {resolve,join} from 'node:path';
 import {createHash} from 'node:crypto';
 import {execFileSync} from 'node:child_process';
@@ -13,18 +14,16 @@ async function sha256(path){
   for await(const chunk of createReadStream(path))hash.update(chunk);
   return hash.digest('hex');
 }
-const files=[];
-async function inventory(dir,prefix=''){
-  for(const entry of (await readdir(dir)).sort()){
-    const path=join(dir,entry),name=prefix+entry,info=await lstat(path);
-    if(info.isSymbolicLink())files.push({path:name,type:'symlink',target:await readlink(path)});
-    else if(info.isDirectory())await inventory(path,name+'/');
-    else if(info.isFile())files.push({path:name,size:info.size,sha256:await sha256(path)});
-    else throw Error(`Unexpected bundle entry: ${name}`);
-  }
+const files=await bundleInventory(bundle);
+let sourceBuild;
+if(process.env.PECIA_REQUIRE_SOURCE_BUILD==='1'){
+  sourceBuild=JSON.parse(await readFile('build/source/source-verification.json','utf8'));
+  const revision=command('git',['rev-parse','HEAD']);
+  const sourceArchive=`pecia-sync-source-${revision}.tar.gz`;
+  const digest=await sha256(resolve('build/source',sourceArchive));
+  verifySourceInstallerEvidence(sourceBuild,{revision,sourceSha256:digest,platform:process.platform,architecture:process.arch,files});
+  sourceBuild={archive:sourceArchive,sha256:digest,verification:'source-verification.json',fromExtractedSource:true};
 }
-await inventory(bundle);
-if(!files.some(file=>/\.(dmg|msi|exe|AppImage|deb|rpm)$/.test(file.path)))throw Error('No installer found');
 await mkdir(output,{recursive:true});
 const archive=join(output,'installer-bundles.tar.gz');
 // Tar preserves macOS app symlinks/modes through GitHub's ZIP artifact wrapper.
@@ -60,6 +59,7 @@ if(process.platform==='linux'){
   await writeFile(join(output,'linux-installed-packages.tsv'),execFileSync('dpkg-query',['-W',`-f=${format}`],{encoding:'utf8',maxBuffer:16*1024*1024}));
   await cp('/usr/share/common-licenses',join(output,'linux-common-licenses'),{recursive:true});
 }
-const report={purpose:'Non-publishing audit; not licensed for release by this report',revision:command('git',['rev-parse','HEAD']),runId:process.env.GITHUB_RUN_ID??null,platform:process.platform,architecture:process.arch,node:process.version,rust:command('rustc',['--version']),cargo:command('cargo',['--version']),archive:{file:'installer-bundles.tar.gz',sha256:await sha256(archive)},files};
+if(sourceBuild)await cp('build/source/source-verification.json',join(output,'source-verification.json'));
+const report={sourceBuild,purpose:'Non-publishing audit; not licensed for release by this report',revision:command('git',['rev-parse','HEAD']),runId:process.env.GITHUB_RUN_ID??null,platform:process.platform,architecture:process.arch,node:process.version,rust:command('rustc',['--version']),cargo:command('cargo',['--version']),archive:{file:'installer-bundles.tar.gz',sha256:await sha256(archive)},files};
 await writeFile(join(output,'inventory.json'),JSON.stringify(report,null,2)+'\n');
 console.log(`Recorded ${files.length} bundle entries for ${report.revision}. Installer payload extraction/review remains required.`);
