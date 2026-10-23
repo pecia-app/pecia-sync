@@ -389,6 +389,27 @@
           "sha256": "19e72062676ebdc67c11dc032ba80b979cdbffd3886c60b04bb442cdd401ff4b"
         }
       ]
+    },
+    {
+      "name": "linuxdeploy-gtk-hook",
+      "version": "7a3fbc3",
+      "license": "MIT",
+      "runtimeRevision": "30da1fd6e17de6107ecc850c95dfb16b5729f2dd",
+      "sourceRevision": "7a3fbc31a9e5075073ff8790f26effbac5f84453",
+      "recipeRevision": "30da1fd6e17de6107ecc850c95dfb16b5729f2dd",
+      "evidence": "Upstream startup block matches the retained Tauri generator except its documented GDK_BACKEND line change. Both source trees and upstream MIT attribution are delivered; the emitted shell is readable source. See docs/APPIMAGE-ASSET-REVIEW.md.",
+      "notice": {
+        "file": "0718f6cadf38d2662f397591b777884c5389e65b9919aae6aca2bea87a52eac4.txt",
+        "sha256": "0718f6cadf38d2662f397591b777884c5389e65b9919aae6aca2bea87a52eac4",
+        "url": "https://raw.githubusercontent.com/linuxdeploy/linuxdeploy-plugin-gtk/7a3fbc31a9e5075073ff8790f26effbac5f84453/LICENSE.txt"
+      },
+      "files": [
+        {
+          "file": "linuxdeploy-plugin-gtk.tar.gz",
+          "url": "https://codeload.github.com/linuxdeploy/linuxdeploy-plugin-gtk/tar.gz/7a3fbc31a9e5075073ff8790f26effbac5f84453",
+          "sha256": "a1aa0be16072c647b5f9fb418d330952ccd9d241f0678f6c6e615cff57c79fea"
+        }
+      ]
     }
   ]
 }

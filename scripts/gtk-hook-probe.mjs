@@ -1,9 +1,18 @@
 import {execFileSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
 import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
 const source=execFileSync('tar',['-xOf','build/preferred-source/tauri-apps-tauri-30da1fd6e17de6107ecc850c95dfb16b5729f2dd.tar.gz','tauri-30da1fd6e17de6107ecc850c95dfb16b5729f2dd/crates/tauri-bundler/src/bundle/linux/appimage/linuxdeploy-plugin-gtk.sh']);
 assert.equal(createHash('sha256').update(source).digest('hex'),'ef6b9a980417243bc62e0241b51dc49876032afd1bab9b4762389f961b406d9b');
 const initial=source.toString().match(/cat > "\$HOOKFILE" <<\\EOF\n([\s\S]*?)\nEOF/)[1]+'\n';
+const upstreamArchive='build/runtime-source/linuxdeploy-gtk-hook/linuxdeploy-plugin-gtk.tar.gz';
+assert.equal(createHash('sha256').update(readFileSync(upstreamArchive)).digest('hex'),'a1aa0be16072c647b5f9fb418d330952ccd9d241f0678f6c6e615cff57c79fea');
+const upstreamRoot='linuxdeploy-plugin-gtk-7a3fbc31a9e5075073ff8790f26effbac5f84453/';
+const upstream=execFileSync('tar',['-xOf',upstreamArchive,upstreamRoot+'linuxdeploy-plugin-gtk.sh']).toString();
+const upstreamBlock=upstream.match(/cat > "\$HOOKFILE" <<\\EOF\n([\s\S]*?)\nEOF/)[1]+'\n';
+assert.equal(upstreamBlock.replace('export GDK_BACKEND=x11 # Crash with Wayland backend on Wayland','# export GDK_BACKEND=x11 # Monitor this closely. AppImage used to crash on Wayland!'),initial,'Unexpected upstream startup-block difference');
+const notice=execFileSync('tar',['-xOf',upstreamArchive,upstreamRoot+'LICENSE.txt']);
+assert.deepEqual(notice,readFileSync('LICENSES/third-party/0718f6cadf38d2662f397591b777884c5389e65b9919aae6aca2bea87a52eac4.txt'));
 // Observed Ubuntu paths, applying the generator's /usr/lib relocation rules.
 const values={GSETTINGS_SCHEMA_DIR:'/usr/share/glib-2.0/schemas',GI_TYPELIB_PATH:'/usr/lib/girepository-1.0',GIO_MODULE_DIR:'/usr/lib/gio/modules',GTK_EXE_PREFIX:'/usr',GTK_PATH:'/usr/lib/gtk-3.0',GTK_IM_MODULE_FILE:'/usr/lib/gtk-3.0/3.0.0/immodules.cache',GDK_PIXBUF_MODULE_FILE:'/usr/lib/gdk-pixbuf-2.0/2.10.0/loaders.cache'};
 const hook=initial+Object.entries(values).map(([key,value])=>`export ${key}="$APPDIR/${value}"\n`).join('');

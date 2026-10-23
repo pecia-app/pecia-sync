@@ -34,6 +34,31 @@ export async function runtimeNotices(project = root) {
     return {...record, contents: bytes.toString('utf8')};
   }));
 }
+export async function downloadRuntimeSource(url, fetcher = fetch, pause = ms => new Promise(resolve => setTimeout(resolve, ms))) {
+  const transientCodes = new Set(['UND_ERR_CONNECT_TIMEOUT', 'UND_ERR_HEADERS_TIMEOUT', 'UND_ERR_BODY_TIMEOUT', 'UND_ERR_SOCKET', 'ECONNRESET', 'ETIMEDOUT', 'EAI_AGAIN']);
+  for (let attempt = 0; attempt < 3; attempt++) {
+    try {
+      const response = await fetcher(url, {signal: AbortSignal.timeout(300000)});
+      if (!response.ok) {
+        await response.body?.cancel();
+        const error = Error(`Runtime source download failed: ${response.status} (${url})`);
+        error.retryable = response.status === 429 || response.status >= 500;
+        throw error;
+      }
+      const chunks = []; let size = 0;
+      for await (const chunk of response.body) {
+        size += chunk.length;
+        if (size > 64 * 1024 * 1024) throw Error('Runtime source size limit');
+        chunks.push(chunk);
+      }
+      return Buffer.concat(chunks);
+    } catch (error) {
+      if (attempt === 2 || !(error.retryable || transientCodes.has(error.code) || transientCodes.has(error.cause?.code) || error.name === 'TimeoutError')) throw error;
+      console.warn(`Retrying runtime source download (${attempt + 2}/3): ${url}`);
+      await pause(1000 * 2 ** attempt);
+    }
+  }
+}
 export async function collectRuntimeSource(project = root, offline = false, fetcher = fetch) {
   const records = await runtimeNotices(project);
   for (const record of records) {
@@ -45,15 +70,7 @@ export async function collectRuntimeSource(project = root, offline = false, fetc
       try { bytes = await readFile(path); } catch (error) { if (error.code !== 'ENOENT') throw error; }
       if (!bytes) {
         if (offline) throw Error(`Missing runtime source: ${file.file}`);
-        const response = await fetcher(file.url, {signal: AbortSignal.timeout(300000)});
-        if (!response.ok) throw Error(`Runtime source download failed: ${response.status}`);
-        const chunks = []; let size = 0;
-        for await (const chunk of response.body) {
-          size += chunk.length;
-          if (size > 64 * 1024 * 1024) throw Error('Runtime source size limit');
-          chunks.push(chunk);
-        }
-        bytes = Buffer.concat(chunks);
+        bytes = await downloadRuntimeSource(file.url, fetcher);
       }
       if (hash(bytes) !== file.sha256 || (file.sha512 && hash(bytes, 'sha512') !== file.sha512)) throw Error(`Runtime source checksum mismatch: ${file.file}`);
       if (!offline) await writeFile(path, bytes);

@@ -4,8 +4,23 @@ import {mkdtemp, mkdir, readFile, writeFile, rm} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 import {createHash} from 'node:crypto';
-import {runtimeNotices, collectRuntimeSource, validateRuntimeManifest} from './runtime-source.mjs';
+import {runtimeNotices, collectRuntimeSource, validateRuntimeManifest, downloadRuntimeSource} from './runtime-source.mjs';
 const hash = (bytes, algorithm='sha256') => createHash(algorithm).update(bytes).digest('hex');
+test('retries transient source failures with a bound, but not permanent failures',async()=>{
+  let calls=0;const delays=[];
+  const bytes=await downloadRuntimeSource('https://zlib.net/source',async()=>{
+    calls++;
+    if(calls===1)throw new TypeError('fetch failed',{cause:{code:'UND_ERR_CONNECT_TIMEOUT'}});
+    return calls===2 ? new Response('busy',{status:503}) : new Response('source');
+  },async ms=>delays.push(ms));
+  assert.equal(bytes.toString(),'source');assert.equal(calls,3);assert.deepEqual(delays,[1000,2000]);
+  calls=0;
+  await assert.rejects(downloadRuntimeSource('https://zlib.net/source',async()=>{calls++;return new Response('busy',{status:503});},async()=>{}),/503/);
+  assert.equal(calls,3);
+  calls=0;
+  await assert.rejects(downloadRuntimeSource('https://zlib.net/source',async()=>{calls++;return new Response('missing',{status:404});},async()=>{assert.fail('Permanent error retried');}),/404/);
+  assert.equal(calls,1);
+});
 async function fixture(fn) {
   const root = await mkdtemp(join(tmpdir(), 'pecia-runtime-source-test-'));
   try {
@@ -48,7 +63,7 @@ test('rejects bad downloads and validates SHA-512 as well as SHA-256',()=>fixtur
 test('repository runtime notices have exact upstream bytes',async()=>{
   const records=await runtimeNotices();
   assert.ok(records.some(record=>record.name==='mimalloc2'&&record.version==='2.1.7-r0'));
-  assert.deepEqual(records.map(record=>record.name).sort(),['appimage-apprun','appimage-type2-runtime','libfuse','linuxdeploy-wrapper','mimalloc2','musl','nsis','nsis-tauri-utils','squashfuse','wix-ui','zlib','zstd']);
+  assert.deepEqual(records.map(record=>record.name).sort(),['appimage-apprun','appimage-type2-runtime','libfuse','linuxdeploy-gtk-hook','linuxdeploy-wrapper','mimalloc2','musl','nsis','nsis-tauri-utils','squashfuse','wix-ui','zlib','zstd']);
   assert.match(records.find(record=>record.name==='nsis').contents,/SPECIAL EXCEPTION FOR LZMA COMPRESSION MODULE/);
   assert.match(records.find(record=>record.name==='wix-ui').contents,/Microsoft Reciprocal License/);
   assert.match(records.find(record=>record.name==='nsis-tauri-utils').evidence,/No upstream Cargo.lock/);

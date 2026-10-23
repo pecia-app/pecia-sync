@@ -114,8 +114,26 @@ resolve the independent platform/licensing review.
 
 ### Still open
 
-- Confirm required attribution for generated startup code.
 - Repeat final candidate checks and supported Linux desktop/FUSE tests.
+
+### Startup attribution follow-up — 23 October
+
+The GTK hook's upstream generator at
+`linuxdeploy/linuxdeploy-plugin-gtk@7a3fbc31a9e5075073ff8790f26effbac5f84453`
+has the same emitted startup block except the `GDK_BACKEND` line: upstream
+forces X11, while the retained Tauri generator comments that setting out.
+Tauri's history records this change in commit
+`7164de39574d616b762ba658f797f9657ea03b20` (PR #15786).
+
+The upstream MIT notice attributes TheAssassin and the linuxdeploy contributors
+(2018–2019). It was missing from the supplemental notice collection and is now
+retained with SHA-256
+`0718f6cadf38d2662f397591b777884c5389e65b9919aae6aca2bea87a52eac4`.
+The source manifest also includes the pinned upstream archive, SHA-256
+`a1aa0be16072c647b5f9fb418d330952ccd9d241f0678f6c6e615cff57c79fea`.
+Tauri's source and elected MIT notice and linuxdeploy's outer-wrapper MIT
+notice are already retained. This closes the identified missing startup
+attribution input; final installer/source delivery must still be checked.
 
 PR #27 merged as `b2e7191f4eda5d0c421da50917b31af76bbe9023` after all four
 checks passed. Runtime CI `39154541990` passed all four synthetic combinations
