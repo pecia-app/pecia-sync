@@ -136,4 +136,20 @@ geometry, runtime logs, AppImage hash, OS release and mount evidence under
 FUSE launch into a pass. Review both screenshots for a loaded interface before
 claiming desktop startup validation. This is a headless X11 smoke test, not a
 Wayland session, physical Kindle/Kobo connection, or full reader interaction
-test. Execution and screenshot review remain pending for this new check.
+test.
+
+On 23 October, [installer audit 39908624334](https://github.com/pecia-app/pecia-sync/actions/runs/39908624334)
+passed at `2cc25ba72070f5e86c31fa4d3b6480600335183b` on Ubuntu 26.04.1
+LTS. Both screenshots were inspected: the Spanish dashboard is fully rendered,
+with readable navigation, cards and controls. Both are 1200×760 and have the
+same SHA-256 `153b7b73dabdc3740bcf4c9f96fe30e1b678098038ce339ef69ea9c7ee13d52a`.
+The tested AppImage SHA-256 is
+`a739d3ce0c910ff55a37c37dcbf8205f6b9ea7e2fd824e80b769471bca3c5e89`.
+The report records a live FUSE mount for the normal launch and no mount for
+extraction mode. The implementation merged in PR #40.
+
+Runtime logs contain missing AT-SPI accessibility-bus and GStreamer `appsink`
+warnings. Successful dashboard rendering does not establish accessibility or
+media functionality. This is verified X11/software-GL startup for this exact
+artifact; final-candidate repetition, other desktop environments, reader
+interaction and physical-device checks remain separate.

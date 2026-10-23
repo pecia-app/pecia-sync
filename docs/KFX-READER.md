@@ -30,4 +30,5 @@ through next/previous navigation, without exposing internal IDs in the index.
 Highlight extraction tests do not establish full-reader compatibility.
 
 This shares the GPL-3.0-or-later dependency and release gate documented in
-KFX-INTEGRATION.md. This development feature is not included in the 0.2.0 release.
+KFX-INTEGRATION.md. The current 0.2.0 candidate includes this code; it is not approved for
+distribution until that review and final maintainer approval are complete.
