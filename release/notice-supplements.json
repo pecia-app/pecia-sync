@@ -1430,7 +1430,7 @@
       "repository": "https://github.com/mozilla/pdf.js.jbig2",
       "revision": "15f6f9357c5e5e30285eb83aa08e5fe1a16ab77a",
       "path": "build",
-      "provenance": "JBIG2 build headers carry Chromium copyright notices (2012 and 2015). The supplement retains the first three lines of build_config.h verbatim plus the complete Chromium BSD license from pinned revision f71e47fc0edf5b2bae628835c5d9def62169b65d. This is notice delivery, not an exact upstream revision mapping for build_config.h. Exact build_config.h bytes also match Chromium 444cda9b1f3be33fffb7c6f93e50d33d4bd39635; its LICENSE is identical to the retained text.",
+      "provenance": "JBIG2 build headers carry Chromium copyright notices (2012 and 2015). The supplement retains the first three lines of build_config.h verbatim plus the complete Chromium BSD license from pinned revision f71e47fc0edf5b2bae628835c5d9def62169b65d. This is notice delivery, not an exact upstream revision mapping for build_config.h. Exact build_config.h bytes also match Chromium 444cda9b1f3be33fffb7c6f93e50d33d4bd39635; its LICENSE is identical to the retained text. Emscripten 6.0.9/6.0.10 top-level and system-library notices are also retained, including optional components; this is not a claim that every listed library is linked into a decoder.",
       "notices": [
         {
           "file": "368cca1106be99d39ecd32a38d8305585d802a475effb66380b91ffc9bcf709b.txt",
@@ -1441,6 +1441,71 @@
           "file": "aa3de0c1b5dcf8968d0e8f5cb7ecd5caac9122dca0dfd573d3bb46bbb61ab155.txt",
           "sha256": "aa3de0c1b5dcf8968d0e8f5cb7ecd5caac9122dca0dfd573d3bb46bbb61ab155",
           "url": "https://raw.githubusercontent.com/mozilla/pdf.js.jbig2/15f6f9357c5e5e30285eb83aa08e5fe1a16ab77a/build/build_config.h"
+        },
+        {
+          "file": "018d4191aa649d5c82ba1b2f9117b9902648792c89d5f0d5564a689dc4198aaa.txt",
+          "sha256": "018d4191aa649d5c82ba1b2f9117b9902648792c89d5f0d5564a689dc4198aaa",
+          "url": "https://raw.githubusercontent.com/emscripten-core/emscripten/4e4223852a0835923411059a3929907d7df1232e/AUTHORS"
+        },
+        {
+          "file": "620a78084fc7ca97c0b5dea9abf891f3ffcadfdbf305276f099c9c4e12fc1d86.txt",
+          "sha256": "620a78084fc7ca97c0b5dea9abf891f3ffcadfdbf305276f099c9c4e12fc1d86",
+          "url": "https://raw.githubusercontent.com/emscripten-core/emscripten/4e4223852a0835923411059a3929907d7df1232e/LICENSE"
+        },
+        {
+          "file": "c0340bf02391530fb13cf4170c31253ecd09868fa483553652699584eb4db6ae.txt",
+          "sha256": "c0340bf02391530fb13cf4170c31253ecd09868fa483553652699584eb4db6ae",
+          "url": "https://raw.githubusercontent.com/emscripten-core/emscripten/4e4223852a0835923411059a3929907d7df1232e/system/include/SDL/COPYING"
+        },
+        {
+          "file": "1a8f1058753f1ba890de984e48f0242a3a5c29a6a8f2ed9fd813f36985387e8d.txt",
+          "sha256": "1a8f1058753f1ba890de984e48f0242a3a5c29a6a8f2ed9fd813f36985387e8d",
+          "url": "https://raw.githubusercontent.com/emscripten-core/emscripten/4e4223852a0835923411059a3929907d7df1232e/system/lib/compiler-rt/LICENSE.TXT"
+        },
+        {
+          "file": "b870108ec5e7790e9f9919064f1b9421d62d5f9b0e6c230c6adf7ea2da62e97b.txt",
+          "sha256": "b870108ec5e7790e9f9919064f1b9421d62d5f9b0e6c230c6adf7ea2da62e97b",
+          "url": "https://raw.githubusercontent.com/emscripten-core/emscripten/4e4223852a0835923411059a3929907d7df1232e/system/lib/libc/musl/COPYRIGHT"
+        },
+        {
+          "file": "539dd7aed86e8a4f12cbdd0e6c50c189c7d74847e4fecc64ce2c6ee3a01da38b.txt",
+          "sha256": "539dd7aed86e8a4f12cbdd0e6c50c189c7d74847e4fecc64ce2c6ee3a01da38b",
+          "url": "https://raw.githubusercontent.com/emscripten-core/emscripten/4e4223852a0835923411059a3929907d7df1232e/system/lib/libcxx/LICENSE.TXT"
+        },
+        {
+          "file": "e2b35be49f7284a45b7baca8fc7b3ab7440e7902392b2528a457816b5bb2a15c.txt",
+          "sha256": "e2b35be49f7284a45b7baca8fc7b3ab7440e7902392b2528a457816b5bb2a15c",
+          "url": "https://raw.githubusercontent.com/emscripten-core/emscripten/4e4223852a0835923411059a3929907d7df1232e/system/lib/libcxxabi/LICENSE.TXT"
+        },
+        {
+          "file": "b5efebcaca80879234098e52d1725e6d9eb8fb96a19fce625d39184b705f7b6d.txt",
+          "sha256": "b5efebcaca80879234098e52d1725e6d9eb8fb96a19fce625d39184b705f7b6d",
+          "url": "https://raw.githubusercontent.com/emscripten-core/emscripten/4e4223852a0835923411059a3929907d7df1232e/system/lib/libunwind/LICENSE.TXT"
+        },
+        {
+          "file": "ebcd9bbf783a73d05c53ba4d586b8d5813dcdf3bbec50265860ccc885e606f47.txt",
+          "sha256": "ebcd9bbf783a73d05c53ba4d586b8d5813dcdf3bbec50265860ccc885e606f47",
+          "url": "https://raw.githubusercontent.com/emscripten-core/emscripten/4e4223852a0835923411059a3929907d7df1232e/system/lib/llvm-libc/LICENSE.TXT"
+        },
+        {
+          "file": "82ade5d7d9b029044b5fbbc326207fc47c2d44ee4dd71e8a559c36d728217de9.txt",
+          "sha256": "82ade5d7d9b029044b5fbbc326207fc47c2d44ee4dd71e8a559c36d728217de9",
+          "url": "https://raw.githubusercontent.com/emscripten-core/emscripten/4e4223852a0835923411059a3929907d7df1232e/system/lib/mimalloc/LICENSE"
+        },
+        {
+          "file": "fdad1758a9e1f9d5a81e18879b3406772115edc92c24bfa36b70c654f325e8e4.txt",
+          "sha256": "fdad1758a9e1f9d5a81e18879b3406772115edc92c24bfa36b70c654f325e8e4",
+          "url": "https://raw.githubusercontent.com/emscripten-core/emscripten/4e4223852a0835923411059a3929907d7df1232e/system/lib/openmp/LICENSE.TXT"
+        },
+        {
+          "file": "cf48cdd9ed87c2031b68fb1b9f4cfb55d00dcf815b21a30bf8304aa1e5e6f76a.txt",
+          "sha256": "cf48cdd9ed87c2031b68fb1b9f4cfb55d00dcf815b21a30bf8304aa1e5e6f76a",
+          "url": "https://raw.githubusercontent.com/emscripten-core/emscripten/4e4223852a0835923411059a3929907d7df1232e/system/lib/openmp/src/thirdparty/ittnotify/LICENSE.txt"
+        },
+        {
+          "file": "b865d6074c7f13366cad82990ba58bbe0a3f3eccf5fa47e50aa02693de4e895e.txt",
+          "sha256": "b865d6074c7f13366cad82990ba58bbe0a3f3eccf5fa47e50aa02693de4e895e",
+          "url": "https://raw.githubusercontent.com/emscripten-core/emscripten/d6c521a7f05449857c76bd99e396895583cf2083/AUTHORS"
         }
       ],
       "reviewRequired": "Decoder toolchain coverage, Foxit preferred-source assessment and final font source/notice delivery remain open."
