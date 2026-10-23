@@ -41,10 +41,26 @@ into either decoder. The original source archives retain file-level notices.
 The generated application notices include these supplementary texts, and
 changes invalidate release-review input hashes.
 
+## QCMS Rust runtime
+
+The source collection also pins the official `rust-src-1.97.1.tar.xz`
+component, SHA-256
+`e9a1e616d04c6845895c827a178b9227f7c7199f3f4a80af81ab3aff7b80156b`.
+Its published checksum and embedded commit
+`8bab26f4f68e0e26f0bb7960be334d5b520ea452` were checked against the
+QCMS reproduction compiler version. It includes the standard library,
+compiler-builtins, library lockfile and vendored library dependencies.
+
+The notice supplement retains the component's named license, copyright,
+notice and author files, deduplicated by content. It also retains notices
+from all 13 registry packages in the QCMS candidate lockfile. Their package
+checksums match the lockfile and their notice bytes match Cargo's vendored
+file checksums. `release/qcms-runtime-evidence.json` records this scope and
+the lockfile hash. These checks establish source-component identity and
+notice integrity; they do not rebuild the precompiled standard library.
+
 ## Remaining scope
 
-- QCMS's Rust standard-library runtime source and notice coverage need a
-  separate assessment; its wrapper/crates and reproducible recipe are supplied.
 - The compiler images themselves are build tools, not attached application
   binaries. This collection is not a full compiler/toolchain-source rebuild.
   Record a scoped distribution assessment before closing the overall review.

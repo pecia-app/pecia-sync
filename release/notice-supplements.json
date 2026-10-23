@@ -1430,7 +1430,7 @@
       "repository": "https://github.com/mozilla/pdf.js.jbig2",
       "revision": "15f6f9357c5e5e30285eb83aa08e5fe1a16ab77a",
       "path": "build",
-      "provenance": "JBIG2 build headers carry Chromium copyright notices (2012 and 2015). The supplement retains the first three lines of build_config.h verbatim plus the complete Chromium BSD license from pinned revision f71e47fc0edf5b2bae628835c5d9def62169b65d. This is notice delivery, not an exact upstream revision mapping for build_config.h. Exact build_config.h bytes also match Chromium 444cda9b1f3be33fffb7c6f93e50d33d4bd39635; its LICENSE is identical to the retained text. Emscripten 6.0.9/6.0.10 top-level and system-library notices are also retained, including optional components; this is not a claim that every listed library is linked into a decoder.",
+      "provenance": "JBIG2 build headers carry Chromium copyright notices (2012 and 2015). The supplement retains the first three lines of build_config.h verbatim plus the complete Chromium BSD license from pinned revision f71e47fc0edf5b2bae628835c5d9def62169b65d. This is notice delivery, not an exact upstream revision mapping for build_config.h. Exact build_config.h bytes also match Chromium 444cda9b1f3be33fffb7c6f93e50d33d4bd39635; its LICENSE is identical to the retained text. Emscripten 6.0.9/6.0.10 top-level and system-library notices are also retained, including optional components; this is not a claim that every listed library is linked into a decoder. Rust 1.97.1 source-component notices (including optional targets) and QCMS reproduction dependency notices are also retained; crate notice bytes were checked against vendored package checksums and the pinned lockfile.",
       "notices": [
         {
           "file": "368cca1106be99d39ecd32a38d8305585d802a475effb66380b91ffc9bcf709b.txt",
@@ -1506,9 +1506,204 @@
           "file": "b865d6074c7f13366cad82990ba58bbe0a3f3eccf5fa47e50aa02693de4e895e.txt",
           "sha256": "b865d6074c7f13366cad82990ba58bbe0a3f3eccf5fa47e50aa02693de4e895e",
           "url": "https://raw.githubusercontent.com/emscripten-core/emscripten/d6c521a7f05449857c76bd99e396895583cf2083/AUTHORS"
+        },
+        {
+          "file": "861399f8c21c042b110517e76dc6b63a2b334276c8cf17412fc3c8908ca8dc17.txt",
+          "sha256": "861399f8c21c042b110517e76dc6b63a2b334276c8cf17412fc3c8908ca8dc17",
+          "url": "https://static.rust-lang.org/dist/rust-src-1.97.1.tar.xz#rust-src-1.97.1/rust-src/lib/rustlib/src/rust/library/vendor/adler2-2.0.1/LICENSE-0BSD"
+        },
+        {
+          "file": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2.txt",
+          "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+          "url": "https://static.rust-lang.org/dist/rust-src-1.97.1.tar.xz#rust-src-1.97.1/rust-src/lib/rustlib/src/rust/library/vendor/cc-1.2.0/LICENSE-APACHE"
+        },
+        {
+          "file": "553fffcd9b1cb158bc3e9edc35da85ca5c3b3d7d2e61c883ebcfa8a65814b583.txt",
+          "sha256": "553fffcd9b1cb158bc3e9edc35da85ca5c3b3d7d2e61c883ebcfa8a65814b583",
+          "url": "https://static.rust-lang.org/dist/rust-src-1.97.1.tar.xz#rust-src-1.97.1/rust-src/lib/rustlib/src/rust/library/vendor/shlex-1.3.0/LICENSE-APACHE"
+        },
+        {
+          "file": "35242e7a83f69875e6edeff02291e688c97caafe2f8902e4e19b49d3e78b4cab.txt",
+          "sha256": "35242e7a83f69875e6edeff02291e688c97caafe2f8902e4e19b49d3e78b4cab",
+          "url": "https://static.rust-lang.org/dist/rust-src-1.97.1.tar.xz#rust-src-1.97.1/rust-src/lib/rustlib/src/rust/library/vendor/rand_xorshift-0.4.0/LICENSE-APACHE"
+        },
+        {
+          "file": "69fef7b0f322a65554156141f2bc6256ed0bb78cba7e49f0d8829d7ec4ee62cd.txt",
+          "sha256": "69fef7b0f322a65554156141f2bc6256ed0bb78cba7e49f0d8829d7ec4ee62cd",
+          "url": "https://static.rust-lang.org/dist/rust-src-1.97.1.tar.xz#rust-src-1.97.1/rust-src/lib/rustlib/src/rust/library/vendor/moto-rt-0.16.0/LICENSE-APACHE"
+        },
+        {
+          "file": "8ada45cd9f843acf64e4722ae262c622a2b3b3007c7310ef36ac1061a30f6adb.txt",
+          "sha256": "8ada45cd9f843acf64e4722ae262c622a2b3b3007c7310ef36ac1061a30f6adb",
+          "url": "https://static.rust-lang.org/dist/rust-src-1.97.1.tar.xz#rust-src-1.97.1/rust-src/lib/rustlib/src/rust/library/vendor/adler2-2.0.1/LICENSE-APACHE"
+        },
+        {
+          "file": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a.txt",
+          "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a",
+          "url": "https://static.rust-lang.org/dist/rust-src-1.97.1.tar.xz#rust-src-1.97.1/LICENSE-APACHE"
+        },
+        {
+          "file": "6df43f6f4b5d4587f3d8d71e45532c688fd168afa5fe89d571cb32fa09c4ef51.txt",
+          "sha256": "6df43f6f4b5d4587f3d8d71e45532c688fd168afa5fe89d571cb32fa09c4ef51",
+          "url": "https://static.rust-lang.org/dist/rust-src-1.97.1.tar.xz#rust-src-1.97.1/rust-src/lib/rustlib/src/rust/library/vendor/rand_core-0.9.3/LICENSE-APACHE"
+        },
+        {
+          "file": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30.txt",
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+          "url": "https://static.rust-lang.org/dist/rust-src-1.97.1.tar.xz#rust-src-1.97.1/rust-src/lib/rustlib/src/rust/library/portable-simd/LICENSE-APACHE"
+        },
+        {
+          "file": "b1181a40b2a7b25cf66fd01481713bc1005df082c53ef73e851e55071b102744.txt",
+          "sha256": "b1181a40b2a7b25cf66fd01481713bc1005df082c53ef73e851e55071b102744",
+          "url": "https://static.rust-lang.org/dist/rust-src-1.97.1.tar.xz#rust-src-1.97.1/rust-src/lib/rustlib/src/rust/library/vendor/foldhash-0.2.0/LICENSE"
+        },
+        {
+          "file": "4108245a1f2df9d4e94df8abed5b4ba0759bb2f9b40a6b939f1be141077ae50b.txt",
+          "sha256": "4108245a1f2df9d4e94df8abed5b4ba0759bb2f9b40a6b939f1be141077ae50b",
+          "url": "https://static.rust-lang.org/dist/rust-src-1.97.1.tar.xz#rust-src-1.97.1/rust-src/lib/rustlib/src/rust/library/vendor/miniz_oxide-0.8.9/LICENSE"
+        },
+        {
+          "file": "01c266bced4a434da0051174d6bee16a4c82cf634e2679b6155d40d75012390f.txt",
+          "sha256": "01c266bced4a434da0051174d6bee16a4c82cf634e2679b6155d40d75012390f",
+          "url": "https://static.rust-lang.org/dist/rust-src-1.97.1.tar.xz#rust-src-1.97.1/rust-src/lib/rustlib/src/rust/library/vendor/memchr-2.7.6/COPYING"
+        },
+        {
+          "file": "fba3318d0c600380177edf7ba4778ff6588faa8d106c679ac5dfee620011239c.txt",
+          "sha256": "fba3318d0c600380177edf7ba4778ff6588faa8d106c679ac5dfee620011239c",
+          "url": "https://static.rust-lang.org/dist/rust-src-1.97.1.tar.xz#rust-src-1.97.1/rust-src/lib/rustlib/src/rust/library/vendor/r-efi-alloc-2.1.0/AUTHORS"
+        },
+        {
+          "file": "ff92bed461f50338dd703a9ba9aee496a425957873df1d91192776e4bdf5dda7.txt",
+          "sha256": "ff92bed461f50338dd703a9ba9aee496a425957873df1d91192776e4bdf5dda7",
+          "url": "https://static.rust-lang.org/dist/rust-src-1.97.1.tar.xz#rust-src-1.97.1/rust-src/lib/rustlib/src/rust/library/vendor/r-efi-5.3.0/AUTHORS"
+        },
+        {
+          "file": "90eb64f0279b0d9432accfa6023ff803bc4965212383697eee27a0f426d5f8d5.txt",
+          "sha256": "90eb64f0279b0d9432accfa6023ff803bc4965212383697eee27a0f426d5f8d5",
+          "url": "https://static.rust-lang.org/dist/rust-src-1.97.1.tar.xz#rust-src-1.97.1/rust-src/lib/rustlib/src/rust/library/vendor/rand_xorshift-0.4.0/COPYRIGHT"
+        },
+        {
+          "file": "172020dbfd5b53a226dfde77616190a48dcff519b0bc0e6deb91a8450782c4af.txt",
+          "sha256": "172020dbfd5b53a226dfde77616190a48dcff519b0bc0e6deb91a8450782c4af",
+          "url": "https://static.rust-lang.org/dist/rust-src-1.97.1.tar.xz#rust-src-1.97.1/COPYRIGHT"
+        },
+        {
+          "file": "378f5840b258e2779c39418f3f2d7b2ba96f1c7917dd6be0713f88305dbda397.txt",
+          "sha256": "378f5840b258e2779c39418f3f2d7b2ba96f1c7917dd6be0713f88305dbda397",
+          "url": "https://static.rust-lang.org/dist/rust-src-1.97.1.tar.xz#rust-src-1.97.1/rust-src/lib/rustlib/src/rust/library/vendor/cc-1.2.0/LICENSE-MIT"
+        },
+        {
+          "file": "4455bf75a91154108304cb283e0fea9948c14f13e20d60887cf2552449dea3b1.txt",
+          "sha256": "4455bf75a91154108304cb283e0fea9948c14f13e20d60887cf2552449dea3b1",
+          "url": "https://static.rust-lang.org/dist/rust-src-1.97.1.tar.xz#rust-src-1.97.1/rust-src/lib/rustlib/src/rust/library/vendor/shlex-1.3.0/LICENSE-MIT"
+        },
+        {
+          "file": "209fbbe0ad52d9235e37badf9cadfe4dbdc87203179c0899e738b39ade42177b.txt",
+          "sha256": "209fbbe0ad52d9235e37badf9cadfe4dbdc87203179c0899e738b39ade42177b",
+          "url": "https://static.rust-lang.org/dist/rust-src-1.97.1.tar.xz#rust-src-1.97.1/rust-src/lib/rustlib/src/rust/library/vendor/rand_xorshift-0.4.0/LICENSE-MIT"
+        },
+        {
+          "file": "a7c936ff1ed8fa340172d42a98185afee078f818e907da69f3a8e336b1623b4b.txt",
+          "sha256": "a7c936ff1ed8fa340172d42a98185afee078f818e907da69f3a8e336b1623b4b",
+          "url": "https://static.rust-lang.org/dist/rust-src-1.97.1.tar.xz#rust-src-1.97.1/rust-src/lib/rustlib/src/rust/library/vendor/moto-rt-0.16.0/LICENSE-MIT"
+        },
+        {
+          "file": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3.txt",
+          "sha256": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3",
+          "url": "https://static.rust-lang.org/dist/rust-src-1.97.1.tar.xz#rust-src-1.97.1/rust-src/lib/rustlib/src/rust/library/vendor/adler2-2.0.1/LICENSE-MIT"
+        },
+        {
+          "file": "e99d88d232bf57d70f0fb87f6b496d44b6653f99f8a63d250a54c61ea4bcde40.txt",
+          "sha256": "e99d88d232bf57d70f0fb87f6b496d44b6653f99f8a63d250a54c61ea4bcde40",
+          "url": "https://static.rust-lang.org/dist/rust-src-1.97.1.tar.xz#rust-src-1.97.1/rust-src/lib/rustlib/src/rust/library/vendor/addr2line-0.25.1/LICENSE-MIT"
+        },
+        {
+          "file": "ff8f68cb076caf8cefe7a6430d4ac086ce6af2ca8ce2c4e5a2004d4552ef52a2.txt",
+          "sha256": "ff8f68cb076caf8cefe7a6430d4ac086ce6af2ca8ce2c4e5a2004d4552ef52a2",
+          "url": "https://static.rust-lang.org/dist/rust-src-1.97.1.tar.xz#rust-src-1.97.1/rust-src/lib/rustlib/src/rust/library/vendor/hashbrown-0.17.1/LICENSE-MIT"
+        },
+        {
+          "file": "b71bd43a069ca0641a9ecfe585ca7b3c53b5cc1608f8b68321168698e28b5ea1.txt",
+          "sha256": "b71bd43a069ca0641a9ecfe585ca7b3c53b5cc1608f8b68321168698e28b5ea1",
+          "url": "https://static.rust-lang.org/dist/rust-src-1.97.1.tar.xz#rust-src-1.97.1/LICENSE-MIT"
+        },
+        {
+          "file": "7b63ecd5f1902af1b63729947373683c32745c16a10e8e6292e2e2dcd7e90ae0.txt",
+          "sha256": "7b63ecd5f1902af1b63729947373683c32745c16a10e8e6292e2e2dcd7e90ae0",
+          "url": "https://static.rust-lang.org/dist/rust-src-1.97.1.tar.xz#rust-src-1.97.1/rust-src/lib/rustlib/src/rust/library/vendor/gimli-0.32.3/LICENSE-MIT"
+        },
+        {
+          "file": "0b74dfa0bcee5c420c6b7f67b4b2658f9ab8388c97b8e733975f2cecbdd668a6.txt",
+          "sha256": "0b74dfa0bcee5c420c6b7f67b4b2658f9ab8388c97b8e733975f2cecbdd668a6",
+          "url": "https://static.rust-lang.org/dist/rust-src-1.97.1.tar.xz#rust-src-1.97.1/rust-src/lib/rustlib/src/rust/library/vendor/object-0.37.3/LICENSE-MIT"
+        },
+        {
+          "file": "6485b8ed310d3f0340bf1ad1f47645069ce4069dcc6bb46c7d5c6faf41de1fdb.txt",
+          "sha256": "6485b8ed310d3f0340bf1ad1f47645069ce4069dcc6bb46c7d5c6faf41de1fdb",
+          "url": "https://static.rust-lang.org/dist/rust-src-1.97.1.tar.xz#rust-src-1.97.1/rust-src/lib/rustlib/src/rust/library/vendor/getopts-0.2.24/LICENSE-MIT"
+        },
+        {
+          "file": "123a331b5dbf04c30097fa43b8f858bc85df671fe776de498d01f3d6b7c1f69e.txt",
+          "sha256": "123a331b5dbf04c30097fa43b8f858bc85df671fe776de498d01f3d6b7c1f69e",
+          "url": "https://static.rust-lang.org/dist/rust-src-1.97.1.tar.xz#rust-src-1.97.1/rust-src/lib/rustlib/src/rust/library/vendor/libc-0.2.185/LICENSE-MIT"
+        },
+        {
+          "file": "0f96a83840e146e43c0ec96a22ec1f392e0680e6c1226e6f3ba87e0740af850f.txt",
+          "sha256": "0f96a83840e146e43c0ec96a22ec1f392e0680e6c1226e6f3ba87e0740af850f",
+          "url": "https://static.rust-lang.org/dist/rust-src-1.97.1.tar.xz#rust-src-1.97.1/rust-src/lib/rustlib/src/rust/library/vendor/memchr-2.7.6/LICENSE-MIT"
+        },
+        {
+          "file": "eb07d497d26e6d68fbc76e793f5e5c9cfa197df2a580e47383569c287a55edf9.txt",
+          "sha256": "eb07d497d26e6d68fbc76e793f5e5c9cfa197df2a580e47383569c287a55edf9",
+          "url": "https://static.rust-lang.org/dist/rust-src-1.97.1.tar.xz#rust-src-1.97.1/rust-src/lib/rustlib/src/rust/library/portable-simd/LICENSE-MIT"
+        },
+        {
+          "file": "29662666b44dff84977b46e05642cdef910bc3a93a17b5fd86e632bafa59cf21.txt",
+          "sha256": "29662666b44dff84977b46e05642cdef910bc3a93a17b5fd86e632bafa59cf21",
+          "url": "https://static.rust-lang.org/dist/rust-src-1.97.1.tar.xz#rust-src-1.97.1/rust-src/lib/rustlib/src/rust/library/stdarch/crates/core_arch/LICENSE-MIT"
+        },
+        {
+          "file": "0a54e647fe54104658b5e563c04c6f9edf251710e47bce692e0bd990a4ddaa39.txt",
+          "sha256": "0a54e647fe54104658b5e563c04c6f9edf251710e47bce692e0bd990a4ddaa39",
+          "url": "https://static.rust-lang.org/dist/rust-src-1.97.1.tar.xz#rust-src-1.97.1/rust-src/lib/rustlib/src/rust/library/vendor/miniz_oxide-0.8.9/LICENSE-ZLIB.md"
+        },
+        {
+          "file": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594.txt",
+          "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+          "url": "https://static.rust-lang.org/dist/rust-src-1.97.1.tar.xz#rust-src-1.97.1/rust-src/lib/rustlib/src/rust/library/vendor/miniz_oxide-0.8.9/LICENSE-APACHE.md"
+        },
+        {
+          "file": "799e9ca9d179295ef372f25d3769cdda7d25bb2668add6a6a1e22d1e4c678b8d.txt",
+          "sha256": "799e9ca9d179295ef372f25d3769cdda7d25bb2668add6a6a1e22d1e4c678b8d",
+          "url": "https://static.rust-lang.org/dist/rust-src-1.97.1.tar.xz#rust-src-1.97.1/rust-src/lib/rustlib/src/rust/library/vendor/miniz_oxide-0.8.9/LICENSE-MIT.md"
+        },
+        {
+          "file": "3823dda7cf046602f4b4e77ec8e227863dc4736037cc85bb33d9f19febe16bb7.txt",
+          "sha256": "3823dda7cf046602f4b4e77ec8e227863dc4736037cc85bb33d9f19febe16bb7",
+          "url": "https://static.rust-lang.org/dist/rust-src-1.97.1.tar.xz#rust-src-1.97.1/rust-src/lib/rustlib/src/rust/library/compiler-builtins/libm/LICENSE.txt"
+        },
+        {
+          "file": "ab6eec6caf0fa5775e411c7a8bc6a45c4ef2956b0980b157ab74fc5cd62a928b.txt",
+          "sha256": "ab6eec6caf0fa5775e411c7a8bc6a45c4ef2956b0980b157ab74fc5cd62a928b",
+          "url": "https://static.rust-lang.org/dist/rust-src-1.97.1.tar.xz#rust-src-1.97.1/rust-src/lib/rustlib/src/rust/library/compiler-builtins/LICENSE.txt"
+        },
+        {
+          "file": "65f94e99ddaf4f5d1782a6dae23f35d4293a9a01444a13135a6887017d353cee.txt",
+          "sha256": "65f94e99ddaf4f5d1782a6dae23f35d4293a9a01444a13135a6887017d353cee",
+          "url": "https://static.crates.io/crates/bumpalo/bumpalo-3.17.0.crate#LICENSE-MIT"
+        },
+        {
+          "file": "f7db81051789b729fea528a63ec4c938fdcb93d9d61d97dc8cc2e9df6d47f2a1.txt",
+          "sha256": "f7db81051789b729fea528a63ec4c938fdcb93d9d61d97dc8cc2e9df6d47f2a1",
+          "url": "https://static.crates.io/crates/unicode-ident/unicode-ident-1.0.17.crate#LICENSE-UNICODE"
+        },
+        {
+          "file": "508a77d2e7b51d98adeed32648ad124b7b30241a8e70b2e72c99f92d8e5874d1.txt",
+          "sha256": "508a77d2e7b51d98adeed32648ad124b7b30241a8e70b2e72c99f92d8e5874d1",
+          "url": "https://raw.githubusercontent.com/mozilla/pdf.js.qcms/2ae4ee72334782928210ba4050e3e77d9b2d35be/LICENSE"
         }
       ],
-      "reviewRequired": "Decoder toolchain coverage, Foxit preferred-source assessment and final font source/notice delivery remain open."
+      "reviewRequired": "Scoped compiler/toolchain distribution assessment, Foxit preferred-source assessment and final source/notice delivery remain open."
     }
   ]
 }

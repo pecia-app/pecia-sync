@@ -11,7 +11,7 @@ export function validateNestedSources(manifest) {
   for(const item of manifest.records){
     if(!/^[a-z][a-z0-9-]*$/.test(item.name)||names.has(item.name)||!/^[-a-z0-9]+\.tar\.(gz|xz)$/.test(item.file)||files.has(item.file)||!/^[a-f0-9]{64}$/.test(item.sha256)||!item.evidence)throw Error('Invalid nested source record');
     const url=new URL(item.url);
-    if(url.protocol!=='https:'||url.username||url.password||!['codeload.github.com','pdfium.googlesource.com','www.sourceware.org','static.crates.io','deb.debian.org'].includes(url.hostname))throw Error('Invalid nested source URL');
+    if(url.protocol!=='https:'||url.username||url.password||!['codeload.github.com','pdfium.googlesource.com','www.sourceware.org','static.crates.io','deb.debian.org','static.rust-lang.org'].includes(url.hostname))throw Error('Invalid nested source URL');
     names.add(item.name);files.add(item.file);
   }
   return manifest;

@@ -1,0 +1,9 @@
+{
+  "rustVersion": "1.97.1",
+  "commit": "8bab26f4f68e0e26f0bb7960be334d5b520ea452",
+  "sourceArchiveSha256": "e9a1e616d04c6845895c827a178b9227f7c7199f3f4a80af81ab3aff7b80156b",
+  "publishedChecksumURL": "https://static.rust-lang.org/dist/rust-src-1.97.1.tar.xz.sha256",
+  "qcmsLockSha256": "8090fdfa15d1d7fec0a9ab8ad43334b5af1389772bd9d906435cf417a430a7bf",
+  "verifiedQcmsRegistryPackages": 13,
+  "scope": "Source-component identity and crate notice checksums; not a standard-library binary rebuild or release approval."
+}
