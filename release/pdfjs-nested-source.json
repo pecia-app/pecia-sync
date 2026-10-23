@@ -78,6 +78,13 @@
       "url": "https://codeload.github.com/emscripten-core/emscripten/tar.gz/d6c521a7f05449857c76bd99e396895583cf2083",
       "sha256": "de630b2a6b736d1bac03b1016a21e365db29b4a3ca6e1457fb0281e1b72e7d59",
       "evidence": "Complete Emscripten 6.0.10 source archive, including bundled runtime-library sources, for the exact decoder reproduction recipe. Not a complete rebuild of the compiler image."
+    },
+    {
+      "name": "rust-runtime-source",
+      "file": "rust-runtime-source.tar.xz",
+      "url": "https://static.rust-lang.org/dist/rust-src-1.97.1.tar.xz",
+      "sha256": "e9a1e616d04c6845895c827a178b9227f7c7199f3f4a80af81ab3aff7b80156b",
+      "evidence": "Official Rust 1.97.1 source component; published checksum and embedded commit match the QCMS reproduction compiler. Includes standard library, compiler-builtins, lockfile and vendored dependencies; not a standard-library binary rebuild."
     }
   ]
 }
