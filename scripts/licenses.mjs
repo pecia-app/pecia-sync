@@ -15,7 +15,7 @@ const inputs=['package.json','package-lock.json','src-tauri/Cargo.toml','src-tau
 const inputSha256=Object.fromEntries(await Promise.all(inputs.map(async path=>[path,hash(await read(path))])));
 inputSha256['scripts/linux-native-bundle.mjs']=hash(await read('scripts/linux-native-bundle.mjs'));
 inputSha256['scripts/linux-notices.mjs']=hash(await read('scripts/linux-notices.mjs'));
-for(const path of ['scripts/linux-native-evidence.mjs','scripts/linux-native-replay.mjs','scripts/linux-native-source.mjs','scripts/linux-replay-tools.mjs','.github/workflows/installer-audit.yml'])inputSha256[path]=hash(await read(path));
+for(const path of ['scripts/linux-desktop-smoke.mjs','scripts/linux-native-evidence.mjs','scripts/linux-native-replay.mjs','scripts/linux-native-source.mjs','scripts/linux-replay-tools.mjs','.github/workflows/installer-audit.yml'])inputSha256[path]=hash(await read(path));
 inputSha256['.gitattributes']=hash(await read('.gitattributes'));
 inputSha256['scripts/source-test-selection.mjs']=hash(await read('scripts/source-test-selection.mjs'));
 inputSha256['scripts/source-installer-evidence.mjs']=hash(await read('scripts/source-installer-evidence.mjs'));

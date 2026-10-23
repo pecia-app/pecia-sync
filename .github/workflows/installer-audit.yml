@@ -35,7 +35,7 @@ jobs:
           rustup default 1.97.0
       - name: Install Linux desktop dependencies
         if: runner.os == 'Linux'
-        run: sudo apt-get update && sudo apt-get install -y libwebkit2gtk-4.1-dev build-essential curl wget file libxdo-dev libssl-dev libayatana-appindicator3-dev librsvg2-dev
+        run: sudo apt-get update && sudo apt-get install -y libwebkit2gtk-4.1-dev build-essential curl wget file libxdo-dev libssl-dev libayatana-appindicator3-dev librsvg2-dev xvfb xdotool imagemagick dbus-x11 libfuse2t64
       - run: npm ci
       - run: npm test
       - run: npm run licenses:test
@@ -62,6 +62,9 @@ jobs:
         env:
           PECIA_REQUIRE_SOURCE_BUILD: '1'
         run: node scripts/installer-audit.mjs
+      - name: Launch candidate AppImage through FUSE and extraction
+        if: runner.os == 'Linux'
+        run: xvfb-run -a -s '-screen 0 1280x900x24' dbus-run-session -- node scripts/linux-desktop-smoke.mjs
       - name: Map AppDir native files to Linux source-package versions
         if: runner.os == 'Linux'
         env:

@@ -121,3 +121,19 @@ PR #27 merged as `b2e7191f4eda5d0c421da50917b31af76bbe9023` after all four
 checks passed. Runtime CI `39154541990` passed all four synthetic combinations
 (two rebuilt runtimes, gzip/zstd) in 1m56s. This verifies offline compressed
 extraction/execution and argument preservation, not a real Pecia desktop launch.
+
+### Candidate desktop launch check
+
+The installer audit now invokes `scripts/linux-desktop-smoke.mjs` under Xvfb
+and a fresh D-Bus session. It launches the actual candidate AppImage twice:
+once using its normal FUSE path (requiring a live recorded AppImage mount),
+then with `--appimage-extract-and-run`. Each launch gets isolated configuration
+and cache directories. Software GL is selected for the virtual display.
+
+The check requires a visible window titled Pecia Sync and captures its pixels,
+geometry, runtime logs, AppImage hash, OS release and mount evidence under
+`build/installer-audit/linux-desktop/`. No automatic fallback converts a failed
+FUSE launch into a pass. Review both screenshots for a loaded interface before
+claiming desktop startup validation. This is a headless X11 smoke test, not a
+Wayland session, physical Kindle/Kobo connection, or full reader interaction
+test. Execution and screenshot review remain pending for this new check.
