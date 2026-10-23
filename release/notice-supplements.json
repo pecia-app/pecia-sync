@@ -1430,7 +1430,7 @@
       "repository": "https://github.com/mozilla/pdf.js.jbig2",
       "revision": "15f6f9357c5e5e30285eb83aa08e5fe1a16ab77a",
       "path": "build",
-      "provenance": "JBIG2 build headers carry Chromium copyright notices (2012 and 2015). The supplement retains the first three lines of build_config.h verbatim plus the complete Chromium BSD license from pinned revision f71e47fc0edf5b2bae628835c5d9def62169b65d. This is notice delivery, not an exact upstream revision mapping for build_config.h.",
+      "provenance": "JBIG2 build headers carry Chromium copyright notices (2012 and 2015). The supplement retains the first three lines of build_config.h verbatim plus the complete Chromium BSD license from pinned revision f71e47fc0edf5b2bae628835c5d9def62169b65d. This is notice delivery, not an exact upstream revision mapping for build_config.h. Exact build_config.h bytes also match Chromium 444cda9b1f3be33fffb7c6f93e50d33d4bd39635; its LICENSE is identical to the retained text.",
       "notices": [
         {
           "file": "368cca1106be99d39ecd32a38d8305585d802a475effb66380b91ffc9bcf709b.txt",
@@ -1443,7 +1443,7 @@
           "url": "https://raw.githubusercontent.com/mozilla/pdf.js.jbig2/15f6f9357c5e5e30285eb83aa08e5fe1a16ab77a/build/build_config.h"
         }
       ],
-      "reviewRequired": "Chromium build_config.h exact upstream attribution, decoder toolchain coverage, and font preferred-source review remain open."
+      "reviewRequired": "Decoder toolchain coverage, Foxit preferred-source assessment and final font source/notice delivery remain open."
     }
   ]
 }

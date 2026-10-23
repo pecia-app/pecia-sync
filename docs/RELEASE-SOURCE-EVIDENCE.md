@@ -63,3 +63,14 @@ candidate evidence. It does not establish bit-for-bit reproducibility or an
 air-gapped installer build: native bundler tools can still download online.
 Toolchain coverage, payload/source review, desktop tests and maintainer sign-off
 remain independent requirements. No release approval is granted by these checks.
+
+The initial extracted-source packaging audit passed macOS and Windows at
+`20e65bd324ae163d6122b79e80e00dfca122af7e` in
+[39825068366](https://github.com/pecia-app/pecia-sync/actions/runs/39825068366).
+Linux packaging and correspondence passed there, but native-source inspection
+failed because the bundler cache had not been copied back. After that fix,
+Linux passed all steps at `75a4a4f` in
+[39842901099](https://github.com/pecia-app/pecia-sync/actions/runs/39842901099).
+PR #38 was merged following these audits and passing lightweight checks.
+These establish the workflow on the recorded revisions; repeat all three
+platforms against the selected final candidate before approval.

@@ -104,3 +104,27 @@ toolchain source coverage, and final installer inspection remain open. PR #35
 merged as `4ff489ff5b54570e0f285b119afe99c7df74ec27`. Source audit
 [39798086732](https://github.com/pecia-app/pecia-sync/actions/runs/39798086732)
 was queued when checked; no successful CI reproduction is claimed here.
+
+## Verified CI and exact header mapping — 22 October 2026
+
+Source audit [39798086732](https://github.com/pecia-app/pecia-sync/actions/runs/39798086732)
+passed on all three platforms at `26a78c12cd0ac1b9e89c35608f80b5b337fa28aa`.
+The first Linux attempt timed out downloading runtime source; its retry passed.
+The retained Linux `jbig2-verification.json` confirms fresh sources, disabled
+container networking and both exact output hashes shown above. The extracted
+source archive SHA-256 was
+`79a9a5ee168f0e6874c81514e4311802b9a99615b60813fd2bb9e715bcaffecf`.
+This is evidence for that audit revision, not the later release candidate.
+
+The wrapper history identifies its header import as the initial commit
+[`76bb4402080eebef2bd09eea985e446f6ec9909c`](https://github.com/mozilla/pdf.js.jbig2/commit/76bb4402080eebef2bd09eea985e446f6ec9909c),
+dated 2 January 2026. Comparing Chromium's last header revision before that
+date produced an exact full-file match for `build/build_config.h` at
+[`444cda9b1f3be33fffb7c6f93e50d33d4bd39635`](https://github.com/chromium/chromium/blob/444cda9b1f3be33fffb7c6f93e50d33d4bd39635/build/build_config.h).
+Both files have SHA-256
+`14ce6d5c00c6fc7f6a167d627a38f7be672a37e1a1f552869532de88390bdc41`.
+The complete `LICENSE` at that same revision hashes to
+`368cca1106be99d39ecd32a38d8305585d802a475effb66380b91ffc9bcf709b`,
+matching the already retained Chromium license supplement. This resolves the
+previously open exact header mapping. It does not prove when upstream copied
+the file or close decoder toolchain-source and final-delivery requirements.

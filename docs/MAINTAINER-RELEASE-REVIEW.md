@@ -60,6 +60,21 @@ Chromium's full BSD license and the retained 2012/2015 copyright notices.
 Exact `build_config.h` upstream attribution and toolchain coverage remain open;
 see [header notice evidence](JBIG2-REBUILD-EXPERIMENT.md#header-notice-delivery--22-october-2026).
 
+Evidence update on 22 October: source audit
+[39798086732](https://github.com/pecia-app/pecia-sync/actions/runs/39798086732)
+now passes on all three platforms at `26a78c12cd0ac1b9e89c35608f80b5b337fa28aa`,
+including both exact JBIG2 outputs on Linux. Chromium `build_config.h` now has
+an exact source match with the retained BSD license; see the latest
+[JBIG2 evidence](JBIG2-REBUILD-EXPERIMENT.md). These supersede the pending-CI
+and unresolved header-mapping statements above for that audit revision.
+Toolchain source/notices and final candidate verification remain open.
+
+On 23 October, all four Liberation Sans fonts were matched exactly to Debian
+`fonts-liberation 1:1.07.4-11`; its missing patch archive is now collected alongside
+the matching original SFD sources. See the [package/source correspondence](PDFJS-NESTED-SOURCE-REVIEW.md#liberation-packagesource-correspondence--23-october-2026).
+This resolves the previous version-only font source mapping, while final source
+and notice delivery still need inspection.
+
 ### Current remaining-work checklist
 
 - [x] PR #22: source/notices for the runtime and six linked libraries collected,
@@ -81,9 +96,8 @@ see [header notice evidence](JBIG2-REBUILD-EXPERIMENT.md#header-notice-delivery-
   [Windows installer review](WINDOWS-INSTALLER-REVIEW.md); embedded WiX custom
   actions and NSIS runtime provenance remain open. Controlled plugin build and
   payload verification passed; repeat them for the final candidate.
-- [ ] PDF.js: remaining font preferred-source coverage, toolchain source/notices
-  and wrapper header attribution. QCMS/OpenJPEG reproduction passed extracted-source
-  CI; JBIG2 reproduction passed locally and awaits extracted-source CI.
+- [ ] PDF.js: decoder toolchain source/notices and final font delivery. QCMS/OpenJPEG/JBIG2 reproduction passed extracted-source
+  CI; header mapping and notice delivery are recorded in the JBIG2 evidence.
 - [ ] objc2: scoped, reasoned maintainer assessment (paid counsel optional).
 - [ ] Final release: choose candidate/version, retain matching hashes and obtain
   explicit maintainer sign-off. The approval ledger remains pending.
