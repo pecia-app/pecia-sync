@@ -1,0 +1,35 @@
+{
+  "scope": "Runtime src/system and top-level notices only; not complete compiler-image source or build verification.",
+  "results": [
+    {
+      "version": "6.0.9",
+      "image": "emscripten/emsdk@sha256:96617f27fe16421588241def73908fd348a7f9d260440ed0d00b36dcf7a063cc",
+      "archiveSha256": "426911732c683c5940e3e089782d90d272ec2738c933e53593f9e9a65ff6aa96",
+      "matchedFiles": 6558,
+      "archiveOnlyConfigurationFiles": [
+        "system/lib/libcxx/.gitignore",
+        "system/lib/libcxx/modules/.clang-format",
+        "system/lib/libcxx/src/.clang-tidy",
+        "system/lib/libcxxabi/src/demangle/.clang-format",
+        "system/lib/libunwind/.clang-format",
+        "system/lib/llvm-libc/src/.clang-tidy",
+        "system/lib/llvm-libc/src/__support/CPP/.clang-tidy"
+      ]
+    },
+    {
+      "version": "6.0.10",
+      "image": "emscripten/emsdk@sha256:e077d54e2b8970575ebc4f185ac1de0b95c05f2b266134d4ba27449af7aebf65",
+      "archiveSha256": "de630b2a6b736d1bac03b1016a21e365db29b4a3ca6e1457fb0281e1b72e7d59",
+      "matchedFiles": 6558,
+      "archiveOnlyConfigurationFiles": [
+        "system/lib/libcxx/.gitignore",
+        "system/lib/libcxx/modules/.clang-format",
+        "system/lib/libcxx/src/.clang-tidy",
+        "system/lib/libcxxabi/src/demangle/.clang-format",
+        "system/lib/libunwind/.clang-format",
+        "system/lib/llvm-libc/src/.clang-tidy",
+        "system/lib/llvm-libc/src/__support/CPP/.clang-tidy"
+      ]
+    }
+  ]
+}

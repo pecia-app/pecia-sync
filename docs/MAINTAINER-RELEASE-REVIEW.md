@@ -75,6 +75,12 @@ the matching original SFD sources. See the [package/source correspondence](PDFJS
 This resolves the previous version-only font source mapping, while final source
 and notice delivery still need inspection.
 
+Emscripten runtime coverage now includes both pinned source archives and
+supplementary system-library notices. Their runtime trees match the successful
+reproduction images (6,558 files per version); see
+[decoder runtime evidence](DECODER-RUNTIME-SOURCE.md). QCMS runtime coverage,
+the scoped toolchain assessment and final delivery remain open.
+
 ### Current remaining-work checklist
 
 - [x] PR #22: source/notices for the runtime and six linked libraries collected,

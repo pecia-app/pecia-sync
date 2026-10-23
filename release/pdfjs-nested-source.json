@@ -64,6 +64,20 @@
       "url": "https://deb.debian.org/debian/pool/main/f/fonts-liberation/fonts-liberation_1.07.4-11.debian.tar.xz",
       "sha256": "45ea32aab7eed82061493edbf5ef621d6fd7f074cb79ae45206014913ca5f313",
       "evidence": "Debian fonts-liberation 1:1.07.4-11 source patches. All four Sans font binaries in that package match PDF.js exactly; its .dsc identifies the original source tarball already retained inside liberation-source.tar.xz. See docs/PDFJS-NESTED-SOURCE-REVIEW.md."
+    },
+    {
+      "name": "emscripten-6-0-9",
+      "file": "emscripten-6-0-9.tar.gz",
+      "url": "https://codeload.github.com/emscripten-core/emscripten/tar.gz/4e4223852a0835923411059a3929907d7df1232e",
+      "sha256": "426911732c683c5940e3e089782d90d272ec2738c933e53593f9e9a65ff6aa96",
+      "evidence": "Complete Emscripten 6.0.9 source archive, including bundled runtime-library sources, for the exact decoder reproduction recipe. Not a complete rebuild of the compiler image."
+    },
+    {
+      "name": "emscripten-6-0-10",
+      "file": "emscripten-6-0-10.tar.gz",
+      "url": "https://codeload.github.com/emscripten-core/emscripten/tar.gz/d6c521a7f05449857c76bd99e396895583cf2083",
+      "sha256": "de630b2a6b736d1bac03b1016a21e365db29b4a3ca6e1457fb0281e1b72e7d59",
+      "evidence": "Complete Emscripten 6.0.10 source archive, including bundled runtime-library sources, for the exact decoder reproduction recipe. Not a complete rebuild of the compiler image."
     }
   ]
 }
