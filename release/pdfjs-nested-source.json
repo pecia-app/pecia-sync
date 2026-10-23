@@ -56,7 +56,14 @@
       "file": "liberation-source.tar.xz",
       "url": "https://www.sourceware.org/pub/cygwin/noarch/release/liberation-fonts/liberation-fonts-1.07.4-1-src.tar.xz",
       "sha256": "96938a0437a73e215898e0475a0c00ea9e251547f7e69cd76012163bb16c7375",
-      "evidence": "Contains original 1.07.4 tarball with editable SFD sources. Cygwin compiled fonts differ from PDF.js; exact historical binary correspondence is not established."
+      "evidence": "Original 1.07.4 SFD source tarball matches the Debian fonts-liberation 1:1.07.4-11 source descriptor. Use together with the collected Debian patches; the unpatched Cygwin fonts do not match PDF.js."
+    },
+    {
+      "name": "liberation-debian-patches",
+      "file": "liberation-debian-patches.tar.xz",
+      "url": "https://deb.debian.org/debian/pool/main/f/fonts-liberation/fonts-liberation_1.07.4-11.debian.tar.xz",
+      "sha256": "45ea32aab7eed82061493edbf5ef621d6fd7f074cb79ae45206014913ca5f313",
+      "evidence": "Debian fonts-liberation 1:1.07.4-11 source patches. All four Sans font binaries in that package match PDF.js exactly; its .dsc identifies the original source tarball already retained inside liberation-source.tar.xz. See docs/PDFJS-NESTED-SOURCE-REVIEW.md."
     }
   ]
 }

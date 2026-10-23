@@ -1,0 +1,30 @@
+{
+  "package": "fonts-liberation",
+  "version": "1:1.07.4-11",
+  "binarySha256": "efd381517f958b01969343634ffcbdd60056be7779af84c6f53a005090430204",
+  "originalSourceSha256": "ad98b7498dc2992f7f0868f79b65ce4a720a3acdb63ab3f1f1cb6881117a5406",
+  "debianPatchesSha256": "45ea32aab7eed82061493edbf5ef621d6fd7f074cb79ae45206014913ca5f313",
+  "fonts": [
+    {
+      "name": "LiberationSans-Regular.ttf",
+      "sha256": "f8ace1f892b2bd9dc1792ba7f097fa7588f84fed48321480e04de5390828221f",
+      "bytes": 139512
+    },
+    {
+      "name": "LiberationSans-Bold.ttf",
+      "sha256": "361c61b82d575c5c35fd9157fda8b0194bcfcd0d88ea8521a4fb5dd53d33dddc",
+      "bytes": 137052
+    },
+    {
+      "name": "LiberationSans-Italic.ttf",
+      "sha256": "832b4406dbef23628800d3aaad21048534ac84d7e3ad955be83b8172ed8ef512",
+      "bytes": 162036
+    },
+    {
+      "name": "LiberationSans-BoldItalic.ttf",
+      "sha256": "a224075ac17495ad0a3af3bc0a419ac0704a8b3fd1095456201fb9b095fc281d",
+      "bytes": 135124
+    }
+  ],
+  "scope": "Exact Debian package bytes and declared source mapping; not a font rebuild or verification of the descriptor PGP signature."
+}

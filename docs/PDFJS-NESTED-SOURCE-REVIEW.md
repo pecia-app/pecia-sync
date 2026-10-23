@@ -151,3 +151,46 @@ See [inputs, output hashes and verification recipe](JBIG2-REBUILD-EXPERIMENT.md)
 The fresh-source check is integrated into the manual Linux source audit;
 its CI run is pending. Compiler source/notices, Chromium header attribution,
 font source questions and final delivery remain separate review items.
+
+### Liberation package/source correspondence — 23 October 2026
+
+All four PDF.js Liberation Sans files match Debian's
+[`fonts-liberation_1.07.4-11_all.deb`](https://deb.debian.org/debian/pool/main/f/fonts-liberation/fonts-liberation_1.07.4-11_all.deb)
+**byte for byte**. The package SHA-256 is
+`efd381517f958b01969343634ffcbdd60056be7779af84c6f53a005090430204`.
+Its control metadata identifies `fonts-liberation` version `1:1.07.4-11`.
+The package contains the same four font hashes listed at the top of this review.
+
+The corresponding Debian source descriptor is retained as
+`release/liberation-source.dsc`. Its two SHA-256 inputs are:
+
+- Original SFD source: `ad98b7498dc2992f7f0868f79b65ce4a720a3acdb63ab3f1f1cb6881117a5406`,
+  already delivered inside the Cygwin source archive.
+- Debian patches/build packaging: `45ea32aab7eed82061493edbf5ef621d6fd7f074cb79ae45206014913ca5f313`,
+  now collected as `liberation-debian-patches.tar.xz`.
+
+The patches include upstream's May 2014 Serbian-glyph correction, which removes
+the extra alternate glyphs found in the earlier unpatched source/binary release.
+The fonts shipped by PDF.js each have 681 glyphs; the older release has 682
+regular/bold glyphs and 687 italic/bold-italic glyphs. Thus the earlier
+version-only source candidate omitted relevant changes. Do not use the upstream
+README's “unmodified release” wording as a substitute for the matched Debian
+source package.
+
+To reconstruct editable source, extract the original nested tarball, extract
+the Debian archive into that source directory, and apply `debian/patches/series`
+in order with `patch -p1`. Debian's `debian/rules` uses debhelper; its descriptor
+requires `debhelper-compat (= 11)`, FontForge and fonttools. The upstream Makefile
+and FontForge export scripts remain in the original archive. This records a
+package-to-source mapping, not a locally demonstrated font rebuild.
+
+`node scripts/liberation-package-probe.mjs <downloaded-deb> <report.json>`
+checks the package hash, control version, four full byte comparisons, original
+source hash and Debian patch hash against the retained source descriptor.
+It passed locally. Applying all four patches in series to a fresh original
+source extraction also passed, leaving 681 glyphs in each Sans SFD. The binary
+comparison report is retained in
+`release/liberation-package-evidence.json`. The descriptor was fetched over
+HTTPS from Debian; its embedded PGP signature was not independently verified.
+The package/source correspondence is established; final archive delivery and
+notice inspection remain required for the release candidate.
