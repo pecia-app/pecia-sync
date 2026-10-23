@@ -8,14 +8,23 @@
   missing data remains unknown and is never interpreted as unread.
 - Add an offline, in-app reader for EPUB, PDF and DRM-free MOBI/AZW3, with
   contents navigation, text sizing/PDF zoom, a local bookmark and resume position.
+- Add experimental, bounded DRM-free single-container KFX reading, including
+  explicit opening from a Kindle over MTP; conversion remains in memory.
+- Add explicit My Clippings.txt import and experimental annotation-database
+  fallback previews when clippings are absent.
 - Bundle the reader parsers: no Calibre or network conversion is required.
 - Use the Pecia logo in the interface and app icons, including native rebuilds
   when icons change.
 - Add reader, privacy and compatibility documentation with synthetic screenshots.
 
-Known beta limitations: KFX/AZW and DRM-protected books are unsupported;
-highlights are not connected. Direct content opening is limited to mounted
-Kindle USB drives; other connections require a local copy. Reader positions
+This candidate remains subject to the pending distribution review and final
+maintainer approval; these notes do not authorize publication.
+
+Known beta limitations: AZW, encrypted books and unsupported KFX variants are
+not readable. KFX support is experimental; recovered annotation boundaries
+need comparison with the device. Direct content opening supports mounted
+Kindle USB drives and the bounded KFX path over MTP; other connections and
+formats require a local copy. Reader positions
 stay on this computer and do not update Kindle progress. Reflowable section
 counts are currently labelled as chapters. macOS packages are ad-hoc signed,
 not Apple-notarized.

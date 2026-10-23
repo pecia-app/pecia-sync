@@ -78,8 +78,20 @@ and notice delivery still need inspection.
 Emscripten runtime coverage now includes both pinned source archives and
 supplementary system-library notices. Their runtime trees match the successful
 reproduction images (6,558 files per version); see
-[decoder runtime evidence](DECODER-RUNTIME-SOURCE.md). QCMS runtime coverage,
-the scoped toolchain assessment and final delivery remain open.
+[decoder runtime evidence](DECODER-RUNTIME-SOURCE.md). PR #42 adds the official
+Rust 1.97.1 source component, QCMS wrapper license and notices from all 13 locked
+registry packages. Source identity, 73 Rust notice files and package notice
+checksums were checked. The scoped toolchain assessment and final delivery
+remain open; no standard-library binary rebuild is claimed.
+
+PR #40's Linux installer audit
+[39908624334](https://github.com/pecia-app/pecia-sync/actions/runs/39908624334)
+passed real AppImage startup through both FUSE and extraction on Ubuntu 26.04.1.
+Both screenshots were visually verified as loaded dashboards. Exact revision,
+installer and screenshot hashes, runtime warnings and scope are recorded in
+[AppImage evidence](APPIMAGE-ASSET-REVIEW.md#candidate-desktop-launch-check).
+This supersedes the unrun desktop/FUSE check above for that artifact only.
+The final candidate still needs all-platform verification.
 
 ### Current remaining-work checklist
 
