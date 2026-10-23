@@ -107,8 +107,10 @@ The final candidate still needs all-platform verification.
   reproduced for the specifically pinned older audit artifact.
 - [x] PR #27: synthetic gzip/zstd extraction and execution passed for both
   rebuilt runtimes, including argument preservation (runtime CI `39154541990`).
-- [ ] AppImage: remaining attribution in [non-ELF asset review](APPIMAGE-ASSET-REVIEW.md),
-  supported Linux desktop/FUSE tests and final artifact correspondence.
+- [ ] AppImage: final delivery of startup attribution recorded in
+  [non-ELF asset review](APPIMAGE-ASSET-REVIEW.md), supported Linux desktop/FUSE
+  tests and final artifact correspondence. The identified missing GTK notice
+  and upstream source archive are now collected.
 - [ ] Windows: installer component source/notices and final-candidate checks.
   Historical MSI destination/feature mapping is recorded in
   [Windows installer review](WINDOWS-INSTALLER-REVIEW.md); embedded WiX custom
